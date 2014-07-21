@@ -44,10 +44,6 @@ function MainPanel () {
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
 
-    var shapes = [RedBubbleShape(bubbleRadius), GreenBubbleShape(bubbleRadius),
-        BlueBubbleShape(bubbleRadius), VioletBubbleShape(bubbleRadius),
-        YellowBubbleShape(bubbleRadius)]
-
     var classPrefix = 'MainPanel'
 
     var canvasWidth = width - width % bubbleDiameter
@@ -65,11 +61,18 @@ function MainPanel () {
     var odd = false
     var bubbles = []
 
+    var c = canvas.getContext('2d')
+
+    var shapes = [
+        RedBubbleShape(c, bubbleRadius),
+        GreenBubbleShape(c, bubbleRadius),
+        BlueBubbleShape(c, bubbleRadius),
+        VioletBubbleShape(c, bubbleRadius),
+        YellowBubbleShape(c, bubbleRadius)]
+
     init()
 
     var nextBubble = getNextBubble()
-
-    var c = canvas.getContext('2d')
 
     var element = document.createElement('div')
     element.className = classPrefix

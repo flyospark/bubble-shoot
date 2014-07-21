@@ -1,10 +1,21 @@
-function GreenBubbleShape (radius) {
+function GreenBubbleShape (c, radius) {
+
+    var halfRadius = radius / 2
+
+    var gradient = c.createRadialGradient(0, -halfRadius, 0, 0, -halfRadius, radius)
+    gradient.addColorStop(0, 'hsl(100, 100%, 45%)')
+    gradient.addColorStop(1, 'hsl(100, 100%, 30%)')
+
     return {
         paint: function (c, x, y) {
-            c.fillStyle = '#0c0'
+            c.save()
+            c.translate(x, y)
+            c.fillStyle = gradient
             c.beginPath()
-            c.arc(x, y, radius, 0, Math.PI * 2)
+            c.arc(0, 0, radius - 0.5, 0, Math.PI * 2)
             c.fill()
+            c.restore()
         },
     }
+
 }
