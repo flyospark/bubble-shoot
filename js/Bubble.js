@@ -1,4 +1,4 @@
-function Bubble (radius, x, y, color) {
+function Bubble (canvasWidth, radius, x, y, color) {
 
     var dx, dy
 
@@ -14,8 +14,22 @@ function Bubble (radius, x, y, color) {
             dy = _dy
         },
         tick: function () {
+
             x += dx * 20
             y += dy * 20
+
+            var overflow = radius - x
+            if (overflow > 0) {
+                x += 2 * overflow
+                dx = -dx
+            }
+
+            var overflow = x + radius - canvasWidth
+            if (overflow > 0) {
+                x -= 2 * overflow
+                dx = -dx
+            }
+
         },
     }
 
