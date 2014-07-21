@@ -1,10 +1,10 @@
 function MainPanel () {
 
-    function createBubbles (x, n, y) {
+    function createBubbles (x, n) {
         for (var i = 0; i < n; i++) {
             var bubbleX = x + i * bubbleDiameter
             var shape = randomShape()
-            bubbles.push(Bubble(canvasWidth, bubbleX, y, shape))
+            bubbles.push(Bubble(canvasWidth, bubbleX, bubbleRadius, shape))
         }
     }
 
@@ -15,9 +15,9 @@ function MainPanel () {
 
     function init () {
         bubbles.splice(0)
-        createBubbles(bubbleRadius, numBubblesHorizontal, bubbleRadius)
-        createBubbles(bubbleDiameter, numBubblesHorizontal - 1, verticalDistance + bubbleRadius)
-        createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
+        shift()
+        shift()
+        shift()
     }
 
     function randomShape () {
@@ -35,6 +35,23 @@ function MainPanel () {
             movingCanvas.paint()
             c.drawImage(movingCanvas.canvas, 0, 0)
         })
+    }
+
+    function shift () {
+
+        for (var i = 0; i < bubbles.length; i++) {
+            var bubble = bubbles[i]
+            bubble.setY(bubble.getY() + verticalDistance)
+        }
+
+        if (odd) {
+            createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
+            odd = false
+        } else {
+            createBubbles(bubbleRadius, numBubblesHorizontal)
+            odd = true
+        }
+
     }
 
     var width = innerWidth

@@ -9,8 +9,14 @@ function Bubble (canvasWidth, x, y, shape) {
         distanceTo: function (pointX, pointY) {
             return Math.hypot(x - pointX, y - pointY)
         },
+        getY: function () {
+            return y
+        },
         paint: function (c) {
             shape.paint(c, x, y)
+        },
+        setY: function (_y) {
+            y = _y
         },
     }
 }
