@@ -38,7 +38,6 @@ function MovingCanvas (canvasWidth, canvasHeight, bubbles, bubbleRadius, vertica
                     y = row * verticalDistance + bubbleRadius
 
                     if (y > canvasHeight - 2 * verticalDistance) {
-                        bubbles.splice(0)
                         movingBubbles = []
                         init()
                     } else {

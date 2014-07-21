@@ -14,6 +14,7 @@ function MainPanel () {
     }
 
     function init () {
+        bubbles.splice(0)
         createBubbles(bubbleRadius, numBubblesHorizontal, bubbleRadius)
         createBubbles(bubbleDiameter, numBubblesHorizontal - 1, verticalDistance + bubbleRadius)
         createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
