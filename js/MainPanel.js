@@ -2,14 +2,18 @@ function MainPanel () {
 
     function createBubbles (x, n, y) {
         for (var i = 0; i < n; i++) {
-            var color = randomColor()
-            var bubble = Bubble(canvasWidth, bubbleRadius, x + i * bubbleDiameter, y, color)
+            var color = randomShape()
+            var bubbleX = x + i * bubbleDiameter
+            var bubble = Bubble(canvasWidth, bubbleRadius, bubbleX, y, color)
             bubbles.push(bubble)
         }
     }
 
     function getNextBubble () {
-        return Bubble(canvasWidth, bubbleRadius, canvasWidth / 2, canvasHeight - bubbleRadius, randomColor())
+        var x = canvasWidth / 2
+        var y = canvasHeight - bubbleRadius
+        var shape = randomShape()
+        return Bubble(canvasWidth, bubbleRadius, x, y, shape)
     }
 
     function init () {
@@ -18,8 +22,8 @@ function MainPanel () {
         createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
     }
 
-    function randomColor () {
-        return colors[Math.floor(Math.random() * colors.length)]
+    function randomShape () {
+        return shapes[Math.floor(Math.random() * shapes.length)]
     }
 
     function repaint () {
@@ -40,7 +44,9 @@ function MainPanel () {
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
 
-    var colors = ['#f22', '#0c0', '#07f', '#ee0', '#f7f']
+    var shapes = [RedBubbleShape(bubbleRadius), GreenBubbleShape(bubbleRadius),
+        BlueBubbleShape(bubbleRadius), VioletBubbleShape(bubbleRadius),
+        YellowBubbleShape(bubbleRadius)]
 
     var classPrefix = 'MainPanel'
 
