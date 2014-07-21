@@ -9,7 +9,7 @@ function MainPanel () {
     }
 
     function getNextBubble () {
-        return Bubble(canvasWidth, bubbleRadius, width / 2, height - bubbleRadius, randomColor())
+        return Bubble(canvasWidth, bubbleRadius, canvasWidth / 2, canvasHeight - bubbleRadius, randomColor())
     }
 
     function randomColor () {
@@ -17,7 +17,8 @@ function MainPanel () {
     }
 
     function repaint () {
-        c.clearRect(0, 0, canvasWidth, canvas.height)
+        c.fillStyle = '#000'
+        c.fillRect(0, 0, canvasWidth, canvasHeight)
         for (var i = 0; i < bubbles.length; i++) {
             bubbles[i].paint(c)
         }
@@ -38,11 +39,12 @@ function MainPanel () {
     var classPrefix = 'MainPanel'
 
     var canvasWidth = width - width % bubbleDiameter
+    var canvasHeight = height - height % bubbleDiameter
 
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
     canvas.width = canvasWidth
-    canvas.height = height - height % bubbleDiameter
+    canvas.height = canvasHeight
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
