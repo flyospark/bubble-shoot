@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+    cursor: default;
+    background: transparent;
+    color: inherit;
+}
+
+body {
+    background: #000;
+}
