@@ -77,10 +77,22 @@ function MainPanel () {
 
     setInterval(function () {
         requestAnimationFrame(function () {
+
             movingBubbles.forEach(function (bubble) {
                 bubble.tick()
             })
+
+            for (var i = 0; i < movingBubbles.length; i++) {
+                var movingBubble = movingBubbles[i]
+                if (movingBubble.collides(bubbles)) {
+                    movingBubbles.splice(i, 1)
+                    bubbles.push(movingBubble)
+                    i--
+                }
+            }
+
             repaint()
+
         })
     }, 10)
 

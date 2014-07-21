@@ -3,6 +3,16 @@ function Bubble (canvasWidth, radius, x, y, color) {
     var dx, dy
 
     return {
+        collides: function (bubbles) {
+            for (var i = 0; i < bubbles.length; i++) {
+                var bubble = bubbles[i]
+                var distance = bubble.distanceTo(x, y)
+                if (distance < radius * 2) return true
+            }
+        },
+        distanceTo: function (pointX, pointY) {
+            return Math.hypot(x - pointX, y - pointY)
+        },
         paint: function (c) {
             c.fillStyle = color
             c.beginPath()
