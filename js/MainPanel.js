@@ -24,15 +24,16 @@ function MainPanel () {
     }
 
     function repaint () {
-        c.fillStyle = '#000'
-        c.fillRect(0, 0, canvasWidth, canvasHeight)
-        for (var i = 0; i < bubbles.length; i++) {
-            bubbles[i].paint(c)
-        }
-        nextBubble.paint(c)
-        for (var i = 0; i < movingBubbles.length; i++) {
-            movingBubbles[i].paint(c)
-        }
+        requestAnimationFrame(function () {
+            c.fillStyle = '#000'
+            c.fillRect(0, 0, canvasWidth, canvasHeight)
+            for (var i = 0; i < bubbles.length; i++) {
+                bubbles[i].paint(c)
+            }
+            nextBubble.paint(c)
+            movingCanvas.paint()
+            c.drawImage(movingCanvas.canvas, 0, 0)
+        })
     }
 
     var width = innerWidth
@@ -46,17 +47,17 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
+    var bubbles = []
+    var odd = false
+
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbles, bubbleRadius, verticalDistance, bubbleDiameter, init)
+
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
     canvas.width = canvasWidth
     canvas.height = canvasHeight
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
-
-    var movingBubbles = []
-
-    var odd = false
-    var bubbles = []
 
     var c = canvas.getContext('2d')
 
@@ -82,51 +83,17 @@ function MainPanel () {
             dx = x / distance,
             dy = -y / distance,
             shape = nextBubble.shape
-        movingBubbles.push(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
+        movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
         nextBubble = getNextBubble()
     })
 
     setInterval(function () {
-        requestAnimationFrame(function () {
 
-            movingBubbles.forEach(function (bubble) {
-                bubble.tick()
-            })
+        movingCanvas.tick(bubbles)
 
-            for (var i = 0; i < movingBubbles.length; i++) {
-                var movingBubble = movingBubbles[i]
-                if (movingBubble.collides(bubbles)) {
 
-                    var y = movingBubble.getY()
-                    var row = Math.round((y - bubbleRadius) / verticalDistance)
-                    y = row * verticalDistance + bubbleRadius
+        repaint()
 
-                    if (y > canvasHeight - 2 * verticalDistance) {
-                        bubbles = []
-                        movingBubbles = []
-                        init()
-                    } else {
-
-                        var x = movingBubble.getX()
-                        x -= bubbleRadius
-                        if (row % 2) x += bubbleRadius
-                        x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
-                        if (row % 2) x -= bubbleRadius
-
-                        movingBubbles.splice(i, 1)
-
-                        bubbles.push(Bubble(canvasWidth, x, y, movingBubble.shape))
-
-                        i--
-
-                    }
-
-                }
-            }
-
-            repaint()
-
-        })
     }, 10)
 
     repaint()
