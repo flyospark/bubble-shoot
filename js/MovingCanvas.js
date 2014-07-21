@@ -1,4 +1,4 @@
-function MovingCanvas (canvasWidth, canvasHeight, bubbles, bubbleRadius, verticalDistance, bubbleDiameter, init) {
+function MovingCanvas (canvasWidth, canvasHeight, stillBubbles, bubbleRadius, verticalDistance, bubbleDiameter, init, stillCanvas) {
 
     var movingBubbles = []
 
@@ -31,7 +31,7 @@ function MovingCanvas (canvasWidth, canvasHeight, bubbles, bubbleRadius, vertica
 
             for (var i = 0; i < movingBubbles.length; i++) {
                 var movingBubble = movingBubbles[i]
-                if (movingBubble.collides(bubbles)) {
+                if (movingBubble.collides(stillBubbles)) {
 
                     var y = movingBubble.getY()
                     var row = Math.round((y - bubbleRadius) / verticalDistance)
@@ -42,15 +42,17 @@ function MovingCanvas (canvasWidth, canvasHeight, bubbles, bubbleRadius, vertica
                         init()
                     } else {
 
+                        var odd = (row + (stillCanvas.isOdd() ? 0 : 1)) % 2
+
                         var x = movingBubble.getX()
                         x -= bubbleRadius
-                        if (row % 2) x += bubbleRadius
+                        if (odd) x += bubbleRadius
                         x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
-                        if (row % 2) x -= bubbleRadius
+                        if (odd) x -= bubbleRadius
 
                         movingBubbles.splice(i, 1)
 
-                        bubbles.push(Bubble(canvasWidth, x, y, movingBubble.shape))
+                        stillBubbles.push(StillBubble(canvasWidth, x, y, movingBubble.shape))
 
                         i--
 

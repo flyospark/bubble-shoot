@@ -1,4 +1,4 @@
-function Bubble (canvasWidth, x, y, shape) {
+function StillBubble (canvasWidth, x, y, shape) {
     return {
         bottomLeft: null,
         bottomRight: null,

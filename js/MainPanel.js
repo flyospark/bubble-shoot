@@ -1,23 +1,15 @@
 function MainPanel () {
 
-    function createBubbles (x, n) {
-        for (var i = 0; i < n; i++) {
-            var bubbleX = x + i * bubbleDiameter
-            var shape = randomShape()
-            bubbles.push(Bubble(canvasWidth, bubbleX, bubbleRadius, shape))
-        }
-    }
-
     function getNextBubble () {
         var shape = randomShape()
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
     function init () {
-        bubbles.splice(0)
-        shift()
-        shift()
-        shift()
+        stillCanvas.removeAll()
+        stillCanvas.shift()
+        stillCanvas.shift()
+        stillCanvas.shift()
     }
 
     function randomShape () {
@@ -26,32 +18,18 @@ function MainPanel () {
 
     function repaint () {
         requestAnimationFrame(function () {
-            c.fillStyle = '#000'
-            c.fillRect(0, 0, canvasWidth, canvasHeight)
-            for (var i = 0; i < bubbles.length; i++) {
-                bubbles[i].paint(c)
-            }
+
+            c.clearRect(0, 0, canvasWidth, canvasHeight)
+
+            stillCanvas.paint()
+            c.drawImage(stillCanvas.canvas, 0, 0)
+
             nextBubble.paint(c)
+
             movingCanvas.paint()
             c.drawImage(movingCanvas.canvas, 0, 0)
+
         })
-    }
-
-    function shift () {
-
-        for (var i = 0; i < bubbles.length; i++) {
-            var bubble = bubbles[i]
-            bubble.setY(bubble.getY() + verticalDistance)
-        }
-
-        if (odd) {
-            createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
-            odd = false
-        } else {
-            createBubbles(bubbleRadius, numBubblesHorizontal)
-            odd = true
-        }
-
     }
 
     var width = innerWidth
@@ -65,17 +43,18 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
-    var bubbles = []
-    var odd = false
+    var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbles, bubbleRadius, verticalDistance, bubbleDiameter, init)
+    var stillCanvas = StillCanvas(canvasWidth, canvasHeight, bubbleRadius,
+        numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance)
+
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
+        stillCanvas.stillBubbles, bubbleRadius, verticalDistance, bubbleDiameter, init, stillCanvas)
 
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
     canvas.width = canvasWidth
     canvas.height = canvasHeight
-
-    var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
     var c = canvas.getContext('2d')
 
@@ -106,12 +85,8 @@ function MainPanel () {
     })
 
     setInterval(function () {
-
-        movingCanvas.tick(bubbles)
-
-
+        movingCanvas.tick()
         repaint()
-
     }, 10)
 
     repaint()
