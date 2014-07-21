@@ -1,53 +1,10 @@
-function Bubble (canvasWidth, radius, x, y, shape) {
-
-    var dx, dy
-
+function Bubble (canvasWidth, x, y, shape) {
     return {
-        collides: function (bubbles) {
-            for (var i = 0; i < bubbles.length; i++) {
-                var bubble = bubbles[i]
-                var distance = bubble.distanceTo(x, y)
-                if (distance < radius * 2) return true
-            }
-        },
         distanceTo: function (pointX, pointY) {
             return Math.hypot(x - pointX, y - pointY)
-        },
-        getX: function () {
-            return x
-        },
-        getY: function () {
-            return y
         },
         paint: function (c) {
             shape.paint(c, x, y)
         },
-        setDirection: function (_dx, _dy) {
-            dx = _dx
-            dy = _dy
-        },
-        setXY: function (_x, _y) {
-            x = _x
-            y = _y
-        },
-        tick: function () {
-
-            x += dx * 16
-            y += dy * 16
-
-            var overflow = radius - x
-            if (overflow > 0) {
-                x += 2 * overflow
-                dx = -dx
-            }
-
-            var overflow = x + radius - canvasWidth
-            if (overflow > 0) {
-                x -= 2 * overflow
-                dx = -dx
-            }
-
-        },
     }
-
 }

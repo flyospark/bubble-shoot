@@ -2,18 +2,15 @@ function MainPanel () {
 
     function createBubbles (x, n, y) {
         for (var i = 0; i < n; i++) {
-            var color = randomShape()
             var bubbleX = x + i * bubbleDiameter
-            var bubble = Bubble(canvasWidth, bubbleRadius, bubbleX, y, color)
-            bubbles.push(bubble)
+            var shape = randomShape()
+            bubbles.push(Bubble(canvasWidth, bubbleX, y, shape))
         }
     }
 
     function getNextBubble () {
-        var x = canvasWidth / 2
-        var y = canvasHeight - bubbleRadius
         var shape = randomShape()
-        return Bubble(canvasWidth, bubbleRadius, x, y, shape)
+        return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
     function init () {
@@ -82,10 +79,10 @@ function MainPanel () {
             x = touch.clientX - width / 2,
             y = height - bubbleRadius - touch.clientY,
             distance = Math.hypot(x, y),
-            sin = y / distance,
-            cos = x / distance
-        nextBubble.setDirection(cos, -sin)
-        movingBubbles.push(nextBubble)
+            dx = x / distance,
+            dy = -y / distance,
+            shape = nextBubble.shape
+        movingBubbles.push(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
         nextBubble = getNextBubble()
     })
 
@@ -116,10 +113,10 @@ function MainPanel () {
                         x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
                         if (row % 2) x -= bubbleRadius
 
-                        movingBubble.setXY(x, y)
-
                         movingBubbles.splice(i, 1)
-                        bubbles.push(movingBubble)
+
+                        bubbles.push(Bubble(canvasWidth, x, y, movingBubble.shape))
+
                         i--
 
                     }
