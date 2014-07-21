@@ -12,6 +12,12 @@ function MainPanel () {
         return Bubble(canvasWidth, bubbleRadius, canvasWidth / 2, canvasHeight - bubbleRadius, randomColor())
     }
 
+    function init () {
+        createBubbles(bubbleRadius, numBubblesHorizontal, bubbleRadius)
+        createBubbles(bubbleDiameter, numBubblesHorizontal - 1, verticalDistance + bubbleRadius)
+        createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
+    }
+
     function randomColor () {
         return colors[Math.floor(Math.random() * colors.length)]
     }
@@ -52,9 +58,8 @@ function MainPanel () {
 
     var odd = false
     var bubbles = []
-    createBubbles(bubbleRadius, numBubblesHorizontal, bubbleRadius)
-    createBubbles(bubbleDiameter, numBubblesHorizontal - 1, verticalDistance + bubbleRadius)
-    createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
+
+    init()
 
     var nextBubble = getNextBubble()
 
@@ -90,17 +95,26 @@ function MainPanel () {
                     var row = Math.round((y - bubbleRadius) / verticalDistance)
                     y = row * verticalDistance + bubbleRadius
 
-                    var x = movingBubble.getX()
-                    x -= bubbleRadius
-                    if (row % 2) x += bubbleRadius
-                    x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
-                    if (row % 2) x -= bubbleRadius
+                    if (y > canvasHeight - 2 * verticalDistance) {
+                        bubbles = []
+                        movingBubbles = []
+                        init()
+                    } else {
 
-                    movingBubble.setXY(x, y)
+                        var x = movingBubble.getX()
+                        x -= bubbleRadius
+                        if (row % 2) x += bubbleRadius
+                        x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
+                        if (row % 2) x -= bubbleRadius
 
-                    movingBubbles.splice(i, 1)
-                    bubbles.push(movingBubble)
-                    i--
+                        movingBubble.setXY(x, y)
+
+                        movingBubbles.splice(i, 1)
+                        bubbles.push(movingBubble)
+                        i--
+
+                    }
+
                 }
             }
 

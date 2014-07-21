@@ -35,8 +35,8 @@ function Bubble (canvasWidth, radius, x, y, color) {
         },
         tick: function () {
 
-            x += dx * 20
-            y += dy * 20
+            x += dx * 16
+            y += dy * 16
 
             var overflow = radius - x
             if (overflow > 0) {
