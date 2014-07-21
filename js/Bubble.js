@@ -1,4 +1,7 @@
 function Bubble (radius, x, y, color) {
+
+    var dx, dy
+
     return {
         paint: function (c) {
             c.fillStyle = color
@@ -6,13 +9,14 @@ function Bubble (radius, x, y, color) {
             c.arc(x, y, radius, 0, Math.PI * 2)
             c.fill()
         },
-        setDirection: function (dx, dy) {
+        setDirection: function (_dx, _dy) {
             dx = _dx
             dy = _dy
         },
         tick: function () {
-            x += dx
-            y += dy
+            x += dx * 20
+            y += dy * 20
         },
     }
+
 }

@@ -8,12 +8,23 @@ function MainPanel () {
         }
     }
 
+    function getNextBubble () {
+        return Bubble(bubbleRadius, width / 2, height - bubbleRadius, randomColor())
+    }
+
     function randomColor () {
         return colors[Math.floor(Math.random() * colors.length)]
     }
 
-    function nextBubble () {
-        return Bubble(bubbleRadius, width / 2, height - bubbleRadius, randomColor)
+    function repaint () {
+        c.clearRect(0, 0, canvas.width, canvas.height)
+        for (var i = 0; i < bubbles.length; i++) {
+            bubbles[i].paint(c)
+        }
+        nextBubble.paint(c)
+        for (var i = 0; i < movingBubbles.length; i++) {
+            movingBubbles[i].paint(c)
+        }
     }
 
     var width = innerWidth
@@ -41,17 +52,35 @@ function MainPanel () {
     createBubbles(bubbleDiameter, numBubblesHorizontal - 1, verticalDistance + bubbleRadius)
     createBubbles(bubbleRadius, numBubblesHorizontal, verticalDistance * 2 + bubbleRadius)
 
-    var nextBubble = nextBubble()
+    var nextBubble = getNextBubble()
 
     var c = canvas.getContext('2d')
-    for (var i = 0; i < bubbles.length; i++) {
-        bubbles[i].paint(c)
-    }
-    nextBubble.paint(c)
 
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
+    element.addEventListener('touchstart', function (e) {
+        var touch = e.changedTouches[0],
+            x = touch.clientX - width / 2,
+            y = height - bubbleRadius - touch.clientY,
+            distance = Math.hypot(x, y),
+            sin = y / distance,
+            cos = x / distance
+        nextBubble.setDirection(cos, -sin)
+        movingBubbles.push(nextBubble)
+        nextBubble = getNextBubble()
+    })
+
+    setInterval(function () {
+        requestAnimationFrame(function () {
+            movingBubbles.forEach(function (bubble) {
+                bubble.tick()
+            })
+            repaint()
+        })
+    }, 20)
+
+    repaint()
 
     return { element: element }
 
