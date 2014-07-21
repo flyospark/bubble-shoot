@@ -13,6 +13,12 @@ function Bubble (canvasWidth, radius, x, y, color) {
         distanceTo: function (pointX, pointY) {
             return Math.hypot(x - pointX, y - pointY)
         },
+        getX: function () {
+            return x
+        },
+        getY: function () {
+            return y
+        },
         paint: function (c) {
             c.fillStyle = color
             c.beginPath()
@@ -22,6 +28,10 @@ function Bubble (canvasWidth, radius, x, y, color) {
         setDirection: function (_dx, _dy) {
             dx = _dx
             dy = _dy
+        },
+        setXY: function (_x, _y) {
+            x = _x
+            y = _y
         },
         tick: function () {
 

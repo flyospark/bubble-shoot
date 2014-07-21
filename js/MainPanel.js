@@ -85,6 +85,19 @@ function MainPanel () {
             for (var i = 0; i < movingBubbles.length; i++) {
                 var movingBubble = movingBubbles[i]
                 if (movingBubble.collides(bubbles)) {
+
+                    var y = movingBubble.getY()
+                    var row = Math.round((y - bubbleRadius) / verticalDistance)
+                    y = row * verticalDistance + bubbleRadius
+
+                    var x = movingBubble.getX()
+                    x -= bubbleRadius
+                    if (row % 2) x += bubbleRadius
+                    x = Math.round(x / bubbleDiameter) * bubbleDiameter + bubbleRadius
+                    if (row % 2) x -= bubbleRadius
+
+                    movingBubble.setXY(x, y)
+
                     movingBubbles.splice(i, 1)
                     bubbles.push(movingBubble)
                     i--
