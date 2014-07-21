@@ -3,7 +3,7 @@ function GreenBubbleShape (c, radius) {
     var halfRadius = radius / 2
 
     var gradient = c.createRadialGradient(0, -halfRadius, 0, 0, -halfRadius, radius)
-    gradient.addColorStop(0, 'hsl(100, 100%, 45%)')
+    gradient.addColorStop(0, 'hsl(100, 100%, 40%)')
     gradient.addColorStop(1, 'hsl(100, 100%, 30%)')
 
     return {
