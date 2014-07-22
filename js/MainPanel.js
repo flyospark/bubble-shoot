@@ -10,7 +10,10 @@ function MainPanel () {
         stillCanvas.shift()
         stillCanvas.shift()
         stillCanvas.shift()
-        nextBubble = getNextBubble()
+        if (!nextBubble) {
+            clearTimeout(nextBubbleTimeout)
+            nextBubble = getNextBubble()
+        }
     }
 
     function randomShape () {
@@ -70,6 +73,7 @@ function MainPanel () {
         YellowBubbleShape(c, bubbleRadius)]
 
     var nextBubble
+    var nextBubbleTimeout
 
     init()
 
@@ -87,7 +91,7 @@ function MainPanel () {
             shape = nextBubble.shape
         movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
         nextBubble = null
-        setTimeout(function () {
+        nextBubbleTimeout = setTimeout(function () {
             nextBubble = getNextBubble()
         }, 100)
     })
