@@ -10,6 +10,7 @@ function MainPanel () {
         stillCanvas.shift()
         stillCanvas.shift()
         stillCanvas.shift()
+        nextBubble = getNextBubble()
     }
 
     function randomShape () {
@@ -24,7 +25,7 @@ function MainPanel () {
             stillCanvas.paint()
             c.drawImage(stillCanvas.canvas, 0, 0)
 
-            nextBubble.paint(c)
+            if (nextBubble) nextBubble.paint(c)
 
             movingCanvas.paint()
             c.drawImage(movingCanvas.canvas, 0, 0)
@@ -49,7 +50,11 @@ function MainPanel () {
         numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance)
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
-        stillCanvas.stillBubbles, bubbleRadius, verticalDistance, bubbleDiameter, init, stillCanvas)
+        stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
+        bubbleDiameter, init, stillCanvas, function (stillBubble) {
+        stillCanvas.add(stillBubble)
+        nextBubble = getNextBubble()
+    })
 
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
@@ -65,14 +70,15 @@ function MainPanel () {
         VioletBubbleShape(c, bubbleRadius),
         YellowBubbleShape(c, bubbleRadius)]
 
-    init()
+    var nextBubble
 
-    var nextBubble = getNextBubble()
+    init()
 
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
     element.addEventListener('touchstart', function (e) {
+        if (!nextBubble) return
         var touch = e.changedTouches[0],
             x = touch.clientX - width / 2,
             y = height - bubbleRadius - touch.clientY,
@@ -81,7 +87,7 @@ function MainPanel () {
             dy = -y / distance,
             shape = nextBubble.shape
         movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
-        nextBubble = getNextBubble()
+        nextBubble = null
     })
 
     setInterval(function () {

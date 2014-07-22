@@ -1,4 +1,4 @@
-function MovingCanvas (canvasWidth, canvasHeight, stillBubbles, bubbleRadius, verticalDistance, bubbleDiameter, init, stillCanvas) {
+function MovingCanvas (canvasWidth, canvasHeight, stillBubbles, bubbleRadius, verticalDistance, bubbleDiameter, init, stillCanvas, finishListener) {
 
     var movingBubbles = []
 
@@ -52,7 +52,7 @@ function MovingCanvas (canvasWidth, canvasHeight, stillBubbles, bubbleRadius, ve
 
                         movingBubbles.splice(i, 1)
 
-                        stillBubbles.push(StillBubble(canvasWidth, x, y, movingBubble.shape))
+                        finishListener(StillBubble(canvasWidth, x, y, movingBubble.shape))
 
                         i--
 
