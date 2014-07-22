@@ -82,7 +82,7 @@ function MainPanel () {
     element.className = classPrefix
     element.appendChild(canvas)
     element.addEventListener('touchstart', function (e) {
-        if (!nextBubble || !nextBubble.isReady()) return
+        if (!nextBubble || !nextBubble.ready) return
         var touch = e.changedTouches[0],
             x = touch.clientX - width / 2,
             y = height - bubbleRadius - touch.clientY,

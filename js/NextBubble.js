@@ -5,11 +5,9 @@ function NextBubble (canvasWidth, canvasHeight, radius, shape) {
     var stepIndex = 8
     var stepSize = radius * 2 / stepIndex
 
-    return {
+    var that = {
+        ready: false,
         shape: shape,
-        isReady: function () {
-            return !stepIndex
-        },
         paint: function (c) {
             shape.paint(c, x, y)
         },
@@ -17,8 +15,12 @@ function NextBubble (canvasWidth, canvasHeight, radius, shape) {
             if (stepIndex) {
                 stepIndex--
                 y -= stepSize
+            } else {
+                that.ready = true
             }
         },
     }
+
+    return that
 
 }
