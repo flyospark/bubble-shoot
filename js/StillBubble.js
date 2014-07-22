@@ -6,6 +6,9 @@ function StillBubble (canvasWidth, x, y, shape) {
         right: null,
         topLeft: null,
         topRight: null,
+        addY: function (_y) {
+            y += _y
+        },
         distanceTo: function (pointX, pointY) {
             return Math.hypot(x - pointX, y - pointY)
         },
@@ -14,9 +17,6 @@ function StillBubble (canvasWidth, x, y, shape) {
         },
         paint: function (c) {
             shape.paint(c, x, y)
-        },
-        setY: function (_y) {
-            y = _y
         },
     }
 }

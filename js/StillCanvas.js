@@ -1,5 +1,22 @@
 function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
 
+    function shift () {
+
+        for (var i = 0; i < stillBubbles.length; i++) {
+            var bubble = stillBubbles[i]
+            moves.push(MoveBubbleDown(bubble, verticalDistance))
+        }
+
+        if (odd) {
+            createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
+            odd = false
+        } else {
+            createBubbles(bubbleRadius, numBubblesHorizontal)
+            odd = true
+        }
+
+    }
+
     function createBubbles (x, n) {
         for (var i = 0; i < n; i++) {
             var bubbleX = x + i * bubbleDiameter
@@ -15,11 +32,15 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     var c = canvas.getContext('2d')
 
     var stillBubbles = []
+    var moves = []
 
     var odd = false
 
+    setInterval(shift, 4000)
+
     return {
         canvas: canvas,
+        shift: shift,
         stillBubbles: stillBubbles,
         add: function (stillBubble) {
             stillBubbles.push(stillBubble)
@@ -40,23 +61,13 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         removeAll: function () {
             stillBubbles.splice(0)
         },
-        shift: function () {
-
-            for (var i = 0; i < stillBubbles.length; i++) {
-                var bubble = stillBubbles[i]
-                bubble.setY(bubble.getY() + verticalDistance)
-            }
-
-            if (odd) {
-                createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
-                odd = false
-            } else {
-                createBubbles(bubbleRadius, numBubblesHorizontal)
-                odd = true
-            }
-
-        },
         tick: function () {
+            for (var i = 0; i < moves.length; i++) {
+                if (moves[i].tick()) {
+                    moves.splice(i, 1)
+                    i--
+                }
+            }
         },
     }
 
