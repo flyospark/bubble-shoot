@@ -3,19 +3,12 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     function shift () {
 
         for (var i = 0; i < stillBubbles.length; i++) {
-            moves.push({
-                steps: maxSteps,
-                bubble: stillBubbles[i],
-            })
+            moveDown(stillBubbles[i])
         }
 
-        if (odd) {
-            createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
-            odd = false
-        } else {
-            createBubbles(bubbleRadius, numBubblesHorizontal)
-            odd = true
-        }
+        if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
+        else createBubbles(bubbleRadius, numBubblesHorizontal)
+        odd = !odd
 
     }
 
@@ -23,11 +16,22 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         for (var i = 0; i < n; i++) {
             var bubbleX = x + i * bubbleDiameter
             var shape = randomShape()
-            stillBubbles.push(StillBubble(canvasWidth, bubbleX, bubbleRadius, shape))
+            var y = bubbleRadius - verticalDistance
+            var bubble = StillBubble(canvasWidth, bubbleX, y, shape)
+            stillBubbles.push(bubble)
+            moveDown(bubble)
         }
     }
 
+    function moveDown (bubble) {
+        moves.push({
+            steps: maxSteps,
+            bubble: bubble,
+        })
+    }
+
     var maxSteps = 8
+    var stepSize = verticalDistance / maxSteps
 
     var canvas = document.createElement('canvas')
     canvas.width = canvasWidth
@@ -69,7 +73,7 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             for (var i = 0; i < moves.length; i++) {
                 var move = moves[i]
                 move.steps--
-                move.bubble.addY(verticalDistance / maxSteps)
+                move.bubble.addY(stepSize)
                 if (!move.steps) {
                     moves.splice(i, 1)
                     i--
