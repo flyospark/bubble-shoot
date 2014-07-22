@@ -66,11 +66,12 @@ function MainPanel () {
     var c = canvas.getContext('2d')
 
     var shapes = [
-        RedBubbleShape(c, bubbleRadius),
-        GreenBubbleShape(c, bubbleRadius),
-        BlueBubbleShape(c, bubbleRadius),
-        VioletBubbleShape(c, bubbleRadius),
-        YellowBubbleShape(c, bubbleRadius)]
+        RedBubbleShape(bubbleRadius),
+        GreenBubbleShape(bubbleRadius),
+        BlueBubbleShape(bubbleRadius),
+        VioletBubbleShape(bubbleRadius),
+        YellowBubbleShape(bubbleRadius),
+    ]
 
     var nextBubble
     var nextBubbleTimeout

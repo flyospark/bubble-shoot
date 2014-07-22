@@ -1,22 +1,31 @@
-function RedBubbleShape (c, radius) {
+function RedBubbleShape (radius) {
 
-    var halfRadius = radius / 2
-    var circleRadius = radius - 0.5
-    var fullCircle = Math.PI * 2
+    var canvas = (function () {
 
-    var gradient = c.createRadialGradient(0, -halfRadius, 0, 0, -halfRadius, radius)
-    gradient.addColorStop(0, 'hsl(5, 100%, 65%)')
-    gradient.addColorStop(1, 'hsl(5, 100%, 40%)')
+        var canvas = document.createElement('canvas')
+        canvas.width = canvas.height = radius * 2
+
+        var c = canvas.getContext('2d')
+
+        var minusHalfRadius = -radius / 2
+
+        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius)
+        gradient.addColorStop(0, 'hsl(5, 100%, 65%)')
+        gradient.addColorStop(1, 'hsl(5, 100%, 40%)')
+
+        c.fillStyle = gradient
+        c.translate(radius, radius)
+        c.arc(0, 0, radius - 0.5, 0, Math.PI * 2)
+        c.fillStyle = gradient
+        c.fill()
+
+        return canvas
+
+    })()
 
     return {
         paint: function (c, x, y) {
-            c.save()
-            c.translate(x, y)
-            c.fillStyle = gradient
-            c.beginPath()
-            c.arc(0, 0, circleRadius, 0, fullCircle)
-            c.fill()
-            c.restore()
+            c.drawImage(canvas, x - radius, y - radius)
         },
     }
 
