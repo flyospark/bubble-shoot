@@ -2,6 +2,7 @@ function StillBubble (canvasWidth, x, y, shape) {
     return {
         bottomLeft: null,
         bottomRight: null,
+        id: Math.random(),
         left: null,
         right: null,
         topLeft: null,

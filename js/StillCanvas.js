@@ -3,35 +3,45 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     function shift () {
 
         for (var i = 0; i < stillBubbles.length; i++) {
-            moveDown(stillBubbles[i])
+            moveDown(stillBubbles[i], maxSteps)
         }
 
         if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
         else createBubbles(bubbleRadius, numBubblesHorizontal)
         odd = !odd
 
+        shiftY += verticalDistance
+        shiftIndex += maxSteps
+
     }
 
     function createBubbles (x, n) {
+        var y = bubbleRadius - verticalDistance - shiftY
         for (var i = 0; i < n; i++) {
-            var bubbleX = x + i * bubbleDiameter
             var shape = randomShape()
-            var y = bubbleRadius - verticalDistance
-            var bubble = StillBubble(canvasWidth, bubbleX, y, shape)
+            var bubble = StillBubble(canvasWidth, x, y, shape)
             stillBubbles.push(bubble)
-            moveDown(bubble)
+            moveDown(bubble, maxSteps + shiftIndex)
+            x += bubbleDiameter
         }
     }
 
-    function moveDown (bubble) {
-        moves.push({
-            steps: maxSteps,
-            bubble: bubble,
-        })
+    function moveDown (bubble, steps) {
+        var id = bubble.id
+        if (moves[id]) {
+            moves[id].steps += steps
+        } else {
+            moves[id] = {
+                steps: steps,
+                bubble: bubble,
+            }
+        }
     }
 
     var maxSteps = 8
     var stepSize = verticalDistance / maxSteps
+    var shiftY = 0
+    var shiftIndex = 0
 
     var canvas = document.createElement('canvas')
     canvas.width = canvasWidth
@@ -40,7 +50,7 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     var c = canvas.getContext('2d')
 
     var stillBubbles = []
-    var moves = []
+    var moves = {}
 
     var odd = false
 
@@ -66,18 +76,26 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             }
         },
         removeAll: function () {
+            moves = {}
             stillBubbles.splice(0)
         },
         tick: function () {
-            for (var i = 0; i < moves.length; i++) {
+
+            for (var i in moves) {
                 var move = moves[i]
                 move.steps--
                 move.bubble.addY(stepSize)
                 if (!move.steps) {
-                    moves.splice(i, 1)
+                    delete moves[i]
                     i--
                 }
             }
+
+            if (shiftIndex) {
+                shiftIndex--
+                shiftY -= stepSize
+            }
+
         },
     }
 
