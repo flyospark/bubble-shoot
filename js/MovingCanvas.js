@@ -18,7 +18,6 @@ function MovingCanvas (canvasWidth, canvasHeight, stillBubbles, bubbleRadius, ve
             c.fillStyle = 'rgba(255, 0, 0, 0.4)'
             c.fillRect(0, 0, canvasWidth, canvasHeight)
             c.globalCompositeOperation = 'source-over'
-            c.globalAlpha = 0.7
             for (var i = 0; i < movingBubbles.length; i++) {
                 movingBubbles[i].paint(c)
             }
