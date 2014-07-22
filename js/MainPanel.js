@@ -53,7 +53,6 @@ function MainPanel () {
         stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
         bubbleDiameter, init, stillCanvas, function (stillBubble) {
         stillCanvas.add(stillBubble)
-        nextBubble = getNextBubble()
     })
 
     var canvas = document.createElement('canvas')
@@ -78,7 +77,7 @@ function MainPanel () {
     element.className = classPrefix
     element.appendChild(canvas)
     element.addEventListener('touchstart', function (e) {
-        if (!nextBubble) return
+        if (!nextBubble || !nextBubble.isReady()) return
         var touch = e.changedTouches[0],
             x = touch.clientX - width / 2,
             y = height - bubbleRadius - touch.clientY,
@@ -88,11 +87,15 @@ function MainPanel () {
             shape = nextBubble.shape
         movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
         nextBubble = null
+        setTimeout(function () {
+            nextBubble = getNextBubble()
+        }, 100)
     })
 
     setInterval(function () {
         stillCanvas.tick()
         movingCanvas.tick()
+        if (nextBubble) nextBubble.tick()
         repaint()
     }, 10)
 

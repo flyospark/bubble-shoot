@@ -54,8 +54,6 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
 
     var odd = false
 
-    setInterval(shift, 4000)
-
     return {
         canvas: canvas,
         shift: shift,
