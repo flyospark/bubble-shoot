@@ -85,6 +85,7 @@ function MainPanel () {
     })
 
     setInterval(function () {
+        stillCanvas.tick()
         movingCanvas.tick()
         repaint()
     }, 10)

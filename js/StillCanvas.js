@@ -56,6 +56,8 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             }
 
         },
+        tick: function () {
+        },
     }
 
 }
