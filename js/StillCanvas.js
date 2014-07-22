@@ -3,8 +3,10 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     function shift () {
 
         for (var i = 0; i < stillBubbles.length; i++) {
-            var bubble = stillBubbles[i]
-            moves.push(MoveBubbleDown(bubble, verticalDistance))
+            moves.push({
+                steps: maxSteps,
+                bubble: stillBubbles[i],
+            })
         }
 
         if (odd) {
@@ -24,6 +26,8 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             stillBubbles.push(StillBubble(canvasWidth, bubbleX, bubbleRadius, shape))
         }
     }
+
+    var maxSteps = 8
 
     var canvas = document.createElement('canvas')
     canvas.width = canvasWidth
@@ -63,7 +67,10 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         },
         tick: function () {
             for (var i = 0; i < moves.length; i++) {
-                if (moves[i].tick()) {
+                var move = moves[i]
+                move.steps--
+                move.bubble.addY(verticalDistance / maxSteps)
+                if (!move.steps) {
                     moves.splice(i, 1)
                     i--
                 }
