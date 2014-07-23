@@ -31,18 +31,27 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
             shape.paint(c, x, y)
         },
         shiftBack: function (distance) {
+
             var hypot = Math.hypot(dx, dy)
             x -= dx * distance / hypot
             y -= dy * distance / hypot
+
+            var underflow = radius - x
+            if (underflow > 0) x += 2 * underflow
+
+            var overflow = x + radius - canvasWidth
+            if (overflow > 0) x -= 2 * overflow
+
+
         },
         tick: function () {
 
             x += stepX
             y += stepY
 
-            var overflow = radius - x
-            if (overflow > 0) {
-                x += 2 * overflow
+            var underflow = radius - x
+            if (underflow > 0) {
+                x += 2 * underflow
                 dx = -dx
                 stepX = dx * stepMultiplier
             }
