@@ -84,6 +84,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
 
             var neighbors = Neighbors(bubble, columns)
             if (neighbors.length >= 3) {
+
                 for (var i = 0; i < neighbors.length; i++) {
 
                     var neighbor = neighbors[i]
@@ -95,6 +96,10 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
                     breakCallback(neighbor.x, neighbor.y)
 
                 }
+
+                var orphans = Orphans(columns)
+                console.log('orphans', orphans)
+
             }
 
         },
