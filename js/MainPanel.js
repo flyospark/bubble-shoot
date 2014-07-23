@@ -97,7 +97,9 @@ function MainPanel () {
             canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init)
 
         for (var i = 0; i < collisions.length; i++) {
-            var movingBubble = collisions[i]
+            var collision = collisions[i]
+            var movingBubble = collision.movingBubble
+            movingBubble.shiftBack(bubbleDiameter - collision.distance)
             stillCanvas.add(movingBubble)
             movingCanvas.remove(movingBubble)
         }

@@ -3,16 +3,22 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
     var x = canvasWidth / 2
     var y = canvasHeight - radius
 
-    var stepX = dx * 20
-    var stepY = dy * 20
+    var stepMultiplier = 20
+    var stepX = dx * stepMultiplier
+    var stepY = dy * stepMultiplier
 
     return {
         shape: shape,
-        collides: function (bubbles) {
-            for (var i = 0; i < bubbles.length; i++) {
-                var bubble = bubbles[i]
-                var distance = bubble.distanceTo(x, y)
-                if (distance < (radius - 1) * 2) return true
+        collides: function (stillBubbles) {
+            for (var i = 0; i < stillBubbles.length; i++) {
+                var stillBubble = stillBubbles[i]
+                var distance = stillBubble.distanceTo(x, y)
+                if (distance < (radius - 1) * 2) {
+                    return {
+                        stillBubble: stillBubble,
+                        distance: distance,
+                    }
+                }
             }
         },
         getX: function () {
@@ -24,6 +30,11 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
         paint: function (c) {
             shape.paint(c, x, y)
         },
+        shiftBack: function (distance) {
+            var hypot = Math.hypot(dx, dy)
+            x -= dx * distance / hypot
+            y -= dy * distance / hypot
+        },
         tick: function () {
 
             x += stepX
@@ -33,12 +44,14 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
             if (overflow > 0) {
                 x += 2 * overflow
                 dx = -dx
+                stepX = dx * stepMultiplier
             }
 
             var overflow = x + radius - canvasWidth
             if (overflow > 0) {
                 x -= 2 * overflow
                 dx = -dx
+                stepX = dx * stepMultiplier
             }
 
         },

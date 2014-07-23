@@ -4,8 +4,10 @@ function Collide (movingBubbles, stillBubbles, bubbleRadius, verticalDistance,
     var collisions = []
     for (var i = 0; i < movingBubbles.length; i++) {
         var movingBubble = movingBubbles[i]
-        if (movingBubble.collides(stillBubbles)) {
-            collisions.push(movingBubble)
+        var collision = movingBubble.collides(stillBubbles)
+        if (collision) {
+            collision.movingBubble = movingBubble
+            collisions.push(collision)
         }
     }
     return collisions
