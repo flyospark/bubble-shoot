@@ -64,14 +64,14 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         stillBubbles: stillBubbles,
         add: function (movingBubble) {
 
-            var y = movingBubble.getY()
+            var y = movingBubble.y
             var shiftOffset = shiftIndex * stepSize - bubbleRadius
             var rowNumber = Math.round((y + shiftOffset) / verticalDistance)
             y = rowNumber * verticalDistance - shiftOffset
 
             var oddOffset = rowNumber % 2 ? 0 : bubbleRadius
             
-            var x = movingBubble.getX()
+            var x = movingBubble.x
             var colNumber = Math.round((x - oddOffset) / bubbleDiameter)
             x = colNumber * bubbleDiameter + oddOffset
 

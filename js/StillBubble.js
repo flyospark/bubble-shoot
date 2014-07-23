@@ -1,19 +1,21 @@
 function StillBubble (x, y, shape, rowNumber, colNumber) {
-    return {
+
+    var that = {
         colNumber: colNumber,
         id: Math.random(),
         rowNumber: rowNumber,
-        addY: function (_y) {
-            y += _y
+        y: y,
+        addY: function (y) {
+            that.y += y
         },
         distanceTo: function (pointX, pointY) {
-            return Math.hypot(x - pointX, y - pointY)
-        },
-        getY: function () {
-            return y
+            return Math.hypot(x - pointX, that.y - pointY)
         },
         paint: function (c) {
-            shape.paint(c, x, y)
+            shape.paint(c, x, that.y)
         },
     }
+
+    return that
+
 }

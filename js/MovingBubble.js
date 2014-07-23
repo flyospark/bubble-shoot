@@ -1,18 +1,17 @@
 function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
 
-    var x = canvasWidth / 2
-    var y = canvasHeight - radius
-
     var stepMultiplier = 20
     var stepX = dx * stepMultiplier
     var stepY = dy * stepMultiplier
 
-    return {
+    var that = {
         shape: shape,
+        x: canvasWidth / 2,
+        y: canvasHeight - radius,
         collides: function (stillBubbles) {
             for (var i = 0; i < stillBubbles.length; i++) {
                 var stillBubble = stillBubbles[i]
-                var distance = stillBubble.distanceTo(x, y)
+                var distance = stillBubble.distanceTo(that.x, that.y)
                 if (distance < (radius - 1) * 2) {
                     return {
                         stillBubble: stillBubble,
@@ -21,49 +20,45 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
                 }
             }
         },
-        getX: function () {
-            return x
-        },
-        getY: function () {
-            return y
-        },
         paint: function (c) {
-            shape.paint(c, x, y)
+            shape.paint(c, that.x, that.y)
         },
         shiftBack: function (distance) {
 
             var hypot = Math.hypot(dx, dy)
-            x -= dx * distance / hypot
-            y -= dy * distance / hypot
+            that.x -= dx * distance / hypot
+            that.y -= dy * distance / hypot
 
-            var underflow = radius - x
-            if (underflow > 0) x += 2 * underflow
+            var underflow = radius - that.x
+            if (underflow > 0) that.x += 2 * underflow
 
-            var overflow = x + radius - canvasWidth
-            if (overflow > 0) x -= 2 * overflow
+            var overflow = that.x + radius - canvasWidth
+            if (overflow > 0) that.x -= 2 * overflow
 
 
         },
         tick: function () {
 
-            x += stepX
-            y += stepY
+            that.x += stepX
+            that.y += stepY
 
-            var underflow = radius - x
+            var underflow = radius - that.x
             if (underflow > 0) {
-                x += 2 * underflow
+                that.x += 2 * underflow
                 dx = -dx
                 stepX = dx * stepMultiplier
             }
 
-            var overflow = x + radius - canvasWidth
+            var overflow = that.x + radius - canvasWidth
             if (overflow > 0) {
-                x -= 2 * overflow
+                that.x -= 2 * overflow
                 dx = -dx
                 stepX = dx * stepMultiplier
             }
 
         },
     }
+
+    return that
 
 }
