@@ -1,20 +1,5 @@
 function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
 
-    function shift () {
-
-        for (var i = 0; i < stillBubbles.length; i++) {
-            moveDown(stillBubbles[i], maxSteps)
-        }
-
-        if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
-        else createBubbles(bubbleRadius, numBubblesHorizontal)
-        odd = !odd
-
-        shiftY += verticalDistance
-        shiftIndex += maxSteps
-
-    }
-
     function createBubbles (x, n) {
         var y = bubbleRadius - verticalDistance - shiftY
         for (var i = 0; i < n; i++) {
@@ -36,6 +21,21 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
                 bubble: bubble,
             }
         }
+    }
+
+    function shift () {
+
+        for (var i = 0; i < stillBubbles.length; i++) {
+            moveDown(stillBubbles[i], maxSteps)
+        }
+
+        if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
+        else createBubbles(bubbleRadius, numBubblesHorizontal)
+        odd = !odd
+
+        shiftY += verticalDistance
+        shiftIndex += maxSteps
+
     }
 
     var maxSteps = 8
