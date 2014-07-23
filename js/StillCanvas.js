@@ -1,13 +1,15 @@
 function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
 
-    function createBubbles (x, n) {
+    function createBubbles (colNumber, n) {
+        var x = bubbleRadius + colNumber * bubbleRadius
         var y = bubbleRadius - verticalDistance - shiftY
         for (var i = 0; i < n; i++) {
             var shape = randomShape()
-            var bubble = StillBubble(canvasWidth, x, y, shape, 0)
+            var bubble = StillBubble(canvasWidth, x, y, shape, 0, colNumber)
             stillBubbles.push(bubble)
             moveDown(bubble, maxSteps + shiftIndex)
             x += bubbleDiameter
+            colNumber += 2
         }
     }
 
@@ -31,8 +33,8 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             stillBubble.rowNumber++
         }
 
-        if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
-        else createBubbles(bubbleRadius, numBubblesHorizontal)
+        if (odd) createBubbles(1, numBubblesHorizontal - 1)
+        else createBubbles(0, numBubblesHorizontal)
 
         odd = !odd
         shiftY += verticalDistance
@@ -64,15 +66,16 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
 
             var y = movingBubble.getY()
             var shiftOffset = shiftIndex * stepSize - bubbleRadius
-            var row = Math.round((y + shiftOffset) / verticalDistance)
-            y = row * verticalDistance - shiftOffset
+            var rowNumber = Math.round((y + shiftOffset) / verticalDistance)
+            y = rowNumber * verticalDistance - shiftOffset
 
-            var oddOffset = row % 2 ? 0 : bubbleRadius
+            var oddOffset = rowNumber % 2 ? 0 : bubbleRadius
             
             var x = movingBubble.getX()
-            x = Math.round((x - oddOffset) / bubbleDiameter) * bubbleDiameter + oddOffset
+            var colNumber = Math.round((x - oddOffset) / bubbleDiameter)
+            x = colNumber * bubbleDiameter + oddOffset
 
-            var bubble = StillBubble(canvasWidth, x, y, movingBubble.shape, row)
+            var bubble = StillBubble(canvasWidth, x, y, movingBubble.shape, rowNumber, colNumber)
             stillBubbles.push(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 

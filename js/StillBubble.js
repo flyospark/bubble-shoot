@@ -1,5 +1,6 @@
-function StillBubble (canvasWidth, x, y, shape, rowNumber) {
+function StillBubble (canvasWidth, x, y, shape, rowNumber, colNumber) {
     return {
+        colNumber: colNumber,
         id: Math.random(),
         rowNumber: rowNumber,
         addY: function (_y) {
