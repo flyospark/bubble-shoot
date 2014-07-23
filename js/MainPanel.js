@@ -19,6 +19,8 @@ function MainPanel () {
     function repaint () {
         requestAnimationFrame(function () {
 
+            var time = Date.now()
+
             c.clearRect(0, 0, canvasWidth, canvasHeight)
             background.paint(c)
 
@@ -29,6 +31,8 @@ function MainPanel () {
 
             movingCanvas.paint()
             c.drawImage(movingCanvas.canvas, 0, 0)
+
+            debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time) + 'ms'
 
         })
     }
@@ -42,6 +46,15 @@ function MainPanel () {
     var nextRandomShape = BubbleShape_Random(bubbleRadius).next
 
     var classPrefix = 'MainPanel'
+
+    var debugTickElement = document.createElement('div')
+
+    var debugRepaintElement = document.createElement('div')
+
+    var debugElement = document.createElement('div')
+    debugElement.className = classPrefix + '-debug'
+    debugElement.appendChild(debugRepaintElement)
+    debugElement.appendChild(debugTickElement)
 
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
@@ -70,6 +83,7 @@ function MainPanel () {
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
+    element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
         if (!nextBubble || !nextBubble.ready) return
         var touch = e.changedTouches[0],
@@ -88,6 +102,8 @@ function MainPanel () {
 
     setInterval(function () {
 
+        var time = Date.now()
+
         stillCanvas.tick()
         movingCanvas.tick()
         if (nextBubble) nextBubble.tick()
@@ -103,6 +119,8 @@ function MainPanel () {
             stillCanvas.add(movingBubble)
             movingCanvas.remove(movingBubble)
         }
+
+        debugTickElement.innerHTML = 'tick ' + (Date.now() - time) + 'ms'
 
         repaint()
 

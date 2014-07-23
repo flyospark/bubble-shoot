@@ -16,3 +16,11 @@
     display: inline-block;
     vertical-align: top;
 }
+
+.MainPanel-debug {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #f00;
+    text-align: right;
+}

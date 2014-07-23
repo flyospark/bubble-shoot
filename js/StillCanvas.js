@@ -1,12 +1,16 @@
 function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
 
+    function add (bubble) {
+        stillBubbles.push(bubble)
+    }
+
     function createBubbles (colNumber, n) {
         var x = bubbleRadius + colNumber * bubbleRadius
         var y = bubbleRadius - verticalDistance - shiftY
         for (var i = 0; i < n; i++) {
             var shape = randomShape()
             var bubble = StillBubble(x, y, shape, 0, colNumber)
-            stillBubbles.push(bubble)
+            add(bubble)
             moveDown(bubble, maxSteps + shiftIndex)
             x += bubbleDiameter
             colNumber += 2
@@ -56,6 +60,11 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     var stillBubbles = []
     var moves = {}
 
+    var columns = {}
+    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) {
+        columns[i] = []
+    }
+
     var odd = false
 
     return {
@@ -76,7 +85,7 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
             x = colNumber * bubbleDiameter + oddOffset
 
             var bubble = StillBubble(x, y, movingBubble.shape, rowNumber, colNumber)
-            stillBubbles.push(bubble)
+            add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
         },
