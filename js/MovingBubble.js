@@ -9,7 +9,7 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
             for (var i = 0; i < bubbles.length; i++) {
                 var bubble = bubbles[i]
                 var distance = bubble.distanceTo(x, y)
-                if (distance < radius * 2) return true
+                if (distance < (radius - 1) * 2) return true
             }
         },
         getX: function () {

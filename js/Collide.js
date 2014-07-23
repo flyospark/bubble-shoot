@@ -1,4 +1,5 @@
-function Collide (movingBubbles, stillBubbles, bubbleRadius, verticalDistance, canvasWidth, canvasHeight, stillCanvas, bubbleDiameter) {
+function Collide (movingBubbles, stillBubbles, bubbleRadius, verticalDistance,
+    canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init) {
 
     var newStillBubbles = []
 
