@@ -3,6 +3,9 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
     var x = canvasWidth / 2
     var y = canvasHeight - radius
 
+    var stepX = dx * 20
+    var stepY = dy * 20
+
     return {
         shape: shape,
         collides: function (bubbles) {
@@ -23,8 +26,8 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
         },
         tick: function () {
 
-            x += dx * 20
-            y += dy * 20
+            x += stepX
+            y += stepY
 
             var overflow = radius - x
             if (overflow > 0) {
