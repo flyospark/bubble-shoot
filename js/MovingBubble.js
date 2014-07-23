@@ -23,8 +23,8 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
         },
         tick: function () {
 
-            x += dx * 16
-            y += dy * 16
+            x += dx * 20
+            y += dy * 20
 
             var overflow = radius - x
             if (overflow > 0) {

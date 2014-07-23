@@ -12,6 +12,7 @@ function MovingCanvas (canvasWidth, canvasHeight) {
         canvas: canvas,
         movingBubbles: movingBubbles,
         add: function (movingBubble) {
+            movingBubble.paint(c)
             movingBubbles.push(movingBubble)
         },
         paint: function () {

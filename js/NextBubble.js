@@ -2,7 +2,7 @@ function NextBubble (canvasWidth, canvasHeight, radius, shape) {
 
     var x = canvasWidth / 2
     var y = canvasHeight + radius
-    var stepIndex = 8
+    var stepIndex = 6
     var stepSize = radius * 2 / stepIndex
 
     var that = {

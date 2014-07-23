@@ -83,7 +83,7 @@ function MainPanel () {
         nextBubble = null
         nextBubbleTimeout = setTimeout(function () {
             nextBubble = getNextBubble()
-        }, 100)
+        }, 200)
     })
 
     setInterval(function () {
@@ -104,7 +104,7 @@ function MainPanel () {
 
         repaint()
 
-    }, 10)
+    }, 20)
 
     repaint()
 

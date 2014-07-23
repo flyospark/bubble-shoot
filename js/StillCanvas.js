@@ -38,7 +38,7 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
 
     }
 
-    var maxSteps = 8
+    var maxSteps = 4
     var stepSize = verticalDistance / maxSteps
     var shiftY = 0
     var shiftIndex = 0
