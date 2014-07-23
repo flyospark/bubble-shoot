@@ -83,7 +83,17 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
             var neighbors = Neighbors(bubble, columns)
-            console.log('neighbors', neighbors)
+            if (neighbors.length >= 3) {
+                for (var i = 0; i < neighbors.length; i++) {
+
+                    var neighbor = neighbors[i]
+                    stillBubbles.splice(stillBubbles.indexOf(neighbor), 1)
+
+                    var columnBubbles = columns[neighbor.colNumber]
+                    columnBubbles.splice(columnBubbles.indexOf(neighbor), 1)
+
+                }
+            }
 
         },
         isOdd: function () {
