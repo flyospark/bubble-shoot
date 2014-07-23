@@ -23,23 +23,39 @@ function MainPanel () {
             var time = Date.now()
 
             blurCanvas.clear()
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' a' + (newTime - time)
+            time = newTime
 
             c.clearRect(0, 0, canvasWidth, canvasHeight)
+            newTime = Date.now()
+            text += ' b' + (newTime - time)
+            time = newTime
+
             background.paint(blurC)
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' c' + (newTime - time)
+            time = newTime
 
             stillCanvas.paint(blurC)
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' d' + (newTime - time)
+            time = newTime
 
             if (nextBubble) nextBubble.paint(blurC)
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' e' + (newTime - time)
+            time = newTime
 
             movingCanvas.paint(blurC)
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' f' + (newTime - time)
+            time = newTime
 
             c.drawImage(blurCanvas.canvas, 0, 0)
-            text += ' ' + (Date.now() - time) + 'ms'
+            newTime = Date.now()
+            text += ' g' + (newTime - time)
+            time = newTime
 
             debugRepaintElement.innerHTML = 'repaint:' + text
 
@@ -134,7 +150,7 @@ function MainPanel () {
             movingCanvas.remove(movingBubble)
         }
 
-        debugTickElement.innerHTML = 'tick ' + (Date.now() - time) + 'ms'
+        debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
 
         repaint()
 
