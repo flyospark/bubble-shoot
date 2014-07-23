@@ -2,6 +2,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
 
     function add (bubble) {
         stillBubbles.push(bubble)
+        columns[bubble.colNumber].push(bubble)
     }
 
     function createBubbles (colNumber, n) {
@@ -54,7 +55,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
     var stillBubbles = []
     var moves = {}
 
-    var columns = {}
+    var columns = []
     for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) {
         columns[i] = []
     }
@@ -81,6 +82,9 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
             add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
+            var neighbors = Neighbors(bubble, columns)
+            console.log('neighbors', neighbors)
+
         },
         isOdd: function () {
             return odd
@@ -93,6 +97,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
         removeAll: function () {
             moves = {}
             stillBubbles.splice(0)
+            for (var i in columns) columns[i].splice(0)
         },
         tick: function () {
 
