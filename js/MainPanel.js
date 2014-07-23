@@ -64,8 +64,8 @@ function MainPanel () {
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
-    var stillCanvas = StillCanvas(canvasWidth, canvasHeight, bubbleRadius,
-        numBubblesHorizontal, bubbleDiameter, nextRandomShape, verticalDistance)
+    var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
+        bubbleDiameter, nextRandomShape, verticalDistance)
 
     var movingCanvas = MovingCanvas()
 

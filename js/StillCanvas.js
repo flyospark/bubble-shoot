@@ -1,4 +1,4 @@
-function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
+function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
 
     function add (bubble) {
         stillBubbles.push(bubble)
