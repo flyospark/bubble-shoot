@@ -1,32 +1,43 @@
 function Neighbors (bubble, columns) {
 
-    function scan (bubble) {
+    function checkAndScan (colNumber, rowNumber) {
 
-        var shape = bubble.shape
-        var colNumber = bubble.colNumber
-        var rowNumber = bubble.rowNumber
+        var columnBubbles = columnsAndRows[colNumber]
+        if (!columnBubbles) return
 
-        for (var i = 0; i < columns.length; i++) {
-            var otherBubbles = columns[i]
-            for (var j = 0; j < otherBubbles.length; j++) {
+        var bubble = columnBubbles[rowNumber]
+        if (!bubble || scannedBubbles[bubble.id] || bubble.shape != shape) return
 
-                var otherBubble = otherBubbles[j]
-                if (scannedBubbles[otherBubble.id]) continue
-
-                if (otherBubble.rowNumber == rowNumber && otherBubble.shape == shape) {
-                    scannedBubbles[otherBubble.id] = true
-                    neighbors.push(otherBubble)
-                }
-
-            }
-        }
+        scan(bubble)
 
     }
 
-    var scannedBubbles = {}
-    scannedBubbles[bubble.id] = true
+    function scan (bubble) {
+        var colNumber = bubble.colNumber
+        var rowNumber = bubble.rowNumber
+        scannedBubbles[bubble.id] = bubble
+        neighbors.push(bubble)
+        checkAndScan(colNumber - 2, rowNumber)
+        checkAndScan(colNumber + 2, rowNumber)
+        checkAndScan(colNumber - 1, rowNumber - 1)
+        checkAndScan(colNumber + 1, rowNumber - 1)
+        checkAndScan(colNumber - 1, rowNumber + 1)
+        checkAndScan(colNumber + 1, rowNumber + 1)
+    }
 
-    var neighbors = [bubble]
+    var columnsAndRows = {}
+    for (var i = 0; i < columns.length; i++) {
+        var columnBubbles = columns[i]
+        columnsAndRows[i] = {}
+        for (var j = 0; j < columnBubbles.length; j++) {
+            var columnBubble = columnBubbles[j]
+            columnsAndRows[i][columnBubble.rowNumber] = columnBubble
+        }
+    }
+
+    var shape = bubble.shape
+    var scannedBubbles = {}
+    var neighbors = []
     scan(bubble)
 
     return neighbors

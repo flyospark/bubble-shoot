@@ -75,9 +75,9 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
             var oddOffset = rowNumber % 2 ? 0 : bubbleRadius
             
             var x = movingBubble.x
-            var colNumber = Math.round((x - oddOffset) / bubbleDiameter)
-            x = colNumber * bubbleDiameter + oddOffset
+            x = Math.round((x - oddOffset) / bubbleDiameter) * bubbleDiameter + oddOffset
 
+            var colNumber = Math.floor(x / bubbleRadius) - 1
             var bubble = StillBubble(x, y, movingBubble.shape, rowNumber, colNumber)
             add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
