@@ -31,8 +31,8 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
 
         if (odd) createBubbles(bubbleDiameter, numBubblesHorizontal - 1)
         else createBubbles(bubbleRadius, numBubblesHorizontal)
-        odd = !odd
 
+        odd = !odd
         shiftY += verticalDistance
         shiftIndex += maxSteps
 
@@ -61,8 +61,9 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         add: function (movingBubble) {
 
             var y = movingBubble.getY()
-            var row = Math.round((y - bubbleRadius) / verticalDistance)
-            y = row * verticalDistance + bubbleRadius
+            var shiftOffset = shiftIndex * stepSize - bubbleRadius
+            var row = Math.round((y + shiftOffset) / verticalDistance)
+            y = row * verticalDistance - shiftOffset
 
             var oddOffset = row % 2 ? 0 : bubbleRadius
             
