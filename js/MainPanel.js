@@ -20,6 +20,7 @@ function MainPanel () {
         requestAnimationFrame(function () {
 
             c.clearRect(0, 0, canvasWidth, canvasHeight)
+            background.paint(c)
 
             stillCanvas.paint()
             c.drawImage(stillCanvas.canvas, 0, 0)
@@ -44,6 +45,8 @@ function MainPanel () {
 
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
+
+    var background = Background(canvasWidth, canvasHeight, bubbleDiameter)
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
