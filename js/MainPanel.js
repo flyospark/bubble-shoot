@@ -52,11 +52,7 @@ function MainPanel () {
     var stillCanvas = StillCanvas(canvasWidth, canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance)
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
-        stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
-        bubbleDiameter, init, stillCanvas, function (stillBubble) {
-        stillCanvas.add(stillBubble)
-    })
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight)
 
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
@@ -98,10 +94,21 @@ function MainPanel () {
     })
 
     setInterval(function () {
+
         stillCanvas.tick()
         movingCanvas.tick()
         if (nextBubble) nextBubble.tick()
+
+        var newStillBubbles = Collide(movingCanvas.movingBubbles,
+            stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
+            canvasWidth, canvasHeight, stillCanvas, bubbleDiameter)
+
+        for (var i = 0; i < newStillBubbles.length; i++) {
+            stillCanvas.add(newStillBubbles[i])
+        }
+
         repaint()
+
     }, 10)
 
     repaint()
