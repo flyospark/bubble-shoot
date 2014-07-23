@@ -28,6 +28,7 @@ function MainPanel () {
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
+            fallingCanvas.paint(blurC)
             c.drawImage(blurCanvas.canvas, 0, 0)
 
             debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time)
@@ -72,6 +73,8 @@ function MainPanel () {
 
     var breakingCanvas = BreakingCanvas()
 
+    var fallingCanvas = FallingCanvas()
+
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
     canvas.width = canvasWidth
@@ -112,6 +115,7 @@ function MainPanel () {
         stillCanvas.tick()
         movingCanvas.tick()
         breakingCanvas.tick()
+        fallingCanvas.tick()
         if (nextBubble) nextBubble.tick()
 
         var collisions = Collide(movingCanvas.movingBubbles,
@@ -122,7 +126,7 @@ function MainPanel () {
             var collision = collisions[i]
             var movingBubble = collision.movingBubble
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
-            stillCanvas.add(movingBubble, breakingCanvas.add)
+            stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
             movingCanvas.remove(movingBubble)
         }
 

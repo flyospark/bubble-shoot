@@ -30,6 +30,12 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
         }
     }
 
+    function remove (bubble) {
+        stillBubbles.splice(stillBubbles.indexOf(bubble), 1)
+        var columnBubbles = columns[bubble.colNumber]
+        columnBubbles.splice(columnBubbles.indexOf(bubble), 1)
+    }
+
     function shift () {
 
         for (var i = 0; i < stillBubbles.length; i++) {
@@ -65,7 +71,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
     return {
         shift: shift,
         stillBubbles: stillBubbles,
-        add: function (movingBubble, breakCallback) {
+        add: function (movingBubble, breakCallback, fallCallback) {
 
             var y = movingBubble.y
             var shiftOffset = shiftIndex * stepSize - bubbleRadius
@@ -86,19 +92,17 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
             if (neighbors.length >= 3) {
 
                 for (var i = 0; i < neighbors.length; i++) {
-
                     var neighbor = neighbors[i]
-                    stillBubbles.splice(stillBubbles.indexOf(neighbor), 1)
-
-                    var columnBubbles = columns[neighbor.colNumber]
-                    columnBubbles.splice(columnBubbles.indexOf(neighbor), 1)
-
+                    remove(neighbor)
                     breakCallback(neighbor.x, neighbor.y)
-
                 }
 
                 var orphans = Orphans(columns)
-                console.log('orphans', orphans)
+                for (var i = 0; i < orphans.length; i++) {
+                    var orphan = orphans[i]
+                    remove(orphan)
+                    fallCallback(orphan.x, orphan.y, orphan.shape)
+                }
 
             }
 
