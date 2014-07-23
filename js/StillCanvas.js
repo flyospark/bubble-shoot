@@ -65,7 +65,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
     return {
         shift: shift,
         stillBubbles: stillBubbles,
-        add: function (movingBubble) {
+        add: function (movingBubble, breakCallback) {
 
             var y = movingBubble.y
             var shiftOffset = shiftIndex * stepSize - bubbleRadius
@@ -91,6 +91,8 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
 
                     var columnBubbles = columns[neighbor.colNumber]
                     columnBubbles.splice(columnBubbles.indexOf(neighbor), 1)
+
+                    breakCallback(neighbor.x, neighbor.y)
 
                 }
             }

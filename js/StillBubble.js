@@ -4,6 +4,7 @@ function StillBubble (x, y, shape, rowNumber, colNumber) {
         colNumber: colNumber,
         id: Math.random(),
         rowNumber: rowNumber,
+        x: x,
         y: y,
         shape: shape,
         addY: function (y) {
