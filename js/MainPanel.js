@@ -99,12 +99,14 @@ function MainPanel () {
         movingCanvas.tick()
         if (nextBubble) nextBubble.tick()
 
-        var newStillBubbles = Collide(movingCanvas.movingBubbles,
+        var collisions = Collide(movingCanvas.movingBubbles,
             stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
             canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init)
 
-        for (var i = 0; i < newStillBubbles.length; i++) {
-            stillCanvas.add(newStillBubbles[i])
+        for (var i = 0; i < collisions.length; i++) {
+            var movingBubble = collisions[i]
+            stillCanvas.add(movingBubble)
+            movingCanvas.remove(movingBubble)
         }
 
         repaint()

@@ -58,8 +58,21 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         canvas: canvas,
         shift: shift,
         stillBubbles: stillBubbles,
-        add: function (stillBubble) {
-            stillBubbles.push(stillBubble)
+        add: function (movingBubble) {
+
+            var y = movingBubble.getY()
+            var row = Math.round((y - bubbleRadius) / verticalDistance)
+            y = row * verticalDistance + bubbleRadius
+
+            var oddOffset = row % 2 ? 0 : bubbleRadius
+            
+            var x = movingBubble.getX()
+            x = Math.round((x - oddOffset) / bubbleDiameter) * bubbleDiameter + oddOffset
+
+            var bubble = StillBubble(canvasWidth, x, y, movingBubble.shape)
+            stillBubbles.push(bubble)
+            if (shiftIndex) moveDown(bubble, shiftIndex)
+
         },
         isOdd: function () {
             return odd
