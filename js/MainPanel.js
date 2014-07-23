@@ -22,19 +22,23 @@ function MainPanel () {
             var text = ''
             var time = Date.now()
 
+            blurCanvas.clear()
+            text += ' ' + (Date.now() - time) + 'ms'
+
             c.clearRect(0, 0, canvasWidth, canvasHeight)
-            background.paint(c)
+            background.paint(blurC)
             text += ' ' + (Date.now() - time) + 'ms'
 
-            stillCanvas.paint()
-            c.drawImage(stillCanvas.canvas, 0, 0)
+            stillCanvas.paint(blurC)
             text += ' ' + (Date.now() - time) + 'ms'
 
-            if (nextBubble) nextBubble.paint(c)
+            if (nextBubble) nextBubble.paint(blurC)
             text += ' ' + (Date.now() - time) + 'ms'
 
-            movingCanvas.paint()
-            c.drawImage(movingCanvas.canvas, 0, 0)
+            movingCanvas.paint(blurC)
+            text += ' ' + (Date.now() - time) + 'ms'
+
+            c.drawImage(blurCanvas.canvas, 0, 0)
             text += ' ' + (Date.now() - time) + 'ms'
 
             debugRepaintElement.innerHTML = 'repaint:' + text
@@ -64,6 +68,10 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
+    var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
+
+    var blurC = blurCanvas.c
+
     var background = Background(canvasWidth, canvasHeight, bubbleDiameter)
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
@@ -71,7 +79,7 @@ function MainPanel () {
     var stillCanvas = StillCanvas(canvasWidth, canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, nextRandomShape, verticalDistance)
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight)
+    var movingCanvas = MovingCanvas()
 
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
@@ -103,6 +111,7 @@ function MainPanel () {
         nextBubbleTimeout = setTimeout(function () {
             nextBubble = getNextBubble()
         }, 200)
+        repaint()
     })
 
     setInterval(function () {

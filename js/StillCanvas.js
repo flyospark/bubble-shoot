@@ -51,12 +51,6 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     var shiftY = 0
     var shiftIndex = 0
 
-    var canvas = document.createElement('canvas')
-    canvas.width = canvasWidth
-    canvas.height = canvasHeight
-
-    var c = canvas.getContext('2d')
-
     var stillBubbles = []
     var moves = {}
 
@@ -68,7 +62,6 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
     var odd = false
 
     return {
-        canvas: canvas,
         shift: shift,
         stillBubbles: stillBubbles,
         add: function (movingBubble) {
@@ -92,11 +85,7 @@ function StillCanvas (canvasWidth, canvasHeight, bubbleRadius, numBubblesHorizon
         isOdd: function () {
             return odd
         },
-        paint: function () {
-            c.globalCompositeOperation = 'destination-out'
-            c.fillStyle = 'rgba(255, 0, 0, 0.4)'
-            c.fillRect(0, 0, canvasWidth, canvasHeight)
-            c.globalCompositeOperation = 'source-over'
+        paint: function (c) {
             for (var i = 0; i < stillBubbles.length; i++) {
                 stillBubbles[i].paint(c)
             }
