@@ -6,6 +6,7 @@ function BubbleShape_Random (bubbleRadius) {
         BubbleShape_Blue(bubbleRadius),
         BubbleShape_Violet(bubbleRadius),
         BubbleShape_Yellow(bubbleRadius),
+        BubbleShape_White(bubbleRadius),
     ]
 
     return {
