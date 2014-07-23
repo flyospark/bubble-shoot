@@ -1,4 +1,4 @@
-function VioletBubbleShape (radius) {
+function BubbleShape_Yellow (radius) {
 
     var canvas = (function () {
 
@@ -10,8 +10,8 @@ function VioletBubbleShape (radius) {
         var minusHalfRadius = -radius / 2
 
         var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius)
-        gradient.addColorStop(0, 'hsl(300, 100%, 60%)')
-        gradient.addColorStop(1, 'hsl(300, 100%, 40%)')
+        gradient.addColorStop(0, 'hsl(50, 100%, 70%)')
+        gradient.addColorStop(1, 'hsl(50, 100%, 40%)')
 
         c.fillStyle = gradient
         c.translate(radius, radius)

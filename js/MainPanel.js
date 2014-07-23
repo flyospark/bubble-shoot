@@ -1,7 +1,7 @@
 function MainPanel () {
 
     function getNextBubble () {
-        var shape = randomShape()
+        var shape = nextRandomShape()
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
@@ -14,10 +14,6 @@ function MainPanel () {
             clearTimeout(nextBubbleTimeout)
             nextBubble = getNextBubble()
         }
-    }
-
-    function randomShape () {
-        return shapes[Math.floor(Math.random() * shapes.length)]
     }
 
     function repaint () {
@@ -42,6 +38,8 @@ function MainPanel () {
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
 
+    var nextRandomShape = BubbleShape_Random(bubbleRadius).next
+
     var classPrefix = 'MainPanel'
 
     var canvasWidth = width - width % bubbleDiameter
@@ -50,7 +48,7 @@ function MainPanel () {
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
     var stillCanvas = StillCanvas(canvasWidth, canvasHeight, bubbleRadius,
-        numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance)
+        numBubblesHorizontal, bubbleDiameter, nextRandomShape, verticalDistance)
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight)
 
@@ -60,14 +58,6 @@ function MainPanel () {
     canvas.height = canvasHeight
 
     var c = canvas.getContext('2d')
-
-    var shapes = [
-        RedBubbleShape(bubbleRadius),
-        GreenBubbleShape(bubbleRadius),
-        BlueBubbleShape(bubbleRadius),
-        VioletBubbleShape(bubbleRadius),
-        YellowBubbleShape(bubbleRadius),
-    ]
 
     var nextBubble
     var nextBubbleTimeout
