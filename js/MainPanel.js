@@ -19,45 +19,17 @@ function MainPanel () {
     function repaint () {
         requestAnimationFrame(function () {
 
-            var text = ''
             var time = Date.now()
 
             blurCanvas.clear()
-            newTime = Date.now()
-            text += ' a' + (newTime - time)
-            time = newTime
-
             c.clearRect(0, 0, canvasWidth, canvasHeight)
-            newTime = Date.now()
-            text += ' b' + (newTime - time)
-            time = newTime
-
             background.paint(blurC)
-            newTime = Date.now()
-            text += ' c' + (newTime - time)
-            time = newTime
-
             stillCanvas.paint(blurC)
-            newTime = Date.now()
-            text += ' d' + (newTime - time)
-            time = newTime
-
             if (nextBubble) nextBubble.paint(blurC)
-            newTime = Date.now()
-            text += ' e' + (newTime - time)
-            time = newTime
-
             movingCanvas.paint(blurC)
-            newTime = Date.now()
-            text += ' f' + (newTime - time)
-            time = newTime
-
             c.drawImage(blurCanvas.canvas, 0, 0)
-            newTime = Date.now()
-            text += ' g' + (newTime - time)
-            time = newTime
 
-            debugRepaintElement.innerHTML = 'repaint:' + text
+            debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time)
 
         })
     }

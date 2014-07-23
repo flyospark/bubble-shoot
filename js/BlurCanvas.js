@@ -10,10 +10,8 @@ function BlurCanvas (canvasWidth, canvasHeight) {
         c: c,
         canvas: canvas,
         clear: function () {
-            c.globalCompositeOperation = 'destination-out'
-            c.fillStyle = 'rgba(0, 0, 0, 0.1)'
+            c.fillStyle = 'rgba(0, 0, 0, 0.2)'
             c.fillRect(0, 0, canvasWidth, canvasHeight)
-            c.globalCompositeOperation = 'source-over'
         },
     }
 
