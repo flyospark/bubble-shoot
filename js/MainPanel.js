@@ -19,20 +19,25 @@ function MainPanel () {
     function repaint () {
         requestAnimationFrame(function () {
 
+            var text = ''
             var time = Date.now()
 
             c.clearRect(0, 0, canvasWidth, canvasHeight)
             background.paint(c)
+            text += ' ' + (Date.now() - time) + 'ms'
 
             stillCanvas.paint()
             c.drawImage(stillCanvas.canvas, 0, 0)
+            text += ' ' + (Date.now() - time) + 'ms'
 
             if (nextBubble) nextBubble.paint(c)
+            text += ' ' + (Date.now() - time) + 'ms'
 
             movingCanvas.paint()
             c.drawImage(movingCanvas.canvas, 0, 0)
+            text += ' ' + (Date.now() - time) + 'ms'
 
-            debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time) + 'ms'
+            debugRepaintElement.innerHTML = 'repaint:' + text
 
         })
     }
