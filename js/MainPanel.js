@@ -45,7 +45,6 @@ function MainPanel () {
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
             placeMovingBubble(movingBubble)
             movingCanvas.remove(movingBubble)
-
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
@@ -122,7 +121,7 @@ function MainPanel () {
     var nextBubble = getNextBubble()
     var nextBubbleTimeout
 
-    var identifier
+    var identifier = null
 
     var element = document.createElement('div')
     element.className = classPrefix
@@ -130,7 +129,7 @@ function MainPanel () {
     element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
         if (!nextBubble || !nextBubble.ready) return
-        if (!identifier) {
+        if (identifier === null) {
             var touch = e.changedTouches[0]
             touchX = touch.clientX
             touchY = touch.clientY
