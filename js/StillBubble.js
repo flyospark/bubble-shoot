@@ -10,9 +10,6 @@ function StillBubble (x, y, shape, rowNumber, colNumber) {
         addY: function (y) {
             that.y += y
         },
-        distanceTo: function (pointX, pointY) {
-            return Math.hypot(x - pointX, that.y - pointY)
-        },
         paint: function (c) {
             shape.paint(c, x, that.y)
         },
