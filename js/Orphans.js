@@ -17,6 +17,10 @@ function Orphans (columns) {
     function checkChildren (bubble) {
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
+        checkAndExclude(colNumber - 1, rowNumber - 1)
+        checkAndExclude(colNumber + 1, rowNumber - 1)
+        checkAndExclude(colNumber - 2, rowNumber)
+        checkAndExclude(colNumber + 2, rowNumber)
         checkAndExclude(colNumber - 1, rowNumber + 1)
         checkAndExclude(colNumber + 1, rowNumber + 1)
     }
