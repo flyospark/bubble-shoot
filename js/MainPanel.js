@@ -55,15 +55,12 @@ function MainPanel () {
     }
 
     function placeMovingBubble (movingBubble) {
-
-        stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
-
+        stillCanvas.add(movingBubble)
         shot++
         if (shot === maxShots) {
             shot = 0
             stillCanvas.shift()
         }
-
     }
 
     var width = innerWidth
@@ -98,17 +95,17 @@ function MainPanel () {
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
+    var breakingCanvas = BreakingCanvas()
+
+    var fallingCanvas = FallingCanvas()
+
     var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
-        bubbleDiameter, nextRandomShape, verticalDistance)
+        bubbleDiameter, nextRandomShape, verticalDistance, breakingCanvas.add, fallingCanvas.add)
     stillCanvas.shift()
     stillCanvas.shift()
     stillCanvas.shift()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, placeMovingBubble)
-
-    var breakingCanvas = BreakingCanvas()
-
-    var fallingCanvas = FallingCanvas()
 
     var touchStarted = false,
         touchX, touchY

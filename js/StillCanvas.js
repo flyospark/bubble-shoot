@@ -1,4 +1,5 @@
-function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, randomShape, verticalDistance) {
+function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
+    randomShape, verticalDistance, breakCallback, fallCallback) {
 
     function add (bubble) {
         stillBubbles.push(bubble)
@@ -71,7 +72,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
     return {
         shift: shift,
         stillBubbles: stillBubbles,
-        add: function (movingBubble, breakCallback, fallCallback) {
+        add: function (movingBubble) {
 
             var y = movingBubble.y
             var shiftOffset = shiftIndex * stepSize - bubbleRadius
