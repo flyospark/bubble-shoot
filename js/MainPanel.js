@@ -122,25 +122,37 @@ function MainPanel () {
 
     init()
 
+    var identifier
+
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
     element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
         if (!nextBubble || !nextBubble.ready) return
-        var touch = e.changedTouches[0],
-            x = touch.clientX - width / 2,
-            y = height - bubbleRadius - touch.clientY,
-            distance = Math.hypot(x, y),
-            dx = x / distance,
-            dy = -y / distance,
-            shape = nextBubble.shape
-        movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
-        nextBubble = null
-        nextBubbleTimeout = setTimeout(function () {
-            nextBubble = getNextBubble()
-        }, 200)
-        repaint()
+        if (!identifier) identifier = e.changedTouches[0].identifier
+    })
+    element.addEventListener('touchend', function (e) {
+        var touches = e.changedTouches
+        for (var i = 0; i < touches.length; i++) {
+            var touch = touches[i]
+            if (touch.identifier === identifier) {
+                var touch = e.changedTouches[0],
+                    x = touch.clientX - width / 2,
+                    y = height - bubbleRadius - touch.clientY,
+                    distance = Math.hypot(x, y),
+                    dx = x / distance,
+                    dy = -y / distance,
+                    shape = nextBubble.shape
+                movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
+                nextBubble = null
+                nextBubbleTimeout = setTimeout(function () {
+                    nextBubble = getNextBubble()
+                }, 200)
+                repaint()
+                identifier = null
+            }
+        }
     })
 
     var shot = 0
