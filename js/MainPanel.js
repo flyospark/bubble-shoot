@@ -142,15 +142,17 @@ function MainPanel () {
                     y = height - bubbleRadius - touch.clientY,
                     distance = Math.hypot(x, y),
                     dx = x / distance,
-                    dy = -y / distance,
-                    shape = nextBubble.shape
-                movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
-                nextBubble = null
-                nextBubbleTimeout = setTimeout(function () {
-                    nextBubble = getNextBubble()
-                }, 200)
-                repaint()
-                identifier = null
+                    dy = -y / distance
+                if (dy < -0.2) {
+                    var shape = nextBubble.shape
+                    movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
+                    nextBubble = null
+                    nextBubbleTimeout = setTimeout(function () {
+                        nextBubble = getNextBubble()
+                    }, 200)
+                    repaint()
+                    identifier = null
+                }
             }
         }
     })
