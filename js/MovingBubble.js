@@ -8,18 +8,6 @@ function MovingBubble (canvasWidth, canvasHeight, radius, visualDiameter, shape,
         shape: shape,
         x: canvasWidth / 2,
         y: canvasHeight - radius,
-        collides: function (stillBubbles) {
-            for (var i = 0; i < stillBubbles.length; i++) {
-                var stillBubble = stillBubbles[i]
-                var distance = stillBubble.distanceTo(that.x, that.y)
-                if (distance < visualDiameter) {
-                    return {
-                        stillBubble: stillBubble,
-                        distance: distance,
-                    }
-                }
-            }
-        },
         paint: function (c) {
             shape.paint(c, that.x, that.y)
         },

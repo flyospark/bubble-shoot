@@ -48,8 +48,7 @@ function MainPanel () {
         if (nextBubble) nextBubble.tick()
 
         var collisions = Collide(movingCanvas.movingBubbles,
-            stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
-            canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init)
+            stillCanvas.stillBubbles, bubbleVisualDiameter)
 
         for (var i = 0; i < collisions.length; i++) {
             var collision = collisions[i]
@@ -192,6 +191,7 @@ function MainPanel () {
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
+    setInterval(tick, 20)
 
     repaint()
 
