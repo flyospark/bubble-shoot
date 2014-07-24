@@ -1,11 +1,11 @@
-function MovingCanvas () {
+function MovingCanvas (canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius) {
 
     var movingBubbles = []
 
     return {
         movingBubbles: movingBubbles,
-        add: function (movingBubble) {
-            movingBubbles.push(movingBubble)
+        add: function (shape, dx, dy) {
+            movingBubbles.push(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius, shape, dx, dy))
         },
         paint: function (c) {
             for (var i = 0; i < movingBubbles.length; i++) {

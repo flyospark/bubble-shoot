@@ -107,7 +107,7 @@ function MainPanel () {
     var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
         bubbleDiameter, nextRandomShape, verticalDistance)
 
-    var movingCanvas = MovingCanvas()
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius)
 
     var breakingCanvas = BreakingCanvas()
 
@@ -173,7 +173,7 @@ function MainPanel () {
 
                 if (dy < -0.2) {
                     var shape = nextBubble.shape
-                    movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius, shape, dx, dy))
+                    movingCanvas.add(shape, dx, dy)
                     nextBubble = null
                     nextBubbleTimeout = setTimeout(function () {
                         nextBubble = getNextBubble()
