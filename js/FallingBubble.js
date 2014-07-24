@@ -1,7 +1,8 @@
 function FallingBubble (x, y, shape) {
 
-    var maxSteps = 16
+    var maxSteps = 32
     var stepIndex = maxSteps
+    var dx = (Math.random() * 2 - 1) * 6
     var dy = 1
 
     return {
@@ -11,8 +12,10 @@ function FallingBubble (x, y, shape) {
             c.globalAlpha = 1
         },
         tick: function () {
-            dy++
+            x += dx
             y += dy
+            dy++
+            dx *= 0.95
             stepIndex--
             if (!stepIndex) return true
         },
