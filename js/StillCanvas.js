@@ -125,7 +125,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
             for (var i in moves) {
                 var move = moves[i]
                 move.steps--
-                move.bubble.addY(stepSize)
+                move.bubble.y += stepSize
                 if (!move.steps) {
                     delete moves[i]
                     i--

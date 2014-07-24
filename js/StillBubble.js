@@ -7,9 +7,6 @@ function StillBubble (x, y, shape, rowNumber, colNumber) {
         x: x,
         y: y,
         shape: shape,
-        addY: function (y) {
-            that.y += y
-        },
         paint: function (c) {
             shape.paint(c, x, that.y)
         },
