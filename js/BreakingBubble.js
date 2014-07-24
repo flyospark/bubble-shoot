@@ -5,8 +5,8 @@ function BreakingBubble (x, y, shape) {
     var fullCircle = Math.PI * 2
 
     var particles = []
-    for (var i = 0; i < 4; i++) {
-        var randomXY = RandomXY(4)
+    for (var i = 0; i < 6; i++) {
+        var randomXY = RandomXY(2, 2)
         particles.push({
             x: x,
             y: y,
@@ -26,11 +26,9 @@ function BreakingBubble (x, y, shape) {
                     py = particle.y
                 c.beginPath()
                 c.moveTo(px, py)
-                c.globalAlpha = stepIndex / maxSteps
                 c.fillStyle = shape.color
-                c.arc(px, py, 4, 0, fullCircle)
+                c.arc(px, py, 4 * stepIndex / maxSteps, 0, fullCircle)
                 c.fill()
-                c.globalAlpha = 1
             }
 
         },
