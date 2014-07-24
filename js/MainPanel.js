@@ -107,7 +107,7 @@ function MainPanel () {
     var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
         bubbleDiameter, nextRandomShape, verticalDistance)
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius)
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter)
 
     var breakingCanvas = BreakingCanvas()
 
@@ -192,7 +192,6 @@ function MainPanel () {
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
-    setInterval(tick, 20)
 
     repaint()
 
