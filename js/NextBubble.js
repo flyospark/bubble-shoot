@@ -1,9 +1,9 @@
-function NextBubble (canvasWidth, canvasHeight, radius, shape) {
+function NextBubble (canvasWidth, canvasHeight, bubbleRadius, shape) {
 
     var x = canvasWidth / 2
-    var y = canvasHeight + radius
+    var y = canvasHeight + bubbleRadius
     var stepIndex = 6
-    var stepSize = radius * 2 / stepIndex
+    var stepSize = bubbleRadius * 2 / stepIndex
 
     var that = {
         ready: false,
