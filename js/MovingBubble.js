@@ -44,6 +44,11 @@ function MovingBubble (canvasWidth, canvasHeight, radius, visualDiameter, shape,
                 stepX = dx * stepMultiplier
             }
 
+            if (that.y <= radius) {
+                that.y = radius
+                return true
+            }
+
         },
     }
 

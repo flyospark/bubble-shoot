@@ -43,20 +43,26 @@ function MainPanel () {
             var collision = collisions[i]
             var movingBubble = collision.movingBubble
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
-            stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
+            placeMovingBubble(movingBubble)
             movingCanvas.remove(movingBubble)
-
-            shot++
-            if (shot === maxShots) {
-                shot = 0
-                stillCanvas.shift()
-            }
 
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
 
         repaint()
+
+    }
+
+    function placeMovingBubble (movingBubble) {
+
+        stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
+
+        shot++
+        if (shot === maxShots) {
+            shot = 0
+            stillCanvas.shift()
+        }
 
     }
 
@@ -98,7 +104,7 @@ function MainPanel () {
     stillCanvas.shift()
     stillCanvas.shift()
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter)
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, placeMovingBubble)
 
     var breakingCanvas = BreakingCanvas()
 
