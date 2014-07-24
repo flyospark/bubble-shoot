@@ -5,17 +5,6 @@ function MainPanel () {
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
-    function init () {
-        stillCanvas.removeAll()
-        stillCanvas.shift()
-        stillCanvas.shift()
-        stillCanvas.shift()
-        if (!nextBubble) {
-            clearTimeout(nextBubbleTimeout)
-            nextBubble = getNextBubble()
-        }
-    }
-
     function repaint () {
         requestAnimationFrame(function () {
 
@@ -105,6 +94,9 @@ function MainPanel () {
 
     var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
         bubbleDiameter, nextRandomShape, verticalDistance)
+    stillCanvas.shift()
+    stillCanvas.shift()
+    stillCanvas.shift()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter)
 
@@ -124,10 +116,8 @@ function MainPanel () {
 
     var laser = Laser(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, c)
 
-    var nextBubble
+    var nextBubble = getNextBubble()
     var nextBubbleTimeout
-
-    init()
 
     var identifier
 
