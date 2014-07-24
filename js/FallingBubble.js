@@ -3,7 +3,7 @@ function FallingBubble (x, y, shape) {
     var maxSteps = 32
     var stepIndex = maxSteps
     var dx = (Math.random() * 2 - 1) * 6
-    var dy = 1
+    var dy = 0
 
     return {
         paint: function (c) {
