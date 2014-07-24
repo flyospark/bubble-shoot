@@ -1,4 +1,4 @@
-function BreakingBubble (x, y) {
+function BreakingBubble (x, y, shape) {
 
     var maxSteps = 16
     var stepIndex = maxSteps
@@ -17,25 +17,36 @@ function BreakingBubble (x, y) {
 
     return {
         paint: function (c) {
+
+            if (stepIndex == maxSteps) {
+                shape.paint(c, x, y)
+            }
+
             for (var i = 0; i < particles.length; i++) {
                 var particle = particles[i],
-                    x = particle.x,
-                    y = particle.y
+                    px = particle.x,
+                    py = particle.y
                 c.beginPath()
-                c.moveTo(x, y)
-                c.fillStyle = 'rgba(255, 255, 255, ' + (stepIndex / maxSteps) + ')'
-                c.arc(x, y, 4, 0, fullCircle)
+                c.moveTo(px, py)
+                c.globalAlpha = stepIndex / maxSteps
+                c.fillStyle = shape.color
+                c.arc(px, py, 4, 0, fullCircle)
                 c.fill()
+                c.globalAlpha = 1
             }
+
         },
         tick: function () {
-            stepIndex--
+
             for (var i = 0; i < particles.length; i++) {
                 var particle = particles[i]
                 particle.x += particle.dx
                 particle.y += particle.dy
             }
+
+            stepIndex--
             if (!stepIndex) return true
+
         },
     }
 

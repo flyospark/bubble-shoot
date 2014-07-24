@@ -36,6 +36,41 @@ function MainPanel () {
         })
     }
 
+    function tick () {
+
+        var time = Date.now()
+
+        stillCanvas.tick()
+        movingCanvas.tick()
+        breakingCanvas.tick()
+        fallingCanvas.tick()
+        if (nextBubble) nextBubble.tick()
+
+        var collisions = Collide(movingCanvas.movingBubbles,
+            stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
+            canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init)
+
+        for (var i = 0; i < collisions.length; i++) {
+            var collision = collisions[i]
+            var movingBubble = collision.movingBubble
+            movingBubble.shiftBack(bubbleDiameter - collision.distance)
+            stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
+            movingCanvas.remove(movingBubble)
+
+            shot++
+            if (shot === maxShots) {
+                shot = 0
+                stillCanvas.shift()
+            }
+
+        }
+
+        debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
+
+        repaint()
+
+    }
+
     var width = innerWidth
     var height = innerHeight
     var bubbleDiameter = 40
@@ -111,40 +146,10 @@ function MainPanel () {
     var shot = 0
     var maxShots = 4
 
-    setInterval(function () {
-
-        var time = Date.now()
-
-        stillCanvas.tick()
-        movingCanvas.tick()
-        breakingCanvas.tick()
-        fallingCanvas.tick()
-        if (nextBubble) nextBubble.tick()
-
-        var collisions = Collide(movingCanvas.movingBubbles,
-            stillCanvas.stillBubbles, bubbleRadius, verticalDistance,
-            canvasWidth, canvasHeight, stillCanvas, bubbleDiameter, init)
-
-        for (var i = 0; i < collisions.length; i++) {
-            var collision = collisions[i]
-            var movingBubble = collision.movingBubble
-            movingBubble.shiftBack(bubbleDiameter - collision.distance)
-            stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
-            movingCanvas.remove(movingBubble)
-
-            shot++
-            if (shot === maxShots) {
-                shot = 0
-                stillCanvas.shift()
-            }
-
-        }
-
-        debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
-
-        repaint()
-
-    }, 20)
+    addEventListener('keydown', function (e) {
+        if (e.keyCode == 32) tick()
+    })
+    setInterval(tick, 20)
 
     repaint()
 

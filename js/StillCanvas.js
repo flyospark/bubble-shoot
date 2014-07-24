@@ -94,7 +94,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter, random
                 for (var i = 0; i < neighbors.length; i++) {
                     var neighbor = neighbors[i]
                     remove(neighbor)
-                    breakCallback(neighbor.x, neighbor.y)
+                    breakCallback(neighbor.x, neighbor.y, neighbor.shape)
                 }
 
                 var orphans = Orphans(columns)

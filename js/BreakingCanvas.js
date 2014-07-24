@@ -3,9 +3,9 @@ function BreakingCanvas () {
     var breakingBubbles = []
 
     return {
-        add: function (x, y) {
-            breakingBubbles.push(BreakingBubble(x, y))
-            breakingBubbles.push(BreakingBubble(x, y))
+        add: function (x, y, shape) {
+            breakingBubbles.push(BreakingBubble(x, y, shape))
+            breakingBubbles.push(BreakingBubble(x, y, shape))
         },
         paint: function (c) {
             for (var i = 0; i < breakingBubbles.length; i++) {
