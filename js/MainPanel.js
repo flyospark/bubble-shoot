@@ -108,6 +108,9 @@ function MainPanel () {
         repaint()
     })
 
+    var shot = 0
+    var maxShots = 4
+
     setInterval(function () {
 
         var time = Date.now()
@@ -128,6 +131,13 @@ function MainPanel () {
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
             stillCanvas.add(movingBubble, breakingCanvas.add, fallingCanvas.add)
             movingCanvas.remove(movingBubble)
+
+            shot++
+            if (shot === maxShots) {
+                shot = 0
+                stillCanvas.shift()
+            }
+
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
