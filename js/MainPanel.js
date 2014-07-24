@@ -25,6 +25,7 @@ function MainPanel () {
             c.clearRect(0, 0, canvasWidth, canvasHeight)
             background.paint(blurC)
             stillCanvas.paint(blurC)
+            if (touchStarted) laser.paint(blurC, touchX, touchY)
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
@@ -76,8 +77,10 @@ function MainPanel () {
     var bubbleDiameter = 40
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
+    var bubbleVisualRadius = bubbleRadius - 1
+    var bubbleVisualDiameter = bubbleVisualRadius * 2
 
-    var nextRandomShape = BubbleShape_Random(bubbleRadius).next
+    var nextRandomShape = BubbleShape_Random(bubbleVisualRadius).next
 
     var classPrefix = 'MainPanel'
 
@@ -110,12 +113,17 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas()
 
+    var touchStarted = false,
+        touchX, touchY
+
     var canvas = document.createElement('canvas')
     canvas.className = classPrefix + '-canvas'
     canvas.width = canvasWidth
     canvas.height = canvasHeight
 
     var c = canvas.getContext('2d')
+
+    var laser = Laser(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, c)
 
     var nextBubble
     var nextBubbleTimeout
@@ -130,22 +138,42 @@ function MainPanel () {
     element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
         if (!nextBubble || !nextBubble.ready) return
-        if (!identifier) identifier = e.changedTouches[0].identifier
+        if (!identifier) {
+            var touch = e.changedTouches[0]
+            touchX = touch.clientX
+            touchY = touch.clientY
+            identifier = touch.identifier
+            touchStarted = true
+        }
+    })
+    element.addEventListener('touchmove', function (e) {
+        var touches = e.changedTouches
+        for (var i = 0; i < touches.length; i++) {
+            var touch = touches[i]
+            if (touch.identifier === identifier) {
+                touchX = touch.clientX
+                touchY = touch.clientY
+            }
+        }
     })
     element.addEventListener('touchend', function (e) {
         var touches = e.changedTouches
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
             if (touch.identifier === identifier) {
+
+                touchStarted = false
+
                 var touch = e.changedTouches[0],
-                    x = touch.clientX - width / 2,
-                    y = height - bubbleRadius - touch.clientY,
+                    x = touchX - width / 2,
+                    y = height - bubbleRadius - touchY,
                     distance = Math.hypot(x, y),
                     dx = x / distance,
                     dy = -y / distance
+
                 if (dy < -0.2) {
                     var shape = nextBubble.shape
-                    movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, shape, dx, dy))
+                    movingCanvas.add(MovingBubble(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualRadius, shape, dx, dy))
                     nextBubble = null
                     nextBubbleTimeout = setTimeout(function () {
                         nextBubble = getNextBubble()
@@ -153,6 +181,7 @@ function MainPanel () {
                     repaint()
                     identifier = null
                 }
+
             }
         }
     })

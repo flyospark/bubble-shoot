@@ -1,4 +1,4 @@
-function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
+function MovingBubble (canvasWidth, canvasHeight, radius, visualRadius, shape, dx, dy) {
 
     var stepMultiplier = 20
     var stepX = dx * stepMultiplier
@@ -12,7 +12,7 @@ function MovingBubble (canvasWidth, canvasHeight, radius, shape, dx, dy) {
             for (var i = 0; i < stillBubbles.length; i++) {
                 var stillBubble = stillBubbles[i]
                 var distance = stillBubble.distanceTo(that.x, that.y)
-                if (distance < (radius - 1) * 2) {
+                if (distance < visualRadius) {
                     return {
                         stillBubble: stillBubble,
                         distance: distance,

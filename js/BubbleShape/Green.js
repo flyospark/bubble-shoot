@@ -17,7 +17,7 @@ function BubbleShape_Green (radius) {
 
         c.fillStyle = gradient
         c.translate(radius, radius)
-        c.arc(0, 0, radius - 1, 0, Math.PI * 2)
+        c.arc(0, 0, radius, 0, Math.PI * 2)
         c.fillStyle = gradient
         c.fill()
 
