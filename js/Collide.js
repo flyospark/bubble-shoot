@@ -15,6 +15,7 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
                     stillBubble: stillBubble,
                     distance: distance,
                 })
+                break
             }
 
         }
