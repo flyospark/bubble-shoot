@@ -1,15 +1,24 @@
 function Orphans (columns) {
 
-    function checkAndPush (colNumber, rowNumber) {
+    function checkAndExclude (colNumber, rowNumber) {
 
-        var columnBubbles = columnsAndRows[colNumber]
-        if (!columnBubbles) return
+        var bubble = get(colNumber, rowNumber)
+        if (!bubble) return
 
-        var bubble = columnBubbles[rowNumber]
-        if (!bubble || scannedBubbles[bubble.id]) return
+        var id = bubble.id
+        if (scannedBubbles[id]) return
 
-        push(bubble)
+        scannedBubbles[id] = true
+        orphans.splice(orphans.indexOf(bubble), 1)
+        checkChildren(bubble)
 
+    }
+
+    function checkChildren (bubble) {
+        var colNumber = bubble.colNumber
+        var rowNumber = bubble.rowNumber
+        checkAndExclude(colNumber - 1, rowNumber + 1)
+        checkAndExclude(colNumber + 1, rowNumber + 1)
     }
 
     function get (colNumber, rowNumber) {
@@ -17,50 +26,29 @@ function Orphans (columns) {
         if (columnBubbles) return columnBubbles[rowNumber]
     }
 
-    function push (bubble) {
-        scannedBubbles[bubble.id] = true
-        orphans.push(bubble)
-        var colNumber = bubble.colNumber
-        var rowNumber = bubble.rowNumber
-        checkAndPush(colNumber + 1, rowNumber + 1)
-        checkAndPush(colNumber - 1, rowNumber + 1)
-    }
-
+    var topBubbles = []
+    var orphans = []
     var columnsAndRows = {}
     for (var i = 0; i < columns.length; i++) {
-        var columnBubbles = columns[i]
+        var bubbles = columns[i]
         columnsAndRows[i] = {}
-        for (var j = 0; j < columnBubbles.length; j++) {
-            var columnBubble = columnBubbles[j]
-            columnsAndRows[i][columnBubble.rowNumber] = columnBubble
+        for (var j = 0; j < bubbles.length; j++) {
+            var bubble = bubbles[j]
+            var rowNumber = bubble.rowNumber
+            if (rowNumber) {
+                columnsAndRows[i][rowNumber] = bubble
+                orphans.push(bubble)
+            } else {
+                topBubbles.push(bubble)
+            }
         }
     }
 
     var scannedBubbles = {}
-    var orphans = []
-    for (var i = 0; i < columns.length; i++) {
-        var columnBubbles = columns[i]
-        for (var j = 0; j < columnBubbles.length; j++) {
-
-            var bubble = columnBubbles[j]
-            if (scannedBubbles[bubble.id]) continue
-
-            var colNumber = bubble.colNumber
-            var rowNumber = bubble.rowNumber
-
-            if (!rowNumber) continue
-
-            if (get(colNumber - 1, rowNumber - 1)) continue
-            if (get(colNumber + 1, rowNumber - 1)) continue
-            if (get(colNumber - 2, rowNumber)) continue
-            if (get(colNumber + 2, rowNumber)) continue
-            if (get(colNumber - 1, rowNumber + 1)) continue
-            if (get(colNumber + 1, rowNumber + 1)) continue
-
-            push(bubble)
-
-        }
+    for (var i = 0; i < topBubbles.length; i++) {
+        checkChildren(topBubbles[i])
     }
+
     return orphans
 
 }
