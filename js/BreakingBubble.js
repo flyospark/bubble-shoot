@@ -3,24 +3,24 @@ function BreakingBubble (x, y, shape) {
     var maxSteps = 16
     var stepIndex = maxSteps
     var fullCircle = Math.PI * 2
-    var multiplier = 4
 
     var particles = []
-    for (var i = 0; i < 4; i++) {
+    var numParticles = 4
+    for (var i = 0; i < numParticles; i++) {
+        var randomXY = RandomXY(4)
         particles.push({
             x: x,
             y: y,
-            dx: (Math.random() * 2 - 1) * multiplier,
-            dy: (Math.random() * 2 - 1) * multiplier,
+            dx: randomXY[0],
+            dy: randomXY[1],
+            color: i < (numParticles / 2) ? shape.color : '#fff',
         })
     }
 
     return {
         paint: function (c) {
 
-            if (stepIndex == maxSteps) {
-                shape.paint(c, x, y)
-            }
+            if (stepIndex == maxSteps) shape.paint(c, x, y)
 
             for (var i = 0; i < particles.length; i++) {
                 var particle = particles[i],
@@ -29,7 +29,7 @@ function BreakingBubble (x, y, shape) {
                 c.beginPath()
                 c.moveTo(px, py)
                 c.globalAlpha = stepIndex / maxSteps
-                c.fillStyle = shape.color
+                c.fillStyle = particle.color
                 c.arc(px, py, 4, 0, fullCircle)
                 c.fill()
                 c.globalAlpha = 1
