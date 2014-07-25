@@ -1,6 +1,6 @@
 function BubbleShape_Yellow (radius) {
 
-    var color = 'hsl(50, 100%, 70%)'
+    var color = 'hsl(60, 90%, 70%)'
 
     var canvas = (function () {
 
@@ -15,7 +15,7 @@ function BubbleShape_Yellow (radius) {
 
         var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, diameter)
         gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(50, 100%, 40%)')
+        gradient.addColorStop(0.5, 'hsl(60, 90%, 40%)')
         gradient.addColorStop(1, color)
 
         c.fillStyle = gradient
