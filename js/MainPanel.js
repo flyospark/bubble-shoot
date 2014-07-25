@@ -65,8 +65,11 @@ function MainPanel () {
         }
     }
 
-    var width = innerWidth
-    var height = innerHeight
+    var dpp = devicePixelRatio
+    var invertedDpp = 1 / dpp
+    var width = innerWidth * dpp
+    var height = innerHeight * dpp
+
     var bubbleDiameter = 40
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
@@ -120,12 +123,24 @@ function MainPanel () {
     var touchStarted = false,
         touchX, touchY
 
+    var transform = 'scale(' + invertedDpp + ')'
+    if (invertedDpp < 1) {
+        var x = (width - width * dpp) / 2
+        var y = (height - height * dpp) / 2
+        transform += ' translate(' + x + 'px, ' + y + 'px)'
+    }
+
     var canvas = document.createElement('canvas')
+    canvas.style.transform = transform
     canvas.className = classPrefix + '-canvas'
-    canvas.width = canvasWidth
-    canvas.height = canvasHeight
+    canvas.width = width
+    canvas.height = height
+
+    var canvasOffsetX = (width - canvasWidth) / 2
+    var canvasOffsetY = (height - canvasHeight) / 2
 
     var c = canvas.getContext('2d')
+    c.translate(canvasOffsetX, canvasOffsetY)
 
     var minShootDY = 0.2
 
@@ -154,8 +169,8 @@ function MainPanel () {
 
         if (identifier === null) {
             var touch = e.changedTouches[0]
-            touchX = touch.clientX
-            touchY = touch.clientY
+            touchX = touch.clientX * dpp - canvasOffsetX
+            touchY = touch.clientY * dpp - canvasOffsetY
             identifier = touch.identifier
             touchStarted = true
         }
@@ -166,8 +181,8 @@ function MainPanel () {
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
             if (touch.identifier === identifier) {
-                touchX = touch.clientX
-                touchY = touch.clientY
+                touchX = touch.clientX * dpp - canvasOffsetX
+                touchY = touch.clientY * dpp - canvasOffsetY
             }
         }
     })
