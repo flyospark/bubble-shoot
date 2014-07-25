@@ -4,16 +4,19 @@ function BubbleShape_Green (radius) {
 
     var canvas = (function () {
 
+        var diameter = radius * 2
+
         var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = radius * 2
+        canvas.width = canvas.height = diameter
 
         var c = canvas.getContext('2d')
 
         var minusHalfRadius = -radius / 2
 
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius)
+        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, diameter)
         gradient.addColorStop(0, color)
-        gradient.addColorStop(1, 'hsl(100, 100%, 30%)')
+        gradient.addColorStop(0.5, 'hsl(100, 100%, 30%)')
+        gradient.addColorStop(1, color)
 
         c.fillStyle = gradient
         c.translate(radius, radius)
