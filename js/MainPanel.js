@@ -184,8 +184,8 @@ function MainPanel () {
                 touchStarted = false
 
                 var touch = e.changedTouches[0],
-                    x = touchX - width / 2,
-                    y = height - bubbleRadius - touchY,
+                    x = touchX - canvasWidth / 2,
+                    y = canvasHeight - bubbleRadius - touchY,
                     distance = Math.hypot(x, y),
                     dx = x / distance,
                     dy = -y / distance
