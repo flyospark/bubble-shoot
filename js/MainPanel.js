@@ -13,6 +13,7 @@ function MainPanel () {
             blurCanvas.clear()
             c.clearRect(0, 0, canvasWidth, canvasHeight)
             background.paint(blurC)
+            score.paint(blurC)
             stillCanvas.paint(blurC)
             if (touchStarted) laser.paint(blurC, touchX, touchY)
             if (nextBubble) nextBubble.paint(blurC)
@@ -98,11 +99,17 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas()
 
+    var score = Score(canvasWidth, canvasHeight, bubbleDiameter)
+
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, nextRandomShape,
-        verticalDistance, breakingCanvas.add, fallingCanvas.add, function () {
+        verticalDistance, breakingCanvas.add, fallingCanvas.add,
+        score.add, function () {
 
-        setTimeout(stillCanvas.reset, 2000)
+        setTimeout(function () {
+            stillCanvas.reset()
+            score.reset()
+        }, 2000)
 
     })
     stillCanvas.reset()

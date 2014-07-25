@@ -18,9 +18,9 @@
 }
 
 .MainPanel-debug {
+    display: none;
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 0;
     color: #f00;
-    text-align: right;
 }

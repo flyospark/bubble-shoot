@@ -1,6 +1,6 @@
 function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     bubbleDiameter, randomShape, verticalDistance, breakCallback, fallCallback,
-    gameOverListener) {
+    scoreListener, gameOverListener) {
 
     function add (bubble) {
         stillBubbles.push(bubble)
@@ -81,6 +81,8 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
     var odd = false
 
+    var breakNumber = 3
+
     var that = {
         gameOver: false,
         shift: shift,
@@ -103,7 +105,9 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
             var neighbors = Neighbors(bubble, columns)
-            if (neighbors.length >= 3) {
+            if (neighbors.length >= breakNumber) {
+
+                scoreListener(neighbors.length - breakNumber + 1)
 
                 for (var i = 0; i < neighbors.length; i++) {
                     var neighbor = neighbors[i]
