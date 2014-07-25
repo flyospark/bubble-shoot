@@ -6,12 +6,13 @@ function BreakingBubble (x, y, shape, dpp) {
 
     var particles = []
     for (var i = 0; i < 6; i++) {
-        var randomXY = RandomXY(2 * dpp, 2 * dpp)
+        var locationXY = RandomXY(2 * dpp, 2 * dpp)
+        var displacementXY = RandomXY(2 * dpp, 2 * dpp)
         particles.push({
-            x: x,
-            y: y,
-            dx: randomXY[0],
-            dy: randomXY[1],
+            x: x + locationXY[0],
+            y: y + locationXY[1],
+            dx: displacementXY[0],
+            dy: displacementXY[1],
         })
     }
 
