@@ -130,6 +130,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             }
         },
         reset: function () {
+            that.gameOver = false
             moves = {}
             stillBubbles.splice(0)
             for (var i in columns) columns[i].splice(0)
