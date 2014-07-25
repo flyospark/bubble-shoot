@@ -3,7 +3,7 @@
 header('Content-Type: application/x-web-app-manifest+json');
 
 echo json_encode([
-    'name' => 'Bubbles',
+    'name' => 'Bubble Shoot',
     'description' => 'Shoot bubbles. Break three or more of the same color.',
     'launch_path' => '/run/',
     'appcache_path' => '/run/cache-manifest/',
