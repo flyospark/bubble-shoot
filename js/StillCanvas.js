@@ -1,9 +1,18 @@
-function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
-    randomShape, verticalDistance, breakCallback, fallCallback) {
+function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
+    bubbleDiameter, randomShape, verticalDistance, breakCallback, fallCallback,
+    gameOverListener) {
 
     function add (bubble) {
         stillBubbles.push(bubble)
         columns[bubble.colNumber].push(bubble)
+        checkOverflow(bubble)
+    }
+
+    function checkOverflow (bubble) {
+        if (bubble.rowNumber >= maxRowNumber) {
+            that.gameOver = true
+            gameOverListener()
+        }
     }
 
     function createBubbles (colNumber, n) {
@@ -43,6 +52,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
             var stillBubble = stillBubbles[i]
             moveDown(stillBubble, maxSteps)
             stillBubble.rowNumber++
+            checkOverflow(stillBubble)
         }
 
         if (odd) createBubbles(1, numBubblesHorizontal - 1)
@@ -67,9 +77,12 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
         columns[i] = []
     }
 
+    var maxRowNumber = Math.floor((canvasHeight - bubbleDiameter) / verticalDistance)
+
     var odd = false
 
-    return {
+    var that = {
+        gameOver: false,
         shift: shift,
         stillBubbles: stillBubbles,
         add: function (movingBubble) {
@@ -116,10 +129,13 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
                 stillBubbles[i].paint(c)
             }
         },
-        removeAll: function () {
+        reset: function () {
             moves = {}
             stillBubbles.splice(0)
             for (var i in columns) columns[i].splice(0)
+            shift()
+            shift()
+            shift()
         },
         tick: function () {
 
@@ -140,5 +156,7 @@ function StillCanvas (bubbleRadius, numBubblesHorizontal, bubbleDiameter,
 
         },
     }
+
+    return that
 
 }

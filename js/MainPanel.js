@@ -98,11 +98,14 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas()
 
-    var stillCanvas = StillCanvas(bubbleRadius, numBubblesHorizontal,
-        bubbleDiameter, nextRandomShape, verticalDistance, breakingCanvas.add, fallingCanvas.add)
-    stillCanvas.shift()
-    stillCanvas.shift()
-    stillCanvas.shift()
+    var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
+        numBubblesHorizontal, bubbleDiameter, nextRandomShape,
+        verticalDistance, breakingCanvas.add, fallingCanvas.add, function () {
+
+        setTimeout(stillCanvas.reset, 2000)
+
+    })
+    stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, placeMovingBubble)
 
@@ -131,7 +134,7 @@ function MainPanel () {
     element.appendChild(canvas)
     element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
-        if (!nextBubble || !nextBubble.ready) return
+        if (!nextBubble || !nextBubble.ready || stillCanvas.gameOver) return
         if (identifier === null) {
             var touch = e.changedTouches[0]
             touchX = touch.clientX
