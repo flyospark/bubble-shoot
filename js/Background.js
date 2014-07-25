@@ -1,9 +1,9 @@
-function Background (width, canvasHeight, bubbleDiameter) {
+function Background (width, canvasHeight, bubbleDiameter, dpp) {
 
     var bubbleRadius = bubbleDiameter / 2
 
-    var padding = 8
-    var lineWidth = 4
+    var padding = 8 * dpp
+    var lineWidth = 4 * dpp
     var lineY = bubbleRadius - lineWidth / 2
     var paddedRadius = bubbleRadius + padding
     var angle = Math.asin(lineY / paddedRadius)

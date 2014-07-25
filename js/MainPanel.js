@@ -69,10 +69,10 @@ function MainPanel () {
     var width = innerWidth * dpp
     var height = innerHeight * dpp
 
-    var bubbleDiameter = 40
+    var bubbleDiameter = 40 * dpp
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
-    var bubbleVisualRadius = bubbleRadius - 1
+    var bubbleVisualRadius = bubbleRadius - 1 * dpp
     var bubbleVisualDiameter = bubbleVisualRadius * 2
 
     var nextRandomShape = BubbleShape_Random(bubbleVisualRadius).next
@@ -95,7 +95,7 @@ function MainPanel () {
 
     var blurC = blurCanvas.c
 
-    var background = Background(canvasWidth, canvasHeight, bubbleDiameter)
+    var background = Background(canvasWidth, canvasHeight, bubbleDiameter, dpp)
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
@@ -103,7 +103,7 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas()
 
-    var score = Score(canvasWidth, canvasHeight, bubbleDiameter)
+    var score = Score(canvasWidth, canvasHeight, bubbleDiameter, dpp)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, nextRandomShape,
