@@ -66,7 +66,6 @@ function MainPanel () {
     }
 
     var dpp = devicePixelRatio
-    var invertedDpp = 1 / dpp
     var width = innerWidth * dpp
     var height = innerHeight * dpp
 
@@ -123,18 +122,7 @@ function MainPanel () {
     var touchStarted = false,
         touchX, touchY
 
-    var transform = 'scale(' + invertedDpp + ')'
-    if (invertedDpp < 1) {
-        var x = (width - width * dpp) / 2
-        var y = (height - height * dpp) / 2
-        transform += ' translate(' + x + 'px, ' + y + 'px)'
-    }
-
-    var canvas = document.createElement('canvas')
-    canvas.style.transform = transform
-    canvas.className = classPrefix + '-canvas'
-    canvas.width = width
-    canvas.height = height
+    var canvas = MainCanvas(width, height, dpp)
 
     var canvasOffsetX = (width - canvasWidth) / 2
     var canvasOffsetY = (height - canvasHeight) / 2

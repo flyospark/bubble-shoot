@@ -6,15 +6,6 @@
     left: 0;
 }
 
-.MainPanel-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: auto;
-    display: inline-block;
-    vertical-align: top;
-}
-
 .MainPanel-debug {
     display: none;
     position: absolute;
