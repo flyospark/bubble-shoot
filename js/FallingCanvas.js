@@ -1,10 +1,10 @@
-function FallingCanvas () {
+function FallingCanvas (dpp) {
 
     var fallingBubbles = []
 
     return {
         add: function (x, y, shape) {
-            fallingBubbles.push(FallingBubble(x, y, shape))
+            fallingBubbles.push(FallingBubble(x, y, shape, dpp))
         },
         paint: function (c) {
             for (var i = 0; i < fallingBubbles.length; i++) {

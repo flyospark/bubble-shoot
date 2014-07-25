@@ -1,11 +1,10 @@
-function BreakingCanvas () {
+function BreakingCanvas (dpp) {
 
     var breakingBubbles = []
 
     return {
         add: function (x, y, shape) {
-            breakingBubbles.push(BreakingBubble(x, y, shape))
-            breakingBubbles.push(BreakingBubble(x, y, shape))
+            breakingBubbles.push(BreakingBubble(x, y, shape, dpp))
         },
         paint: function (c) {
             for (var i = 0; i < breakingBubbles.length; i++) {

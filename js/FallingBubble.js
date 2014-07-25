@@ -1,8 +1,8 @@
-function FallingBubble (x, y, shape) {
+function FallingBubble (x, y, shape, dpp) {
 
     var maxSteps = 32
     var stepIndex = maxSteps
-    var dx = (Math.random() * 2 - 1) * 6
+    var dx = (Math.random() * 2 - 1) * 6 * dpp
     var dy = 0
 
     return {

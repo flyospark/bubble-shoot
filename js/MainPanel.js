@@ -99,9 +99,9 @@ function MainPanel () {
 
     var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
 
-    var breakingCanvas = BreakingCanvas()
+    var breakingCanvas = BreakingCanvas(dpp)
 
-    var fallingCanvas = FallingCanvas()
+    var fallingCanvas = FallingCanvas(dpp)
 
     var score = Score(canvasWidth, canvasHeight, bubbleDiameter, dpp)
 
