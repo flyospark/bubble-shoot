@@ -4,9 +4,9 @@ function StillBubble (x, y, shape, rowNumber, colNumber) {
         colNumber: colNumber,
         id: Math.random(),
         rowNumber: rowNumber,
+        shape: shape,
         x: x,
         y: y,
-        shape: shape,
         paint: function (c) {
             shape.paint(c, x, that.y)
         },
