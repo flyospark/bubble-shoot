@@ -116,7 +116,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
                 }
 
                 var orphans = Orphans(columns)
-                for (var i = 0; i < orphans.length; i++) {
+                for (var i in orphans) {
                     var orphan = orphans[i]
                     remove(orphan)
                     fallCallback(orphan.x, orphan.y, orphan.shape)

@@ -2,14 +2,17 @@ function Orphans (columns) {
 
     function checkAndExclude (colNumber, rowNumber) {
 
-        var bubble = get(colNumber, rowNumber)
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
+
+        var bubble = bubbles[rowNumber]
         if (!bubble) return
 
         var id = bubble.id
         if (scannedBubbles[id]) return
 
         scannedBubbles[id] = true
-        orphans.splice(orphans.indexOf(bubble), 1)
+        delete orphans[id]
         checkChildren(bubble)
 
     }
@@ -25,13 +28,8 @@ function Orphans (columns) {
         checkAndExclude(colNumber + 1, rowNumber + 1)
     }
 
-    function get (colNumber, rowNumber) {
-        var columnBubbles = columnsAndRows[colNumber]
-        if (columnBubbles) return columnBubbles[rowNumber]
-    }
-
     var topBubbles = []
-    var orphans = []
+    var orphans = {}
     var columnsAndRows = {}
     for (var i = 0; i < columns.length; i++) {
         var bubbles = columns[i]
@@ -41,7 +39,7 @@ function Orphans (columns) {
             var rowNumber = bubble.rowNumber
             if (rowNumber) {
                 columnsAndRows[i][rowNumber] = bubble
-                orphans.push(bubble)
+                orphans[bubble.id] = bubble
             } else {
                 topBubbles.push(bubble)
             }
