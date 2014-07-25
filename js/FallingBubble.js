@@ -14,7 +14,7 @@ function FallingBubble (x, y, shape, dpp) {
         tick: function () {
             x += dx
             y += dy
-            dy++
+            dy += dpp
             dx *= 0.95
             stepIndex--
             if (!stepIndex) return true
