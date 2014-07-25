@@ -4,7 +4,7 @@ function Background (width, canvasHeight, bubbleDiameter) {
 
     var padding = 8
     var lineWidth = 4
-    var lineY = 12
+    var lineY = bubbleRadius - lineWidth / 2
     var paddedRadius = bubbleRadius + padding
     var angle = Math.asin(lineY / paddedRadius)
     var cos = Math.sqrt(1 - Math.pow(lineY / paddedRadius, 2)) * paddedRadius
