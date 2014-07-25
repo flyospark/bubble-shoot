@@ -1,5 +1,5 @@
 function MovingCanvas (canvasWidth, canvasHeight,
-    bubbleRadius, bubbleVisualDiameter, placeListener) {
+    bubbleRadius, bubbleVisualDiameter, placeListener, dpp) {
 
     function remove (movingBubble) {
         movingBubbles.splice(movingBubbles.indexOf(movingBubble), 1)
@@ -12,7 +12,7 @@ function MovingCanvas (canvasWidth, canvasHeight,
         remove: remove,
         add: function (shape, dx, dy) {
             var bubble = MovingBubble(canvasWidth, canvasHeight,
-                bubbleRadius, bubbleVisualDiameter, shape, dx, dy)
+                bubbleRadius, bubbleVisualDiameter, shape, dx, dy, dpp)
             movingBubbles.push(bubble)
         },
         paint: function (c) {

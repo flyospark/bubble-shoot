@@ -115,7 +115,8 @@ function MainPanel () {
     })
     stillCanvas.reset()
 
-    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, placeMovingBubble)
+    var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
+        bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
 
     var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
 
