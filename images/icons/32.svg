@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
-   width="16"
-   height="16"
+   width="32"
+   height="32"
    id="svg2">
   <defs
      id="defs4">
@@ -257,16 +257,6 @@
        gradientTransform="translate(-8.4717979,1.7779452)" />
     <radialGradient
        cx="3.5"
-       cy="1.7968751"
-       r="1.5"
-       fx="3.5"
-       fy="1.7968751"
-       id="radialGradient3797"
-       xlink:href="#linearGradient3791"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.9999999,-1.8026347e-8,1.8026346e-8,2,-3.4999997,-1.796875)" />
-    <radialGradient
-       cx="3.5"
        cy="2.125"
        r="1.5"
        fx="3.5"
@@ -347,6 +337,35 @@
          id="rect3893"
          style="fill:#339900;fill-opacity:0.38306454;stroke:none" />
     </clipPath>
+    <linearGradient
+       x1="10.864102"
+       y1="18.078461"
+       x2="18.864103"
+       y2="4.222055"
+       id="linearGradient3858"
+       xlink:href="#linearGradient4084"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-8.4717979,1.7779452)" />
+    <radialGradient
+       cx="3.5"
+       cy="1.75"
+       r="1.5"
+       fx="3.5"
+       fy="1.75"
+       id="radialGradient3862"
+       xlink:href="#linearGradient3855"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.9999999,-4.2708439e-8,4.2708439e-8,2,-3.4999997,-1.7499998)" />
+    <radialGradient
+       cx="3.5"
+       cy="1.7968751"
+       r="1.5"
+       fx="3.5"
+       fy="1.7968751"
+       id="radialGradient3866"
+       xlink:href="#linearGradient3791"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.9999999,-1.8026347e-8,1.8026346e-8,2,-3.4999997,-1.796875)" />
   </defs>
   <metadata
      id="metadata7">
@@ -361,6 +380,7 @@
     </rdf:RDF>
   </metadata>
   <g
+     transform="scale(2,2)"
      id="g3826">
     <rect
        width="15.5"
@@ -387,12 +407,12 @@
        transform="matrix(0.8660254,-0.50000001,0.50000001,0.8660254,0,0)"
        clip-path="url(#clipPath3891)"
        id="rect4082"
-       style="fill:url(#linearGradient4090);fill-opacity:1;stroke:none" />
+       style="fill:url(#linearGradient3858);fill-opacity:1;stroke:none" />
     <path
        d="m 5,2.5 a 1.5,1.5 0 1 1 -3,0 1.5,1.5 0 1 1 3,0 z"
        transform="matrix(1.0666667,0,0,1.0666667,4.2666666,-0.2166668)"
        id="path3950"
-       style="fill:url(#radialGradient3797);fill-opacity:1;stroke:none" />
+       style="fill:url(#radialGradient3866);fill-opacity:1;stroke:none" />
     <path
        d="m 5,2.5 a 1.5,1.5 0 1 1 -3,0 1.5,1.5 0 1 1 3,0 z"
        transform="matrix(1.0666667,0,0,1.0666667,2.4166666,2.9833332)"
@@ -413,7 +433,7 @@
        transform="matrix(1.0666667,0,0,1.0666667,7.9666666,-0.21666667)"
        clip-path="url(#clipPath3887)"
        id="path3945"
-       style="fill:url(#radialGradient3861);fill-opacity:1;stroke:none" />
+       style="fill:url(#radialGradient3862);fill-opacity:1;stroke:none" />
     <use
        transform="translate(-3.7,0)"
        clip-path="url(#clipPath3883)"
