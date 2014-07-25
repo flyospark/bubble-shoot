@@ -20,6 +20,7 @@ function MainPanel () {
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
             fallingCanvas.paint(blurC)
+            if (resultCanvas.visible) resultCanvas.paint(blurC)
             c.drawImage(blurCanvas.canvas, 0, 0)
 
             debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time)
@@ -35,6 +36,7 @@ function MainPanel () {
         movingCanvas.tick()
         breakingCanvas.tick()
         fallingCanvas.tick()
+        if (resultCanvas.visible) resultCanvas.tick()
         if (nextBubble) nextBubble.tick()
 
         var collisions = Collide(movingCanvas.movingBubbles,
@@ -106,15 +108,14 @@ function MainPanel () {
         verticalDistance, breakingCanvas.add, fallingCanvas.add,
         score.add, function () {
 
-        setTimeout(function () {
-            stillCanvas.reset()
-            score.reset()
-        }, 2000)
+        resultCanvas.visible = true
 
     })
     stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, placeMovingBubble)
+
+    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
 
     var touchStarted = false,
         touchX, touchY
@@ -141,7 +142,16 @@ function MainPanel () {
     element.appendChild(canvas)
     element.appendChild(debugElement)
     element.addEventListener('touchstart', function (e) {
-        if (!nextBubble || !nextBubble.ready || stillCanvas.gameOver) return
+
+        if (!nextBubble || !nextBubble.ready ||
+            resultCanvas.showing || resultCanvas.hiding) return
+
+        if (resultCanvas.visible) {
+            resultCanvas.hide()
+            stillCanvas.reset()
+            return
+        }
+
         if (identifier === null) {
             var touch = e.changedTouches[0]
             touchX = touch.clientX
@@ -149,6 +159,7 @@ function MainPanel () {
             identifier = touch.identifier
             touchStarted = true
         }
+
     })
     element.addEventListener('touchmove', function (e) {
         var touches = e.changedTouches
