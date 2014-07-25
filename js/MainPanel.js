@@ -116,7 +116,10 @@ function MainPanel () {
 
     var c = canvas.getContext('2d')
 
-    var laser = Laser(canvasWidth, canvasHeight, bubbleRadius, bubbleVisualDiameter, c)
+    var minShootDY = 0.2
+
+    var laser = Laser(canvasWidth, canvasHeight, bubbleRadius,
+        bubbleVisualDiameter, c, minShootDY)
 
     var nextBubble = getNextBubble()
     var nextBubbleTimeout
@@ -162,7 +165,7 @@ function MainPanel () {
                     dx = x / distance,
                     dy = -y / distance
 
-                if (dy < -0.2) {
+                if (dy < -minShootDY) {
                     var shape = nextBubble.shape
                     movingCanvas.add(shape, dx, dy)
                     nextBubble = null

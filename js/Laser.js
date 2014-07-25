@@ -1,4 +1,4 @@
-function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c) {
+function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootDY) {
 
     var gradient = c.createLinearGradient(0, 0, 0, canvasHeight)
     gradient.addColorStop(0, 'rgba(255, 255, 255, 0)')
@@ -18,13 +18,15 @@ function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c) {
                 endX = touchX * radius / touchHypot,
                 endY = touchY * radius / touchHypot
 
-            c.beginPath()
-            c.moveTo(bubbleX, bubbleY)
-            c.lineTo(bubbleX + endX, bubbleY + endY)
-            c.lineWidth = thinkness
-            c.lineCap = 'round'
-            c.strokeStyle = gradient
-            c.stroke()
+            if (touchY / touchHypot < -minShootDY) {
+                c.beginPath()
+                c.moveTo(bubbleX, bubbleY)
+                c.lineTo(bubbleX + endX, bubbleY + endY)
+                c.lineWidth = thinkness
+                c.lineCap = 'round'
+                c.strokeStyle = gradient
+                c.stroke()
+            }
 
         },
     }
