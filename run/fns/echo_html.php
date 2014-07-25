@@ -3,7 +3,7 @@
 function echo_html ($html, $head, $body) {
     header('Content-Type: text/html; charset=UTF-8');
     echo '<!DOCTYPE html>'
-        .'<html>'
+        .$html
             .'<head>'
                 .'<title>Bubble Shoot</title>'
                 .'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
