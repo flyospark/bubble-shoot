@@ -1,11 +1,24 @@
 function RandomShape () {
-    var shapes = []
+
+    var outcomes = []
+    var maxChance = 0
+
     return {
-        add: function (shape) {
-            shapes.push(shape)
+        add: function (chance, shape) {
+            outcomes.push({
+                chance: chance,
+                shape: shape,
+            })
+            maxChance += chance
         },
         get: function () {
-            return shapes[Math.floor(Math.random() * shapes.length)]
+            var random = Math.random() * maxChance
+            for (var i in outcomes) {
+                var outcome = outcomes[i]
+                random -= outcome.chance
+                if (random < 0) return outcome.shape
+            }
         },
     }
+
 }
