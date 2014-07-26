@@ -30,6 +30,7 @@ echo_html(
     .'<script type="text/javascript" src="js/Score.js"></script>'
     .'<script type="text/javascript" src="js/BubbleShape/Black.js"></script>'
     .'<script type="text/javascript" src="js/BubbleShape/Blue.js"></script>'
+    .'<script type="text/javascript" src="js/BubbleShape/Canvas.js"></script>'
     .'<script type="text/javascript" src="js/BubbleShape/Green.js"></script>'
     .'<script type="text/javascript" src="js/BubbleShape/Red.js"></script>'
     .'<script type="text/javascript" src="js/BubbleShape/Violet.js"></script>'
