@@ -45,7 +45,7 @@ function ResultCanvas (canvasWidth, canvasHeight, dpp) {
             c.translate(x, y)
             c.fillStyle = 'rgba(255, 255, 255, ' + ratioSqr + ')'
             c.textAlign = 'center'
-            c.textBaseline = 'middle'
+            c.textBaseline = 'top'
             c.font = font
             c.fillText('YOUR SCORE: ' + score, 0, 0)
             if (score > highScore) {

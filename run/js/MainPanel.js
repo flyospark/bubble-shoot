@@ -137,7 +137,10 @@ function MainPanel () {
 
         var scoreValue = score.get()
         resultCanvas.show(scoreValue, highScore)
-        if (scoreValue > highScore) highScore = scoreValue
+        if (scoreValue > highScore) {
+            highScore = scoreValue
+            localStorage.highScore = highScore
+        }
 
     })
     stillCanvas.reset()
@@ -164,7 +167,8 @@ function MainPanel () {
     var nextBubble = getNextBubble()
     var nextBubbleTimeout
 
-    var highScore = 0
+    var highScore = parseInt(localStorage.highScore, 10)
+    if (!isFinite(highScore)) highScore = 0
 
     var identifier = null
 
