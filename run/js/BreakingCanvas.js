@@ -1,22 +1,18 @@
 function BreakingCanvas (dpp) {
 
-    var breakingBubbles = []
+    var breakingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            breakingBubbles.push(BreakingBubble(x, y, shape, dpp))
+            var bubble = BreakingBubble(x, y, shape, dpp)
+            breakingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < breakingBubbles.length; i++) {
-                breakingBubbles[i].paint(c)
-            }
+            for (var i in breakingBubbles) breakingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < breakingBubbles.length; i++) {
-                if (breakingBubbles[i].tick()) {
-                    breakingBubbles.splice(i, 1)
-                    i--
-                }
+            for (var i in breakingBubbles) {
+                if (breakingBubbles[i].tick()) delete breakingBubbles[i]
             }
         },
     }

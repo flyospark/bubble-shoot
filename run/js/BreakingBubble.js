@@ -17,6 +17,7 @@ function BreakingBubble (x, y, shape, dpp) {
     }
 
     return {
+        id: Math.random(),
         paint: function (c) {
 
             if (stepIndex == maxSteps) shape.paint(c, x, y)
