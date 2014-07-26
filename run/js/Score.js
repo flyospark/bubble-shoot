@@ -2,8 +2,8 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
 
     var score = 0,
         x = 10 * dpp,
-        y = canvasHeight - bubbleDiameter + 10 * dpp
-    var font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
+        y = canvasHeight - bubbleDiameter + 10 * dpp,
+        font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
 
     return {
         add: function (_score) {
