@@ -229,7 +229,7 @@ function MainPanel () {
     })
 
     var shot = 0
-    var maxShots = 4
+    var maxShots = 7
 
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
