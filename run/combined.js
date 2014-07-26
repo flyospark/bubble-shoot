@@ -1,16 +1,16 @@
 (function () {
 function Background (width, canvasHeight, bubbleDiameter, dpp) {
 
-    var bubbleRadius = bubbleDiameter / 2
-
-    var padding = 8 * dpp
-    var lineWidth = 4 * dpp
-    var lineY = bubbleRadius - lineWidth / 2
-    var paddedRadius = bubbleRadius + padding
-    var angle = Math.asin(lineY / paddedRadius)
-    var cos = Math.sqrt(1 - Math.pow(lineY / paddedRadius, 2)) * paddedRadius
-    var height = bubbleDiameter + padding + lineWidth
-    var halfWidth = width / 2
+    var bubbleRadius = bubbleDiameter / 2,
+        padding = 8 * dpp,
+        lineWidth = 4 * dpp,
+        lineY = bubbleRadius - lineWidth / 2,
+        paddedRadius = bubbleRadius + padding,
+        angle = Math.asin(lineY / paddedRadius),
+        cos = Math.sqrt(1 - Math.pow(lineY / paddedRadius, 2)) * paddedRadius,
+        height = bubbleDiameter + padding + lineWidth,
+        halfWidth = width / 2,
+        y = canvasHeight - height
 
     var canvas = document.createElement('canvas')
     canvas.width = width
@@ -26,8 +26,6 @@ function Background (width, canvasHeight, bubbleDiameter, dpp) {
     c.strokeStyle = '#555'
     c.lineWidth = lineWidth
     c.stroke()
-
-    var y = canvasHeight - height
 
     return {
         paint: function (c) {
@@ -62,24 +60,26 @@ function BreakingBubble (x, y, shape, dpp) {
     var stepIndex = maxSteps
     var fullCircle = Math.PI * 2
 
+    var scale = 2 * dpp
     var particles = []
     for (var i = 0; i < 6; i++) {
-        var locationXY = RandomXY(2 * dpp, 2 * dpp)
-        var displacementXY = RandomXY(2 * dpp, 2 * dpp)
+        var locationXY = RandomXY(scale, scale)
+        var directionXY = RandomXY(scale, scale)
         particles.push({
             x: x + locationXY[0],
             y: y + locationXY[1],
-            dx: displacementXY[0],
-            dy: displacementXY[1],
+            dx: directionXY[0],
+            dy: directionXY[1],
         })
     }
 
     return {
+        id: Math.random(),
         paint: function (c) {
 
             if (stepIndex == maxSteps) shape.paint(c, x, y)
 
-            for (var i = 0; i < particles.length; i++) {
+            for (var i in particles) {
                 var particle = particles[i],
                     px = particle.x,
                     py = particle.y
@@ -93,7 +93,7 @@ function BreakingBubble (x, y, shape, dpp) {
         },
         tick: function () {
 
-            for (var i = 0; i < particles.length; i++) {
+            for (var i in particles) {
                 var particle = particles[i]
                 particle.x += particle.dx
                 particle.y += particle.dy
@@ -109,23 +109,19 @@ function BreakingBubble (x, y, shape, dpp) {
 ;
 function BreakingCanvas (dpp) {
 
-    var breakingBubbles = []
+    var breakingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            breakingBubbles.push(BreakingBubble(x, y, shape, dpp))
+            var bubble = BreakingBubble(x, y, shape, dpp)
+            breakingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < breakingBubbles.length; i++) {
-                breakingBubbles[i].paint(c)
-            }
+            for (var i in breakingBubbles) breakingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < breakingBubbles.length; i++) {
-                if (breakingBubbles[i].tick()) {
-                    breakingBubbles.splice(i, 1)
-                    i--
-                }
+            for (var i in breakingBubbles) {
+                if (breakingBubbles[i].tick()) delete breakingBubbles[i]
             }
         },
     }
@@ -134,9 +130,9 @@ function BreakingCanvas (dpp) {
 ;
 function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
     var collisions = []
-    for (var i = 0; i < movingBubbles.length; i++) {
+    for (var i in movingBubbles) {
         var movingBubble = movingBubbles[i]
-        for (var j = 0; j < stillBubbles.length; j++) {
+        for (var j in stillBubbles) {
 
             var stillBubble = stillBubbles[j],
                 dx = stillBubble.x - movingBubble.x,
@@ -159,23 +155,19 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
 ;
 function FallingCanvas (dpp) {
 
-    var fallingBubbles = []
+    var fallingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            fallingBubbles.push(FallingBubble(x, y, shape, dpp))
+            var bubble = FallingBubble(x, y, shape, dpp)
+            fallingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < fallingBubbles.length; i++) {
-                fallingBubbles[i].paint(c)
-            }
+            for (var i in fallingBubbles) fallingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < fallingBubbles.length; i++) {
-                if (fallingBubbles[i].tick()) {
-                    fallingBubbles.splice(i, 1)
-                    i--
-                }
+            for (var i in fallingBubbles) {
+                if (fallingBubbles[i].tick()) delete fallingBubbles[i]
             }
         },
     }
@@ -184,14 +176,16 @@ function FallingCanvas (dpp) {
 ;
 function FallingBubble (x, y, shape, dpp) {
 
-    var maxSteps = 32
-    var stepIndex = maxSteps
-    var dx = (Math.random() * 2 - 1) * 6 * dpp
-    var dy = 0
+    var maxSteps = 32,
+        stepsLeft = maxSteps,
+        opacity = 1,
+        dx = (Math.random() * 2 - 1) * 6 * dpp,
+        dy = 0
 
     return {
+        id: Math.random(),
         paint: function (c) {
-            c.globalAlpha = stepIndex / maxSteps
+            c.globalAlpha = opacity
             shape.paint(c, x, y)
             c.globalAlpha = 1
         },
@@ -200,8 +194,9 @@ function FallingBubble (x, y, shape, dpp) {
             y += dy
             dy += dpp
             dx *= 0.95
-            stepIndex--
-            if (!stepIndex) return true
+            stepsLeft--
+            if (!stepsLeft) return true
+            opacity = stepsLeft / maxSteps
         },
     }
 
@@ -209,17 +204,13 @@ function FallingBubble (x, y, shape, dpp) {
 ;
 function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootDY) {
 
-    var gradient = c.createLinearGradient(0, 0, 0, canvasHeight)
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 0)')
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.2)')
-
     var radius = Math.max(canvasWidth, canvasHeight) * 2
 
     var bubbleX = canvasWidth / 2,
         bubbleY = canvasHeight - bubbleRadius
 
     return {
-        paint: function (c, x, y) {
+        paint: function (c, x, y, gradient) {
 
             var touchX = x - bubbleX,
                 touchY = y - bubbleY,
@@ -244,16 +235,16 @@ function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootD
 ;
 function MainCanvas (width, height, dpp) {
 
-    var transform = 'scale(' + (1 / dpp) + ')'
-    var x = (width - width * dpp) / 2
-    var y = (height - height * dpp) / 2
-    transform += ' translate(' + x + 'px, ' + y + 'px)'
+    var x = (width - width * dpp) / 2,
+        y = (height - height * dpp) / 2
 
     var canvas = document.createElement('canvas')
-    canvas.style.transform = transform
     canvas.className = 'MainCanvas'
     canvas.width = width
     canvas.height = height
+    canvas.style.transform =
+        'scale(' + (1 / dpp) + ')' +
+        ' translate(' + x + 'px, ' + y + 'px)'
     return canvas
 
 }
@@ -261,7 +252,7 @@ function MainCanvas (width, height, dpp) {
 function MainPanel () {
 
     function getNextBubble () {
-        var shape = nextRandomShape()
+        var shape = nextBubbleRandomShape.get()
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
@@ -275,7 +266,7 @@ function MainPanel () {
             background.paint(blurC)
             score.paint(blurC)
             stillCanvas.paint(blurC)
-            if (touchStarted) laser.paint(blurC, touchX, touchY)
+            if (touchStarted) laser.paint(blurC, touchX, touchY, nextBubble.shape.laserGradient)
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
@@ -284,6 +275,8 @@ function MainPanel () {
             c.drawImage(blurCanvas.canvas, 0, 0)
 
             debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time)
+
+            repaint()
 
         })
     }
@@ -312,8 +305,6 @@ function MainPanel () {
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
 
-        repaint()
-
     }
 
     function placeMovingBubble (movingBubble) {
@@ -335,8 +326,6 @@ function MainPanel () {
     var bubbleVisualRadius = bubbleRadius - 1 * dpp
     var bubbleVisualDiameter = bubbleVisualRadius * 2
 
-    var nextRandomShape = BubbleShape_Random(bubbleVisualRadius).next
-
     var classPrefix = 'MainPanel'
 
     var debugTickElement = document.createElement('div')
@@ -351,6 +340,31 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
+    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
+        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
+        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
+        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
+        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
+        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius)
+
+    var nextBubbleRandomShape = RandomShape()
+    nextBubbleRandomShape.add(1, bubbleShapeBlue)
+    nextBubbleRandomShape.add(1, bubbleShapeGreen)
+    nextBubbleRandomShape.add(1, bubbleShapeRed)
+    nextBubbleRandomShape.add(1, bubbleShapeViolet)
+    nextBubbleRandomShape.add(1, bubbleShapeWhite)
+    nextBubbleRandomShape.add(1, bubbleShapeYellow)
+
+    var shiftRandomShape = RandomShape()
+    shiftRandomShape.add(1, bubbleShapeBlack)
+    shiftRandomShape.add(2, bubbleShapeBlue)
+    shiftRandomShape.add(2, bubbleShapeGreen)
+    shiftRandomShape.add(2, bubbleShapeRed)
+    shiftRandomShape.add(2, bubbleShapeViolet)
+    shiftRandomShape.add(2, bubbleShapeWhite)
+    shiftRandomShape.add(2, bubbleShapeYellow)
+
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
     var blurC = blurCanvas.c
@@ -363,22 +377,18 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas(dpp)
 
-    var score = Score(canvasWidth, canvasHeight, bubbleDiameter, dpp)
+    var score = Score(canvasHeight, bubbleDiameter, dpp)
+
+    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
-        numBubblesHorizontal, bubbleDiameter, nextRandomShape,
+        numBubblesHorizontal, bubbleDiameter, shiftRandomShape.get,
         verticalDistance, breakingCanvas.add, fallingCanvas.add,
-        score.add, function () {
-
-        resultCanvas.visible = true
-
-    })
+        score.add, resultCanvas.show)
     stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
         bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
-
-    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
 
     var touchStarted = false,
         touchX, touchY
@@ -413,6 +423,7 @@ function MainPanel () {
         if (resultCanvas.visible) {
             resultCanvas.hide()
             stillCanvas.reset()
+            score.reset()
             return
         }
 
@@ -457,7 +468,6 @@ function MainPanel () {
                     nextBubbleTimeout = setTimeout(function () {
                         nextBubble = getNextBubble()
                     }, 200)
-                    repaint()
                     identifier = null
                 }
 
@@ -466,7 +476,7 @@ function MainPanel () {
     })
 
     var shot = 0
-    var maxShots = 4
+    var maxShots = 7
 
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
@@ -482,11 +492,12 @@ function MainPanel () {
 function MovingBubble (canvasWidth, canvasHeight,
     radius, visualDiameter, shape, dx, dy, dpp) {
 
-    var stepMultiplier = 20 * dpp
-    var stepX = dx * stepMultiplier
-    var stepY = dy * stepMultiplier
+    var stepMultiplier = 20 * dpp,
+        stepX = dx * stepMultiplier,
+        stepY = dy * stepMultiplier
 
     var that = {
+        id: Math.random(),
         shape: shape,
         x: canvasWidth / 2,
         y: canvasHeight - radius,
@@ -541,11 +552,11 @@ function MovingBubble (canvasWidth, canvasHeight,
 function MovingCanvas (canvasWidth, canvasHeight,
     bubbleRadius, bubbleVisualDiameter, placeListener, dpp) {
 
-    function remove (movingBubble) {
-        movingBubbles.splice(movingBubbles.indexOf(movingBubble), 1)
+    function remove (bubble) {
+        delete movingBubbles[bubble.id]
     }
 
-    var movingBubbles = []
+    var movingBubbles = {}
 
     return {
         movingBubbles: movingBubbles,
@@ -553,19 +564,17 @@ function MovingCanvas (canvasWidth, canvasHeight,
         add: function (shape, dx, dy) {
             var bubble = MovingBubble(canvasWidth, canvasHeight,
                 bubbleRadius, bubbleVisualDiameter, shape, dx, dy, dpp)
-            movingBubbles.push(bubble)
+            movingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < movingBubbles.length; i++) {
-                movingBubbles[i].paint(c)
-            }
+            for (var i in movingBubbles) movingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < movingBubbles.length; i++) {
-                var movingBubble = movingBubbles[i]
-                if (movingBubble.tick()) {
-                    placeListener(movingBubble)
-                    remove(movingBubble)
+            for (var i in movingBubbles) {
+                var bubble = movingBubbles[i]
+                if (bubble.tick()) {
+                    placeListener(bubble)
+                    remove(bubble)
                 }
             }
         },
@@ -577,10 +586,10 @@ function Neighbors (bubble, columns) {
 
     function checkAndScan (colNumber, rowNumber) {
 
-        var columnBubbles = columnsAndRows[colNumber]
-        if (!columnBubbles) return
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
 
-        var bubble = columnBubbles[rowNumber]
+        var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id] || bubble.shape != shape) return
 
         scan(bubble)
@@ -601,12 +610,12 @@ function Neighbors (bubble, columns) {
     }
 
     var columnsAndRows = {}
-    for (var i = 0; i < columns.length; i++) {
-        var columnBubbles = columns[i]
+    for (var i in columns) {
+        var bubbles = columns[i]
         columnsAndRows[i] = {}
-        for (var j = 0; j < columnBubbles.length; j++) {
-            var columnBubble = columnBubbles[j]
-            columnsAndRows[i][columnBubble.rowNumber] = columnBubble
+        for (var j in bubbles) {
+            var itemBubble = bubbles[j]
+            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
         }
     }
 
@@ -621,20 +630,23 @@ function Neighbors (bubble, columns) {
 ;
 function NextBubble (canvasWidth, canvasHeight, bubbleRadius, shape) {
 
-    var x = canvasWidth / 2
-    var y = canvasHeight + bubbleRadius
-    var stepIndex = 6
-    var stepSize = bubbleRadius * 2 / stepIndex
+    var x = canvasWidth / 2,
+        y = canvasHeight + bubbleRadius,
+        maxSteps = 8,
+        stepIndex = 0,
+        stepSize = bubbleRadius * 2 / maxSteps
 
     var that = {
         ready: false,
         shape: shape,
         paint: function (c) {
+            c.globalAlpha = stepIndex / maxSteps
             shape.paint(c, x, y)
+            c.globalAlpha = 1
         },
         tick: function () {
-            if (stepIndex) {
-                stepIndex--
+            if (stepIndex < maxSteps) {
+                stepIndex++
                 y -= stepSize
             } else {
                 that.ready = true
@@ -650,14 +662,17 @@ function Orphans (columns) {
 
     function checkAndExclude (colNumber, rowNumber) {
 
-        var bubble = get(colNumber, rowNumber)
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
+
+        var bubble = bubbles[rowNumber]
         if (!bubble) return
 
         var id = bubble.id
         if (scannedBubbles[id]) return
 
         scannedBubbles[id] = true
-        orphans.splice(orphans.indexOf(bubble), 1)
+        delete orphans[id]
         checkChildren(bubble)
 
     }
@@ -673,23 +688,18 @@ function Orphans (columns) {
         checkAndExclude(colNumber + 1, rowNumber + 1)
     }
 
-    function get (colNumber, rowNumber) {
-        var columnBubbles = columnsAndRows[colNumber]
-        if (columnBubbles) return columnBubbles[rowNumber]
-    }
-
-    var topBubbles = []
-    var orphans = []
-    var columnsAndRows = {}
-    for (var i = 0; i < columns.length; i++) {
+    var topBubbles = [],
+        orphans = {},
+        columnsAndRows = {}
+    for (var i in columns) {
         var bubbles = columns[i]
         columnsAndRows[i] = {}
-        for (var j = 0; j < bubbles.length; j++) {
+        for (var j in bubbles) {
             var bubble = bubbles[j]
             var rowNumber = bubble.rowNumber
             if (rowNumber) {
                 columnsAndRows[i][rowNumber] = bubble
-                orphans.push(bubble)
+                orphans[bubble.id] = bubble
             } else {
                 topBubbles.push(bubble)
             }
@@ -705,11 +715,36 @@ function Orphans (columns) {
 
 }
 ;
+function RandomShape () {
+
+    var outcomes = []
+    var maxChance = 0
+
+    return {
+        add: function (chance, shape) {
+            outcomes.push({
+                chance: chance,
+                shape: shape,
+            })
+            maxChance += chance
+        },
+        get: function () {
+            var random = Math.random() * maxChance
+            for (var i in outcomes) {
+                var outcome = outcomes[i]
+                random -= outcome.chance
+                if (random < 0) return outcome.shape
+            }
+        },
+    }
+
+}
+;
 function RandomXY (minDistance, scale) {
-    var angle = Math.random() * Math.PI * 2
-    var distance = minDistance + Math.random() * scale
-    var x = Math.cos(angle) * distance
-    var y = Math.sin(angle) * distance
+    var angle = Math.random() * Math.PI * 2,
+        distance = minDistance + Math.random() * scale,
+        x = Math.cos(angle) * distance,
+        y = Math.sin(angle) * distance
     return [x, y]
 }
 ;
@@ -749,6 +784,7 @@ function ResultCanvas (canvasWidth, canvasHeight) {
             c.fillRect(0, 0, canvasWidth, canvasHeight)
         },
         show: function () {
+            that.visible = true
             that.hiding = false
             that.tick = showTick
             that.showing = true
@@ -765,9 +801,9 @@ function StillBubble (x, y, shape, rowNumber, colNumber) {
         colNumber: colNumber,
         id: Math.random(),
         rowNumber: rowNumber,
+        shape: shape,
         x: x,
         y: y,
-        shape: shape,
         paint: function (c) {
             shape.paint(c, x, that.y)
         },
@@ -782,13 +818,14 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     scoreListener, gameOverListener) {
 
     function add (bubble) {
-        stillBubbles.push(bubble)
-        columns[bubble.colNumber].push(bubble)
+        var id = bubble.id
+        stillBubbles[id] = bubble
+        columns[bubble.colNumber][id] = bubble
         checkOverflow(bubble)
     }
 
     function checkOverflow (bubble) {
-        if (bubble.rowNumber >= maxRowNumber) {
+        if (!that.gameOver && bubble.rowNumber >= maxRowNumber) {
             that.gameOver = true
             gameOverListener()
         }
@@ -820,14 +857,14 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     }
 
     function remove (bubble) {
-        stillBubbles.splice(stillBubbles.indexOf(bubble), 1)
-        var columnBubbles = columns[bubble.colNumber]
-        columnBubbles.splice(columnBubbles.indexOf(bubble), 1)
+        var id = bubble.id
+        delete stillBubbles[id]
+        delete columns[bubble.colNumber][id]
     }
 
     function shift () {
 
-        for (var i = 0; i < stillBubbles.length; i++) {
+        for (var i in stillBubbles) {
             var stillBubble = stillBubbles[i]
             moveDown(stillBubble, maxSteps)
             stillBubble.rowNumber++
@@ -848,13 +885,11 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     var shiftY = 0
     var shiftIndex = 0
 
-    var stillBubbles = []
+    var stillBubbles = {}
     var moves = {}
 
-    var columns = []
-    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) {
-        columns[i] = []
-    }
+    var columns = {}
+    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) columns[i] = {}
 
     var maxRowNumber = Math.floor((canvasHeight - bubbleDiameter) / verticalDistance)
 
@@ -895,7 +930,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
                 }
 
                 var orphans = Orphans(columns)
-                for (var i = 0; i < orphans.length; i++) {
+                for (var i in orphans) {
                     var orphan = orphans[i]
                     remove(orphan)
                     fallCallback(orphan.x, orphan.y, orphan.shape)
@@ -908,15 +943,16 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             return odd
         },
         paint: function (c) {
-            for (var i = 0; i < stillBubbles.length; i++) {
-                stillBubbles[i].paint(c)
-            }
+            for (var i in stillBubbles) stillBubbles[i].paint(c)
         },
         reset: function () {
             that.gameOver = false
             moves = {}
-            stillBubbles.splice(0)
-            for (var i in columns) columns[i].splice(0)
+            for (var i in stillBubbles) delete stillBubbles[i]
+            for (var i in columns) {
+                var columnBubbles = columns[i]
+                for (var i in columnBubbles) delete columnBubbles[i]
+            }
             shift()
             shift()
             shift()
@@ -945,22 +981,21 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
 }
 ;
-function Score (canvasWidth, canvasHeight, bubbleDiameter, dpp) {
+function Score (canvasHeight, bubbleDiameter, dpp) {
 
-    var score = 0
-    var x = canvasWidth - 11 * dpp
-    var y = canvasHeight - bubbleDiameter + 12 * dpp
-    var font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
+    var score = 0,
+        x = 10 * dpp,
+        y = canvasHeight - bubbleDiameter + 10 * dpp,
+        font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
 
     return {
         add: function (_score) {
             score += _score
         },
         paint: function (c) {
-            c.textAlign = 'right'
             c.textBaseline = 'top'
             c.font = font
-            c.fillStyle = '#555'
+            c.fillStyle = '#777'
             c.fillText(score, x, y)
         },
         reset: function () {
@@ -970,37 +1005,33 @@ function Score (canvasWidth, canvasHeight, bubbleDiameter, dpp) {
 
 }
 ;
-function BubbleShape_Blue (radius) {
+function BubbleShape_Black (radius) {
+
+    var color = 'hsl(0, 0%, 40%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 15%)', radius)
+
+    return {
+        color: color,
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Blue (canvasHeight, radius) {
 
     var color = 'hsl(220, 100%, 70%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(220, 100%, 55%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 220, 100, 70),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1008,37 +1039,43 @@ function BubbleShape_Blue (radius) {
 
 }
 ;
-function BubbleShape_Green (radius) {
+function BubbleShape_Canvas (lightColor, darkColor, radius) {
+
+    var halfWidth = radius + 2
+
+    var canvas = document.createElement('canvas')
+    canvas.width = canvas.height = halfWidth * 2
+
+    var c = canvas.getContext('2d')
+
+    var minusHalfRadius = -radius / 2
+
+    var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
+    gradient.addColorStop(0, lightColor)
+    gradient.addColorStop(0.5, darkColor)
+    gradient.addColorStop(1, lightColor)
+
+    c.fillStyle = gradient
+    c.translate(halfWidth, halfWidth)
+    c.arc(0, 0, radius, 0, Math.PI * 2)
+    c.fillStyle = gradient
+    c.fill()
+
+    return canvas
+
+}
+;
+function BubbleShape_Green (canvasHeight, radius) {
 
     var color = 'hsl(100, 100%, 40%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(100, 100%, 30%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 100, 100, 40),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1046,56 +1083,17 @@ function BubbleShape_Green (radius) {
 
 }
 ;
-function BubbleShape_Random (bubbleRadius) {
-
-    var shapes = [
-        BubbleShape_Red(bubbleRadius),
-        BubbleShape_Green(bubbleRadius),
-        BubbleShape_Blue(bubbleRadius),
-        BubbleShape_Violet(bubbleRadius),
-        BubbleShape_Yellow(bubbleRadius),
-        BubbleShape_White(bubbleRadius),
-    ]
-
-    return {
-        next: function () {
-            return shapes[Math.floor(Math.random() * shapes.length)]
-        },
-    }
-
-}
-;
-function BubbleShape_Red (radius) {
+function BubbleShape_Red (canvasHeight, radius) {
 
     var color = 'hsl(5, 100%, 65%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(5, 100%, 40%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 5, 100, 65),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1103,37 +1101,17 @@ function BubbleShape_Red (radius) {
 
 }
 ;
-function BubbleShape_Violet (radius) {
+function BubbleShape_Violet (canvasHeight, radius) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(300, 100%, 40%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 300, 100, 60),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1141,37 +1119,17 @@ function BubbleShape_Violet (radius) {
 
 }
 ;
-function BubbleShape_White (radius) {
+function BubbleShape_White (canvasHeight, radius) {
 
     var color = 'hsl(0, 0%, 90%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(0, 0%, 70%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 0, 0, 90),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1179,37 +1137,17 @@ function BubbleShape_White (radius) {
 
 }
 ;
-function BubbleShape_Yellow (radius) {
+function BubbleShape_Yellow (canvasHeight, radius) {
 
     var color = 'hsl(60, 90%, 70%)'
     var halfWidth = radius + 2
 
-    var canvas = (function () {
-
-        var canvas = document.createElement('canvas')
-        canvas.width = canvas.height = halfWidth * 2
-
-        var c = canvas.getContext('2d')
-
-        var minusHalfRadius = -radius / 2
-
-        var gradient = c.createRadialGradient(0, minusHalfRadius, 0, 0, minusHalfRadius, radius * 2)
-        gradient.addColorStop(0, color)
-        gradient.addColorStop(0.5, 'hsl(60, 90%, 40%)')
-        gradient.addColorStop(1, color)
-
-        c.fillStyle = gradient
-        c.translate(halfWidth, halfWidth)
-        c.arc(0, 0, radius, 0, Math.PI * 2)
-        c.fillStyle = gradient
-        c.fill()
-
-        return canvas
-
-    })()
+    var canvas = BubbleShape_Canvas(color, 'hsl(60, 90%, 40%)', radius)
+    var c = canvas.getContext('2d')
 
     return {
         color: color,
+        laserGradient: LaserGradient(canvasHeight, c, 60, 90, 70),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
