@@ -3,8 +3,9 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     scoreListener, gameOverListener) {
 
     function add (bubble) {
-        stillBubbles[bubble.id] = bubble
-        columns[bubble.colNumber].push(bubble)
+        var id = bubble.id
+        stillBubbles[id] = bubble
+        columns[bubble.colNumber][id] = bubble
         checkOverflow(bubble)
     }
 
@@ -41,9 +42,9 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     }
 
     function remove (bubble) {
-        delete stillBubbles[bubble.id]
-        var columnBubbles = columns[bubble.colNumber]
-        columnBubbles.splice(columnBubbles.indexOf(bubble), 1)
+        var id = bubble.id
+        delete stillBubbles[id]
+        delete columns[bubble.colNumber][id]
     }
 
     function shift () {
@@ -72,8 +73,8 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     var stillBubbles = {}
     var moves = {}
 
-    var columns = []
-    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) columns[i] = []
+    var columns = {}
+    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) columns[i] = {}
 
     var maxRowNumber = Math.floor((canvasHeight - bubbleDiameter) / verticalDistance)
 
@@ -133,7 +134,10 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             that.gameOver = false
             moves = {}
             for (var i in stillBubbles) delete stillBubbles[i]
-            for (var i in columns) columns[i].splice(0)
+            for (var i in columns) {
+                var columnBubbles = columns[i]
+                for (var i in columnBubbles) delete columnBubbles[i]
+            }
             shift()
             shift()
             shift()

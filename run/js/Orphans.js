@@ -31,10 +31,10 @@ function Orphans (columns) {
     var topBubbles = [],
         orphans = {},
         columnsAndRows = {}
-    for (var i = 0; i < columns.length; i++) {
+    for (var i in columns) {
         var bubbles = columns[i]
         columnsAndRows[i] = {}
-        for (var j = 0; j < bubbles.length; j++) {
+        for (var j in bubbles) {
             var bubble = bubbles[j]
             var rowNumber = bubble.rowNumber
             if (rowNumber) {

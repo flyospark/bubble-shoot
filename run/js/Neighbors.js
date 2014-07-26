@@ -2,10 +2,10 @@ function Neighbors (bubble, columns) {
 
     function checkAndScan (colNumber, rowNumber) {
 
-        var columnBubbles = columnsAndRows[colNumber]
-        if (!columnBubbles) return
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
 
-        var bubble = columnBubbles[rowNumber]
+        var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id] || bubble.shape != shape) return
 
         scan(bubble)
@@ -26,12 +26,12 @@ function Neighbors (bubble, columns) {
     }
 
     var columnsAndRows = {}
-    for (var i = 0; i < columns.length; i++) {
-        var columnBubbles = columns[i]
+    for (var i in columns) {
+        var bubbles = columns[i]
         columnsAndRows[i] = {}
-        for (var j = 0; j < columnBubbles.length; j++) {
-            var columnBubble = columnBubbles[j]
-            columnsAndRows[i][columnBubble.rowNumber] = columnBubble
+        for (var j in bubbles) {
+            var itemBubble = bubbles[j]
+            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
         }
     }
 
