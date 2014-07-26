@@ -1,22 +1,18 @@
 function FallingCanvas (dpp) {
 
-    var fallingBubbles = []
+    var fallingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            fallingBubbles.push(FallingBubble(x, y, shape, dpp))
+            var bubble = FallingBubble(x, y, shape, dpp)
+            fallingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < fallingBubbles.length; i++) {
-                fallingBubbles[i].paint(c)
-            }
+            for (var i in fallingBubbles) fallingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < fallingBubbles.length; i++) {
-                if (fallingBubbles[i].tick()) {
-                    fallingBubbles.splice(i, 1)
-                    i--
-                }
+            for (var i in fallingBubbles) {
+                if (fallingBubbles[i].tick()) delete fallingBubbles[i]
             }
         },
     }
