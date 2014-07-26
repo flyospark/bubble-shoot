@@ -1,15 +1,15 @@
 function Background (width, canvasHeight, bubbleDiameter, dpp) {
 
-    var bubbleRadius = bubbleDiameter / 2
-
-    var padding = 8 * dpp
-    var lineWidth = 4 * dpp
-    var lineY = bubbleRadius - lineWidth / 2
-    var paddedRadius = bubbleRadius + padding
-    var angle = Math.asin(lineY / paddedRadius)
-    var cos = Math.sqrt(1 - Math.pow(lineY / paddedRadius, 2)) * paddedRadius
-    var height = bubbleDiameter + padding + lineWidth
-    var halfWidth = width / 2
+    var bubbleRadius = bubbleDiameter / 2,
+        padding = 8 * dpp,
+        lineWidth = 4 * dpp,
+        lineY = bubbleRadius - lineWidth / 2,
+        paddedRadius = bubbleRadius + padding,
+        angle = Math.asin(lineY / paddedRadius),
+        cos = Math.sqrt(1 - Math.pow(lineY / paddedRadius, 2)) * paddedRadius,
+        height = bubbleDiameter + padding + lineWidth,
+        halfWidth = width / 2,
+        y = canvasHeight - height
 
     var canvas = document.createElement('canvas')
     canvas.width = width
@@ -25,8 +25,6 @@ function Background (width, canvasHeight, bubbleDiameter, dpp) {
     c.strokeStyle = '#555'
     c.lineWidth = lineWidth
     c.stroke()
-
-    var y = canvasHeight - height
 
     return {
         paint: function (c) {
