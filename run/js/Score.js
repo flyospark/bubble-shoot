@@ -9,6 +9,9 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
         add: function (_score) {
             score += _score
         },
+        get: function () {
+            return score
+        },
         paint: function (c) {
             c.textBaseline = 'top'
             c.font = font

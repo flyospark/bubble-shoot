@@ -128,12 +128,18 @@ function MainPanel () {
 
     var score = Score(canvasHeight, bubbleDiameter, dpp)
 
-    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
+    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight, dpp)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, shiftRandomShape.get,
         verticalDistance, breakingCanvas.add, fallingCanvas.add,
-        score.add, resultCanvas.show)
+        score.add, function () {
+
+        var scoreValue = score.get()
+        resultCanvas.show(scoreValue, highScore)
+        if (scoreValue > highScore) highScore = scoreValue
+
+    })
     stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
@@ -157,6 +163,8 @@ function MainPanel () {
 
     var nextBubble = getNextBubble()
     var nextBubbleTimeout
+
+    var highScore = 0
 
     var identifier = null
 
