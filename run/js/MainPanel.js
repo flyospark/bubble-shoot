@@ -106,13 +106,13 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, bubbleShapeYellow)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(1, bubbleShapeBlack)
-    shiftRandomShape.add(2, bubbleShapeBlue)
-    shiftRandomShape.add(2, bubbleShapeGreen)
-    shiftRandomShape.add(2, bubbleShapeRed)
-    shiftRandomShape.add(2, bubbleShapeViolet)
-    shiftRandomShape.add(2, bubbleShapeWhite)
-    shiftRandomShape.add(2, bubbleShapeYellow)
+    shiftRandomShape.add(2, bubbleShapeBlack)
+    shiftRandomShape.add(5, bubbleShapeBlue)
+    shiftRandomShape.add(5, bubbleShapeGreen)
+    shiftRandomShape.add(5, bubbleShapeRed)
+    shiftRandomShape.add(5, bubbleShapeViolet)
+    shiftRandomShape.add(5, bubbleShapeWhite)
+    shiftRandomShape.add(5, bubbleShapeYellow)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
