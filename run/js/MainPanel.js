@@ -153,6 +153,7 @@ function MainPanel () {
         if (resultCanvas.visible) {
             resultCanvas.hide()
             stillCanvas.reset()
+            score.reset()
             return
         }
 
