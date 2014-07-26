@@ -4,15 +4,16 @@ function BreakingBubble (x, y, shape, dpp) {
     var stepIndex = maxSteps
     var fullCircle = Math.PI * 2
 
+    var scale = 2 * dpp
     var particles = []
     for (var i = 0; i < 6; i++) {
-        var locationXY = RandomXY(2 * dpp, 2 * dpp)
-        var displacementXY = RandomXY(2 * dpp, 2 * dpp)
+        var locationXY = RandomXY(scale, scale)
+        var directionXY = RandomXY(scale, scale)
         particles.push({
             x: x + locationXY[0],
             y: y + locationXY[1],
-            dx: displacementXY[0],
-            dy: displacementXY[1],
+            dx: directionXY[0],
+            dy: directionXY[1],
         })
     }
 
@@ -22,7 +23,7 @@ function BreakingBubble (x, y, shape, dpp) {
 
             if (stepIndex == maxSteps) shape.paint(c, x, y)
 
-            for (var i = 0; i < particles.length; i++) {
+            for (var i in particles) {
                 var particle = particles[i],
                     px = particle.x,
                     py = particle.y
@@ -36,7 +37,7 @@ function BreakingBubble (x, y, shape, dpp) {
         },
         tick: function () {
 
-            for (var i = 0; i < particles.length; i++) {
+            for (var i in particles) {
                 var particle = particles[i]
                 particle.x += particle.dx
                 particle.y += particle.dy
