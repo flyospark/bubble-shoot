@@ -28,9 +28,9 @@ function Orphans (columns) {
         checkAndExclude(colNumber + 1, rowNumber + 1)
     }
 
-    var topBubbles = []
-    var orphans = {}
-    var columnsAndRows = {}
+    var topBubbles = [],
+        orphans = {},
+        columnsAndRows = {}
     for (var i = 0; i < columns.length; i++) {
         var bubbles = columns[i]
         columnsAndRows[i] = {}
