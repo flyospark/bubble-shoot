@@ -15,6 +15,7 @@ var files = [
     'js/FallingCanvas.js',
     'js/FallingBubble.js',
     'js/Laser.js',
+    'js/LaserGradient.js',
     'js/MainCanvas.js',
     'js/MainPanel.js',
     'js/MovingBubble.js',
