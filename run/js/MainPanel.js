@@ -128,20 +128,16 @@ function MainPanel () {
 
     var score = Score(canvasHeight, bubbleDiameter, dpp)
 
+    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
+
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, shiftRandomShape.get,
         verticalDistance, breakingCanvas.add, fallingCanvas.add,
-        score.add, function () {
-
-        resultCanvas.visible = true
-
-    })
+        score.add, resultCanvas.show)
     stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
         bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
-
-    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight)
 
     var touchStarted = false,
         touchX, touchY

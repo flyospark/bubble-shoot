@@ -34,6 +34,7 @@ function ResultCanvas (canvasWidth, canvasHeight) {
             c.fillRect(0, 0, canvasWidth, canvasHeight)
         },
         show: function () {
+            that.visible = true
             that.hiding = false
             that.tick = showTick
             that.showing = true
