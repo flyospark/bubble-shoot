@@ -9,7 +9,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     }
 
     function checkOverflow (bubble) {
-        if (bubble.rowNumber >= maxRowNumber) {
+        if (!that.gameOver && bubble.rowNumber >= maxRowNumber) {
             that.gameOver = true
             gameOverListener()
         }
@@ -73,9 +73,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     var moves = {}
 
     var columns = []
-    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) {
-        columns[i] = []
-    }
+    for (var i = 0; i < 2 * numBubblesHorizontal - 1; i++) columns[i] = []
 
     var maxRowNumber = Math.floor((canvasHeight - bubbleDiameter) / verticalDistance)
 
