@@ -103,7 +103,7 @@ function MainPanel () {
 
     var fallingCanvas = FallingCanvas(dpp)
 
-    var score = Score(canvasWidth, canvasHeight, bubbleDiameter, dpp)
+    var score = Score(canvasHeight, bubbleDiameter, dpp)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, nextRandomShape,

@@ -1,8 +1,8 @@
-function Score (canvasWidth, canvasHeight, bubbleDiameter, dpp) {
+function Score (canvasHeight, bubbleDiameter, dpp) {
 
-    var score = 0
-    var x = canvasWidth - 10 * dpp
-    var y = canvasHeight - bubbleDiameter + 10 * dpp
+    var score = 0,
+        x = 10 * dpp,
+        y = canvasHeight - bubbleDiameter + 10 * dpp
     var font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
 
     return {
@@ -10,7 +10,6 @@ function Score (canvasWidth, canvasHeight, bubbleDiameter, dpp) {
             score += _score
         },
         paint: function (c) {
-            c.textAlign = 'right'
             c.textBaseline = 'top'
             c.font = font
             c.fillStyle = '#777'
