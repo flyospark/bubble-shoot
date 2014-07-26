@@ -6,6 +6,7 @@ function MovingBubble (canvasWidth, canvasHeight,
     var stepY = dy * stepMultiplier
 
     var that = {
+        id: Math.random(),
         shape: shape,
         x: canvasWidth / 2,
         y: canvasHeight - radius,

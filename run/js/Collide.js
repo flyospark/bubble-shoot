@@ -1,6 +1,6 @@
 function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
     var collisions = []
-    for (var i = 0; i < movingBubbles.length; i++) {
+    for (var i in movingBubbles) {
         var movingBubble = movingBubbles[i]
         for (var j = 0; j < stillBubbles.length; j++) {
 

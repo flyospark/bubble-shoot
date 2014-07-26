@@ -1,11 +1,11 @@
 function MovingCanvas (canvasWidth, canvasHeight,
     bubbleRadius, bubbleVisualDiameter, placeListener, dpp) {
 
-    function remove (movingBubble) {
-        movingBubbles.splice(movingBubbles.indexOf(movingBubble), 1)
+    function remove (bubble) {
+        delete movingBubbles[bubble.id]
     }
 
-    var movingBubbles = []
+    var movingBubbles = {}
 
     return {
         movingBubbles: movingBubbles,
@@ -13,19 +13,17 @@ function MovingCanvas (canvasWidth, canvasHeight,
         add: function (shape, dx, dy) {
             var bubble = MovingBubble(canvasWidth, canvasHeight,
                 bubbleRadius, bubbleVisualDiameter, shape, dx, dy, dpp)
-            movingBubbles.push(bubble)
+            movingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
-            for (var i = 0; i < movingBubbles.length; i++) {
-                movingBubbles[i].paint(c)
-            }
+            for (var i in movingBubbles) movingBubbles[i].paint(c)
         },
         tick: function () {
-            for (var i = 0; i < movingBubbles.length; i++) {
-                var movingBubble = movingBubbles[i]
-                if (movingBubble.tick()) {
-                    placeListener(movingBubble)
-                    remove(movingBubble)
+            for (var i in movingBubbles) {
+                var bubble = movingBubbles[i]
+                if (bubble.tick()) {
+                    placeListener(bubble)
+                    remove(bubble)
                 }
             }
         },
