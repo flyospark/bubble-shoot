@@ -1,7 +1,9 @@
-function BubbleShape_Violet (radius) {
+function BubbleShape_Violet (canvasHeight, radius) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
+
+    var laserGradient
 
     var canvas = (function () {
 
@@ -23,12 +25,15 @@ function BubbleShape_Violet (radius) {
         c.fillStyle = gradient
         c.fill()
 
+        laserGradient = LaserGradient(canvasHeight, c, 300, 100, 60)
+
         return canvas
 
     })()
 
     return {
         color: color,
+        laserGradient: laserGradient,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },

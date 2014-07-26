@@ -14,6 +14,7 @@ echo_html(
     .'<script type="text/javascript" src="js/FallingCanvas.js"></script>'
     .'<script type="text/javascript" src="js/FallingBubble.js"></script>'
     .'<script type="text/javascript" src="js/Laser.js"></script>'
+    .'<script type="text/javascript" src="js/LaserGradient.js"></script>'
     .'<script type="text/javascript" src="js/MainCanvas.js"></script>'
     .'<script type="text/javascript" src="js/MainPanel.js"></script>'
     .'<script type="text/javascript" src="js/MovingBubble.js"></script>'

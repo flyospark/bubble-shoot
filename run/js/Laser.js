@@ -1,16 +1,12 @@
 function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootDY) {
 
-    var gradient = c.createLinearGradient(0, 0, 0, canvasHeight)
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 0)')
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.2)')
-
     var radius = Math.max(canvasWidth, canvasHeight) * 2
 
     var bubbleX = canvasWidth / 2,
         bubbleY = canvasHeight - bubbleRadius
 
     return {
-        paint: function (c, x, y) {
+        paint: function (c, x, y, gradient) {
 
             var touchX = x - bubbleX,
                 touchY = y - bubbleY,

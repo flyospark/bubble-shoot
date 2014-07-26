@@ -15,7 +15,7 @@ function MainPanel () {
             background.paint(blurC)
             score.paint(blurC)
             stillCanvas.paint(blurC)
-            if (touchStarted) laser.paint(blurC, touchX, touchY)
+            if (touchStarted) laser.paint(blurC, touchX, touchY, nextBubble.shape.laserGradient)
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
@@ -75,13 +75,27 @@ function MainPanel () {
     var bubbleVisualRadius = bubbleRadius - 1 * dpp
     var bubbleVisualDiameter = bubbleVisualRadius * 2
 
+    var classPrefix = 'MainPanel'
+
+    var debugTickElement = document.createElement('div')
+
+    var debugRepaintElement = document.createElement('div')
+
+    var debugElement = document.createElement('div')
+    debugElement.className = classPrefix + '-debug'
+    debugElement.appendChild(debugRepaintElement)
+    debugElement.appendChild(debugTickElement)
+
+    var canvasWidth = width - width % bubbleDiameter
+    var canvasHeight = height - height % bubbleDiameter
+
     var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
-        bubbleShapeBlue = BubbleShape_Blue(bubbleVisualRadius),
-        bubbleShapeGreen = BubbleShape_Green(bubbleVisualRadius),
-        bubbleShapeRed = BubbleShape_Red(bubbleVisualRadius),
-        bubbleShapeViolet = BubbleShape_Violet(bubbleVisualRadius),
-        bubbleShapeWhite = BubbleShape_White(bubbleVisualRadius),
-        bubbleShapeYellow = BubbleShape_Yellow(bubbleVisualRadius)
+        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
+        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
+        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
+        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
+        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(bubbleShapeBlue)
@@ -99,20 +113,6 @@ function MainPanel () {
     shiftRandomShape.add(bubbleShapeViolet)
     shiftRandomShape.add(bubbleShapeWhite)
     shiftRandomShape.add(bubbleShapeYellow)
-
-    var classPrefix = 'MainPanel'
-
-    var debugTickElement = document.createElement('div')
-
-    var debugRepaintElement = document.createElement('div')
-
-    var debugElement = document.createElement('div')
-    debugElement.className = classPrefix + '-debug'
-    debugElement.appendChild(debugRepaintElement)
-    debugElement.appendChild(debugTickElement)
-
-    var canvasWidth = width - width % bubbleDiameter
-    var canvasHeight = height - height % bubbleDiameter
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
