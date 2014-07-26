@@ -1,7 +1,7 @@
 function MainPanel () {
 
     function getNextBubble () {
-        var shape = nextRandomShape()
+        var shape = nextBubbleRandomShape.get()
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
@@ -75,7 +75,30 @@ function MainPanel () {
     var bubbleVisualRadius = bubbleRadius - 1 * dpp
     var bubbleVisualDiameter = bubbleVisualRadius * 2
 
-    var nextRandomShape = BubbleShape_Random(bubbleVisualRadius).next
+    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
+        bubbleShapeBlue = BubbleShape_Blue(bubbleVisualRadius),
+        bubbleShapeGreen = BubbleShape_Green(bubbleVisualRadius),
+        bubbleShapeRed = BubbleShape_Red(bubbleVisualRadius),
+        bubbleShapeViolet = BubbleShape_Violet(bubbleVisualRadius),
+        bubbleShapeWhite = BubbleShape_White(bubbleVisualRadius),
+        bubbleShapeYellow = BubbleShape_Yellow(bubbleVisualRadius)
+
+    var nextBubbleRandomShape = RandomShape()
+    nextBubbleRandomShape.add(bubbleShapeBlue)
+    nextBubbleRandomShape.add(bubbleShapeGreen)
+    nextBubbleRandomShape.add(bubbleShapeRed)
+    nextBubbleRandomShape.add(bubbleShapeViolet)
+    nextBubbleRandomShape.add(bubbleShapeWhite)
+    nextBubbleRandomShape.add(bubbleShapeYellow)
+
+    var shiftRandomShape = RandomShape()
+    shiftRandomShape.add(bubbleShapeBlack)
+    shiftRandomShape.add(bubbleShapeBlue)
+    shiftRandomShape.add(bubbleShapeGreen)
+    shiftRandomShape.add(bubbleShapeRed)
+    shiftRandomShape.add(bubbleShapeViolet)
+    shiftRandomShape.add(bubbleShapeWhite)
+    shiftRandomShape.add(bubbleShapeYellow)
 
     var classPrefix = 'MainPanel'
 
@@ -106,7 +129,7 @@ function MainPanel () {
     var score = Score(canvasHeight, bubbleDiameter, dpp)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
-        numBubblesHorizontal, bubbleDiameter, nextRandomShape,
+        numBubblesHorizontal, bubbleDiameter, shiftRandomShape.get,
         verticalDistance, breakingCanvas.add, fallingCanvas.add,
         score.add, function () {
 
