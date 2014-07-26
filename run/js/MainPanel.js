@@ -25,6 +25,8 @@ function MainPanel () {
 
             debugRepaintElement.innerHTML = 'repaint ' + (Date.now() - time)
 
+            repaint()
+
         })
     }
 
@@ -51,8 +53,6 @@ function MainPanel () {
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
-
-        repaint()
 
     }
 
@@ -198,7 +198,6 @@ function MainPanel () {
                     nextBubbleTimeout = setTimeout(function () {
                         nextBubble = getNextBubble()
                     }, 200)
-                    repaint()
                     identifier = null
                 }
 
