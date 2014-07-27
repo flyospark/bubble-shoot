@@ -5,6 +5,52 @@ function MainPanel () {
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
+    function pointerEnd () {
+
+        var x = pointerX - canvasWidth / 2,
+            y = canvasHeight - bubbleRadius - pointerY,
+            distance = Math.hypot(x, y),
+            dx = x / distance,
+            dy = -y / distance
+
+        if (dy < -minShootDY) {
+            var shape = nextBubble.shape
+            movingCanvas.add(shape, dx, dy)
+            nextBubble = null
+            nextBubbleTimeout = setTimeout(function () {
+                nextBubble = getNextBubble()
+            }, 200)
+            identifier = null
+            pointerStarted = false
+        }
+
+    }
+
+    function pointerHit () {
+
+        if (!nextBubble || !nextBubble.ready ||
+            resultCanvas.showing || resultCanvas.hiding) return true
+
+        if (resultCanvas.visible) {
+            resultCanvas.hide()
+            stillCanvas.reset()
+            score.reset()
+            return true
+        }
+
+    }
+
+    function pointerMove (e) {
+        pointerX = e.clientX * dpp - canvasOffsetX
+        pointerY = e.clientY * dpp - canvasOffsetY
+    }
+
+    function pointerStart (e) {
+        pointerX = e.clientX * dpp - canvasOffsetX
+        pointerY = e.clientY * dpp - canvasOffsetY
+        pointerStarted = true
+    }
+
     function repaint () {
         requestAnimationFrame(function () {
 
@@ -15,7 +61,9 @@ function MainPanel () {
             background.paint(blurC)
             score.paint(blurC)
             stillCanvas.paint(blurC)
-            if (touchStarted) laser.paint(blurC, touchX, touchY, nextBubble.shape.laserGradient)
+            if (pointerStarted) {
+                laser.paint(blurC, pointerX, pointerY, nextBubble.shape.laserGradient)
+            }
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
@@ -148,8 +196,8 @@ function MainPanel () {
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
         bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
 
-    var touchStarted = false,
-        touchX, touchY
+    var pointerStarted = false,
+        pointerX, pointerY
 
     var canvas = MainCanvas(width, height, dpp)
 
@@ -172,67 +220,51 @@ function MainPanel () {
 
     var identifier = null
 
+    var touched = false
+
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
     element.appendChild(debugElement)
+    element.addEventListener('mousedown', function (e) {
+        if (touched) touched = false
+        else {
+            if (pointerHit()) return
+            if (!pointerStarted) pointerStart(e)
+        }
+    })
     element.addEventListener('touchstart', function (e) {
-
-        if (!nextBubble || !nextBubble.ready ||
-            resultCanvas.showing || resultCanvas.hiding) return
-
-        if (resultCanvas.visible) {
-            resultCanvas.hide()
-            stillCanvas.reset()
-            score.reset()
-            return
-        }
-
-        if (identifier === null) {
+        if (pointerHit()) return
+        if (!pointerStarted) {
             var touch = e.changedTouches[0]
-            touchX = touch.clientX * dpp - canvasOffsetX
-            touchY = touch.clientY * dpp - canvasOffsetY
             identifier = touch.identifier
-            touchStarted = true
+            pointerStart(touch)
         }
-
+    })
+    element.addEventListener('mousemove', function (e) {
+        if (touched) touched = false
+        else pointerMove(e)
     })
     element.addEventListener('touchmove', function (e) {
+        touched = true
+        e.preventDefault()
         var touches = e.changedTouches
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
-            if (touch.identifier === identifier) {
-                touchX = touch.clientX * dpp - canvasOffsetX
-                touchY = touch.clientY * dpp - canvasOffsetY
-            }
+            if (touch.identifier === identifier) pointerMove(touch)
         }
     })
+    element.addEventListener('mouseup', function (e) {
+        if (touched) touched = false
+        else pointerEnd(e)
+    })
     element.addEventListener('touchend', function (e) {
+        touched = true
+        e.preventDefault()
         var touches = e.changedTouches
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
-            if (touch.identifier === identifier) {
-
-                touchStarted = false
-
-                var touch = e.changedTouches[0],
-                    x = touchX - canvasWidth / 2,
-                    y = canvasHeight - bubbleRadius - touchY,
-                    distance = Math.hypot(x, y),
-                    dx = x / distance,
-                    dy = -y / distance
-
-                if (dy < -minShootDY) {
-                    var shape = nextBubble.shape
-                    movingCanvas.add(shape, dx, dy)
-                    nextBubble = null
-                    nextBubbleTimeout = setTimeout(function () {
-                        nextBubble = getNextBubble()
-                    }, 200)
-                    identifier = null
-                }
-
-            }
+            if (touch.identifier === identifier) pointerEnd(touch)
         }
     })
 
