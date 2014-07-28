@@ -2,7 +2,7 @@ function BubbleShape_Bomb (canvas, radius) {
 
     var c = canvas.getContext('2d')
 
-    var color = 'rgba(255 ,255, 255, 0.3)'
+    var color = 'rgba(255 ,255, 255, 0.4)'
 
     c.beginPath()
     c.arc(0, 0, radius * 0.25, 0, Math.PI * 2)
