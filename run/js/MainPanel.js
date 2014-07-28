@@ -13,7 +13,7 @@ function MainPanel () {
             dx = x / distance,
             dy = -y / distance
 
-        if (dy < -minShootDY) {
+        if (dy < -minShootDY && nextBubble) {
             var shape = nextBubble.shape
             movingCanvas.add(shape, dx, dy)
             nextBubble = null
@@ -160,18 +160,18 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, bubbleShapeYellow)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(2, bubbleShapeBlack)
-    shiftRandomShape.add(5, bubbleShapeBlue)
+    shiftRandomShape.add(3, bubbleShapeBlack)
+    shiftRandomShape.add(8, bubbleShapeBlue)
     shiftRandomShape.add(1, bubbleShapeBlueBomb)
-    shiftRandomShape.add(5, bubbleShapeGreen)
+    shiftRandomShape.add(8, bubbleShapeGreen)
     shiftRandomShape.add(1, bubbleShapeGreenBomb)
-    shiftRandomShape.add(5, bubbleShapeRed)
+    shiftRandomShape.add(8, bubbleShapeRed)
     shiftRandomShape.add(1, bubbleShapeRedBomb)
-    shiftRandomShape.add(5, bubbleShapeViolet)
+    shiftRandomShape.add(8, bubbleShapeViolet)
     shiftRandomShape.add(1, bubbleShapeVioletBomb)
-    shiftRandomShape.add(5, bubbleShapeWhite)
+    shiftRandomShape.add(8, bubbleShapeWhite)
     shiftRandomShape.add(1, bubbleShapeWhiteBomb)
-    shiftRandomShape.add(5, bubbleShapeYellow)
+    shiftRandomShape.add(8, bubbleShapeYellow)
     shiftRandomShape.add(1, bubbleShapeYellowBomb)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
