@@ -8,6 +8,7 @@ function BubbleShape_Blue (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'blue',
         laserGradient: LaserGradient(canvasHeight, c, 220, 100, 70),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)

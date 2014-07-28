@@ -141,10 +141,15 @@ function MainPanel () {
         bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
         bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius),
         bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
+        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius),
         bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
+        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius),
         bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
+        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius),
         bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius)
+        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius),
+        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)
@@ -159,10 +164,15 @@ function MainPanel () {
     shiftRandomShape.add(5, bubbleShapeBlue)
     shiftRandomShape.add(1, bubbleShapeBlueBomb)
     shiftRandomShape.add(5, bubbleShapeGreen)
+    shiftRandomShape.add(1, bubbleShapeGreenBomb)
     shiftRandomShape.add(5, bubbleShapeRed)
+    shiftRandomShape.add(1, bubbleShapeRedBomb)
     shiftRandomShape.add(5, bubbleShapeViolet)
+    shiftRandomShape.add(1, bubbleShapeVioletBomb)
     shiftRandomShape.add(5, bubbleShapeWhite)
+    shiftRandomShape.add(1, bubbleShapeWhiteBomb)
     shiftRandomShape.add(5, bubbleShapeYellow)
+    shiftRandomShape.add(1, bubbleShapeYellowBomb)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 

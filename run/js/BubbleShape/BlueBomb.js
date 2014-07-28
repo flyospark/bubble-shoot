@@ -8,6 +8,8 @@ function BubbleShape_BlueBomb (radius) {
 
     return {
         color: color,
+        colorName: 'blue',
+        isBomb: true,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },

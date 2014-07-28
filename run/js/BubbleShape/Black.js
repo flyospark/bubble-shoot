@@ -7,6 +7,7 @@ function BubbleShape_Black (radius) {
 
     return {
         color: color,
+        colorName: 'black',
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
