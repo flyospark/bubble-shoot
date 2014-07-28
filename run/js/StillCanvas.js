@@ -106,13 +106,17 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             var neighbors = Neighbors(bubble, columns)
             if (neighbors.length >= breakNumber) {
 
-                scoreListener(neighbors.length - breakNumber + 1)
+                var bombNeighbors = BombNeighbors(columns, neighbors)
 
-                for (var i = 0; i < neighbors.length; i++) {
-                    var neighbor = neighbors[i]
+                var n = 0
+                for (var i in bombNeighbors) {
+                    var neighbor = bombNeighbors[i]
                     remove(neighbor)
                     breakCallback(neighbor.x, neighbor.y, neighbor.shape)
+                    n++
                 }
+
+                scoreListener(n - breakNumber + 1)
 
                 var orphans = Orphans(columns)
                 for (var i in orphans) {
