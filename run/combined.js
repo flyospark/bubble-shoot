@@ -264,6 +264,52 @@ function MainPanel () {
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
+    function pointerEnd () {
+
+        var x = pointerX - canvasWidth / 2,
+            y = canvasHeight - bubbleRadius - pointerY,
+            distance = Math.hypot(x, y),
+            dx = x / distance,
+            dy = -y / distance
+
+        if (dy < -minShootDY && nextBubble) {
+            var shape = nextBubble.shape
+            movingCanvas.add(shape, dx, dy)
+            nextBubble = null
+            nextBubbleTimeout = setTimeout(function () {
+                nextBubble = getNextBubble()
+            }, 200)
+            identifier = null
+            pointerStarted = false
+        }
+
+    }
+
+    function pointerHit () {
+
+        if (!nextBubble || !nextBubble.ready ||
+            resultCanvas.showing || resultCanvas.hiding) return true
+
+        if (resultCanvas.visible) {
+            resultCanvas.hide()
+            stillCanvas.reset()
+            score.reset()
+            return true
+        }
+
+    }
+
+    function pointerMove (e) {
+        pointerX = e.clientX * dpp - canvasOffsetX
+        pointerY = e.clientY * dpp - canvasOffsetY
+    }
+
+    function pointerStart (e) {
+        pointerX = e.clientX * dpp - canvasOffsetX
+        pointerY = e.clientY * dpp - canvasOffsetY
+        pointerStarted = true
+    }
+
     function repaint () {
         requestAnimationFrame(function () {
 
@@ -274,7 +320,9 @@ function MainPanel () {
             background.paint(blurC)
             score.paint(blurC)
             stillCanvas.paint(blurC)
-            if (touchStarted) laser.paint(blurC, touchX, touchY, nextBubble.shape.laserGradient)
+            if (pointerStarted) {
+                laser.paint(blurC, pointerX, pointerY, nextBubble.shape.laserGradient)
+            }
             if (nextBubble) nextBubble.paint(blurC)
             movingCanvas.paint(blurC)
             breakingCanvas.paint(blurC)
@@ -350,11 +398,17 @@ function MainPanel () {
 
     var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
         bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
+        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius),
         bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
+        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius),
         bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
+        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius),
         bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
+        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius),
         bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius)
+        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius),
+        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)
@@ -365,13 +419,19 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, bubbleShapeYellow)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(2, bubbleShapeBlack)
-    shiftRandomShape.add(5, bubbleShapeBlue)
-    shiftRandomShape.add(5, bubbleShapeGreen)
-    shiftRandomShape.add(5, bubbleShapeRed)
-    shiftRandomShape.add(5, bubbleShapeViolet)
-    shiftRandomShape.add(5, bubbleShapeWhite)
-    shiftRandomShape.add(5, bubbleShapeYellow)
+    shiftRandomShape.add(3, bubbleShapeBlack)
+    shiftRandomShape.add(8, bubbleShapeBlue)
+    shiftRandomShape.add(1, bubbleShapeBlueBomb)
+    shiftRandomShape.add(8, bubbleShapeGreen)
+    shiftRandomShape.add(1, bubbleShapeGreenBomb)
+    shiftRandomShape.add(8, bubbleShapeRed)
+    shiftRandomShape.add(1, bubbleShapeRedBomb)
+    shiftRandomShape.add(8, bubbleShapeViolet)
+    shiftRandomShape.add(1, bubbleShapeVioletBomb)
+    shiftRandomShape.add(8, bubbleShapeWhite)
+    shiftRandomShape.add(1, bubbleShapeWhiteBomb)
+    shiftRandomShape.add(8, bubbleShapeYellow)
+    shiftRandomShape.add(1, bubbleShapeYellowBomb)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
@@ -407,8 +467,8 @@ function MainPanel () {
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
         bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
 
-    var touchStarted = false,
-        touchX, touchY
+    var pointerStarted = false,
+        pointerX, pointerY
 
     var canvas = MainCanvas(width, height, dpp)
 
@@ -431,67 +491,51 @@ function MainPanel () {
 
     var identifier = null
 
+    var touched = false
+
     var element = document.createElement('div')
     element.className = classPrefix
     element.appendChild(canvas)
     element.appendChild(debugElement)
+    element.addEventListener('mousedown', function (e) {
+        if (touched) touched = false
+        else {
+            if (pointerHit()) return
+            if (!pointerStarted) pointerStart(e)
+        }
+    })
     element.addEventListener('touchstart', function (e) {
-
-        if (!nextBubble || !nextBubble.ready ||
-            resultCanvas.showing || resultCanvas.hiding) return
-
-        if (resultCanvas.visible) {
-            resultCanvas.hide()
-            stillCanvas.reset()
-            score.reset()
-            return
-        }
-
-        if (identifier === null) {
+        if (pointerHit()) return
+        if (!pointerStarted) {
             var touch = e.changedTouches[0]
-            touchX = touch.clientX * dpp - canvasOffsetX
-            touchY = touch.clientY * dpp - canvasOffsetY
             identifier = touch.identifier
-            touchStarted = true
+            pointerStart(touch)
         }
-
+    })
+    element.addEventListener('mousemove', function (e) {
+        if (touched) touched = false
+        else pointerMove(e)
     })
     element.addEventListener('touchmove', function (e) {
+        touched = true
+        e.preventDefault()
         var touches = e.changedTouches
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
-            if (touch.identifier === identifier) {
-                touchX = touch.clientX * dpp - canvasOffsetX
-                touchY = touch.clientY * dpp - canvasOffsetY
-            }
+            if (touch.identifier === identifier) pointerMove(touch)
         }
     })
+    element.addEventListener('mouseup', function (e) {
+        if (touched) touched = false
+        else pointerEnd(e)
+    })
     element.addEventListener('touchend', function (e) {
+        touched = true
+        e.preventDefault()
         var touches = e.changedTouches
         for (var i = 0; i < touches.length; i++) {
             var touch = touches[i]
-            if (touch.identifier === identifier) {
-
-                touchStarted = false
-
-                var touch = e.changedTouches[0],
-                    x = touchX - canvasWidth / 2,
-                    y = canvasHeight - bubbleRadius - touchY,
-                    distance = Math.hypot(x, y),
-                    dx = x / distance,
-                    dy = -y / distance
-
-                if (dy < -minShootDY) {
-                    var shape = nextBubble.shape
-                    movingCanvas.add(shape, dx, dy)
-                    nextBubble = null
-                    nextBubbleTimeout = setTimeout(function () {
-                        nextBubble = getNextBubble()
-                    }, 200)
-                    identifier = null
-                }
-
-            }
+            if (touch.identifier === identifier) pointerEnd(touch)
         }
     })
 
@@ -610,7 +654,8 @@ function Neighbors (bubble, columns) {
         if (!bubbles) return
 
         var bubble = bubbles[rowNumber]
-        if (!bubble || scannedBubbles[bubble.id] || bubble.shape != shape) return
+        if (!bubble || scannedBubbles[bubble.id]) return
+        if (bubble.shape.colorName != shape.colorName) return
 
         scan(bubble)
 
@@ -966,13 +1011,17 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             var neighbors = Neighbors(bubble, columns)
             if (neighbors.length >= breakNumber) {
 
-                scoreListener(neighbors.length - breakNumber + 1)
+                var bombNeighbors = BombNeighbors(columns, neighbors)
 
-                for (var i = 0; i < neighbors.length; i++) {
-                    var neighbor = neighbors[i]
+                var n = 0
+                for (var i in bombNeighbors) {
+                    var neighbor = bombNeighbors[i]
                     remove(neighbor)
                     breakCallback(neighbor.x, neighbor.y, neighbor.shape)
+                    n++
                 }
+
+                scoreListener(n - breakNumber + 1)
 
                 var orphans = Orphans(columns)
                 for (var i in orphans) {
@@ -1062,6 +1111,7 @@ function BubbleShape_Black (radius) {
 
     return {
         color: color,
+        colorName: 'black',
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1079,6 +1129,7 @@ function BubbleShape_Blue (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'blue',
         laserGradient: LaserGradient(canvasHeight, c, 220, 100, 70),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
@@ -1123,6 +1174,7 @@ function BubbleShape_Green (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'green',
         laserGradient: LaserGradient(canvasHeight, c, 100, 100, 40),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
@@ -1141,6 +1193,7 @@ function BubbleShape_Red (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'red',
         laserGradient: LaserGradient(canvasHeight, c, 5, 100, 65),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
@@ -1159,6 +1212,7 @@ function BubbleShape_Violet (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'violet',
         laserGradient: LaserGradient(canvasHeight, c, 300, 100, 60),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
@@ -1177,6 +1231,7 @@ function BubbleShape_White (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'white',
         laserGradient: LaserGradient(canvasHeight, c, 0, 0, 90),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
@@ -1195,6 +1250,7 @@ function BubbleShape_Yellow (canvasHeight, radius) {
 
     return {
         color: color,
+        colorName: 'yellow',
         laserGradient: LaserGradient(canvasHeight, c, 60, 90, 70),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
