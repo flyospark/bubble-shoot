@@ -139,6 +139,7 @@ function MainPanel () {
 
     var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
         bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
+        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius),
         bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
         bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
         bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
@@ -156,6 +157,7 @@ function MainPanel () {
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(2, bubbleShapeBlack)
     shiftRandomShape.add(5, bubbleShapeBlue)
+    shiftRandomShape.add(1, bubbleShapeBlueBomb)
     shiftRandomShape.add(5, bubbleShapeGreen)
     shiftRandomShape.add(5, bubbleShapeRed)
     shiftRandomShape.add(5, bubbleShapeViolet)
