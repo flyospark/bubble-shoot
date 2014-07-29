@@ -1,4 +1,4 @@
-function BubbleShape_RedBomb (radius) {
+function BubbleShape_RedBomb (radius, scale) {
 
     var color = 'hsl(5, 100%, 65%)'
     var halfWidth = radius + 2
@@ -10,6 +10,7 @@ function BubbleShape_RedBomb (radius) {
         color: color,
         colorName: 'red',
         isBomb: true,
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },

@@ -1,4 +1,4 @@
-function BubbleShape_Yellow (canvasHeight, radius) {
+function BubbleShape_Yellow (canvasHeight, radius, scale) {
 
     var color = 'hsl(60, 90%, 70%)'
     var halfWidth = radius + 2
@@ -10,6 +10,7 @@ function BubbleShape_Yellow (canvasHeight, radius) {
         color: color,
         colorName: 'yellow',
         laserGradient: LaserGradient(canvasHeight, c, 60, 90, 70),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },

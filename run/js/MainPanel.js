@@ -141,27 +141,19 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
-    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
-        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
-        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius),
-        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
-        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius),
-        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
-        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius),
-        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
-        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius),
-        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
-        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius),
-        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius)
-
-    bubbleShapeBlack.particleCanvases = ParticleCanvases(dpp, bubbleShapeBlack.color)
-    bubbleShapeBlue.particleCanvases = bubbleShapeBlueBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeBlue.color)
-    bubbleShapeGreen.particleCanvases = bubbleShapeGreenBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeGreen.color)
-    bubbleShapeRed.particleCanvases = bubbleShapeRedBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeRed.color)
-    bubbleShapeViolet.particleCanvases = bubbleShapeVioletBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeViolet.color)
-    bubbleShapeWhite.particleCanvases = bubbleShapeWhiteBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeWhite.color)
-    bubbleShapeYellow.particleCanvases = bubbleShapeYellowBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeYellow.color)
+    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, dpp),
+        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, dpp),
+        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, dpp),
+        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, dpp),
+        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, dpp),
+        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, dpp),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, dpp)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)

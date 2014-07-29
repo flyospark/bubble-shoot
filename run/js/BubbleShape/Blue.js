@@ -1,4 +1,4 @@
-function BubbleShape_Blue (canvasHeight, radius) {
+function BubbleShape_Blue (canvasHeight, radius, scale) {
 
     var color = 'hsl(220, 100%, 70%)'
     var halfWidth = radius + 2
@@ -10,6 +10,7 @@ function BubbleShape_Blue (canvasHeight, radius) {
         color: color,
         colorName: 'blue',
         laserGradient: LaserGradient(canvasHeight, c, 220, 100, 70),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
