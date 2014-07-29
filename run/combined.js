@@ -47,7 +47,7 @@ function BlurCanvas (canvasWidth, canvasHeight) {
         c: c,
         canvas: canvas,
         clear: function () {
-            c.fillStyle = 'rgba(0, 0, 0, 0.4)'
+            c.fillStyle = 'rgba(0, 0, 0, 0.3)'
             c.fillRect(0, 0, canvasWidth, canvasHeight)
         },
     }
@@ -100,17 +100,52 @@ function BombNeighbors (columns, neighbors) {
 
 }
 ;
-function BreakingBubble (x, y, shape, dpp) {
+function BombParticleCanvases (scale, color) {
 
-    var maxSteps = 16
-    var stepIndex = maxSteps
-    var fullCircle = Math.PI * 2
+    var maxRadius = scale * 6
+    var steps = 24
 
-    var scale = 2 * dpp
+    var canvases = []
+    for (var i = 0; i < steps; i++) {
+
+        var radius = maxRadius * (steps - i) / steps
+        var canvasRadius = radius + 1
+
+        var canvas = document.createElement('canvas')
+        canvas.width = canvas.height = canvasRadius * 2
+
+        var c = canvas.getContext('2d')
+        c.fillStyle = color
+        c.translate(canvasRadius, canvasRadius)
+        c.arc(0, 0, radius, 0, Math.PI * 2)
+        c.fill()
+
+        canvases.push(canvas)
+
+    }
+    return canvases
+
+}
+;
+function BreakingBubble (x, y, shape, scale) {
+
+    var index = 0
+    var particleCanvases = shape.particleCanvases
+
+    var particelScale
+    var numParticles
+    if (shape.isBomb) {
+        particelScale = 3 * scale
+        numParticles = 10
+    } else {
+        particelScale = 2 * scale
+        numParticles = 5
+    }
+
     var particles = []
-    for (var i = 0; i < 6; i++) {
-        var locationXY = RandomXY(scale, scale)
-        var directionXY = RandomXY(scale, scale)
+    for (var i = 0; i < numParticles; i++) {
+        var locationXY = RandomXY(particelScale, particelScale)
+        var directionXY = RandomXY(particelScale, particelScale)
         particles.push({
             x: x + locationXY[0],
             y: y + locationXY[1],
@@ -123,17 +158,14 @@ function BreakingBubble (x, y, shape, dpp) {
         id: Math.random(),
         paint: function (c) {
 
-            if (stepIndex == maxSteps) shape.paint(c, x, y)
+            if (!index) shape.paint(c, x, y)
 
             for (var i in particles) {
-                var particle = particles[i],
-                    px = particle.x,
-                    py = particle.y
-                c.beginPath()
-                c.moveTo(px, py)
-                c.fillStyle = shape.color
-                c.arc(px, py, 4 * stepIndex / maxSteps * dpp, 0, fullCircle)
-                c.fill()
+                var canvas = particleCanvases[index],
+                    particle = particles[i],
+                    px = particle.x - canvas.width / 2,
+                    py = particle.y - canvas.height / 2
+                c.drawImage(canvas, px, py)
             }
 
         },
@@ -145,21 +177,21 @@ function BreakingBubble (x, y, shape, dpp) {
                 particle.y += particle.dy
             }
 
-            stepIndex--
-            if (!stepIndex) return true
+            index++
+            if (index == particleCanvases.length) return true
 
         },
     }
 
 }
 ;
-function BreakingCanvas (dpp) {
+function BreakingCanvas (scale) {
 
     var breakingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            var bubble = BreakingBubble(x, y, shape, dpp)
+            var bubble = BreakingBubble(x, y, shape, scale)
             breakingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
@@ -199,13 +231,13 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
     return collisions
 }
 ;
-function FallingCanvas (dpp) {
+function FallingCanvas (scale) {
 
     var fallingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            var bubble = FallingBubble(x, y, shape, dpp)
+            var bubble = FallingBubble(x, y, shape, scale)
             fallingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
@@ -220,12 +252,12 @@ function FallingCanvas (dpp) {
 
 }
 ;
-function FallingBubble (x, y, shape, dpp) {
+function FallingBubble (x, y, shape, scale) {
 
     var maxSteps = 32,
         stepsLeft = maxSteps,
         opacity = 1,
-        dx = (Math.random() * 2 - 1) * 6 * dpp,
+        dx = (Math.random() * 2 - 1) * 6 * scale,
         dy = 0
 
     return {
@@ -238,7 +270,7 @@ function FallingBubble (x, y, shape, dpp) {
         tick: function () {
             x += dx
             y += dy
-            dy += dpp
+            dy += scale
             dx *= 0.95
             stepsLeft--
             if (!stepsLeft) return true
@@ -318,13 +350,11 @@ function MainPanel () {
             dx = x / distance,
             dy = -y / distance
 
-        if (dy < -minShootDY && nextBubble) {
+        if (dy < -minShootDY && nextBubble && nextBubble.ready) {
             var shape = nextBubble.shape
             movingCanvas.add(shape, dx, dy)
             nextBubble = null
-            nextBubbleTimeout = setTimeout(function () {
-                nextBubble = getNextBubble()
-            }, 200)
+            nextBubbleTimeout = 10
             identifier = null
             pointerStarted = false
         }
@@ -392,7 +422,6 @@ function MainPanel () {
         breakingCanvas.tick()
         fallingCanvas.tick()
         if (resultCanvas.visible) resultCanvas.tick()
-        if (nextBubble) nextBubble.tick()
 
         var collisions = Collide(movingCanvas.movingBubbles,
             stillCanvas.stillBubbles, bubbleVisualDiameter)
@@ -403,6 +432,13 @@ function MainPanel () {
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
             placeMovingBubble(movingBubble)
             movingCanvas.remove(movingBubble)
+        }
+
+        if (nextBubbleTimeout) {
+            nextBubbleTimeout--
+            if (!nextBubbleTimeout) nextBubble = getNextBubble()
+        } else {
+            if (nextBubble) nextBubble.tick()
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
@@ -442,19 +478,19 @@ function MainPanel () {
     var canvasWidth = width - width % bubbleDiameter
     var canvasHeight = height - height % bubbleDiameter
 
-    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius),
-        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius),
-        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius),
-        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius),
-        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius),
-        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius),
-        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius),
-        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius),
-        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius),
-        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius),
-        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius),
-        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius)
+    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, dpp),
+        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, dpp),
+        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, dpp),
+        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, dpp),
+        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, dpp),
+        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, dpp),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, dpp),
+        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, dpp)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)
@@ -530,7 +566,7 @@ function MainPanel () {
         bubbleVisualDiameter, c, minShootDY)
 
     var nextBubble = getNextBubble()
-    var nextBubbleTimeout
+    var nextBubbleTimeout = 0
 
     var highScore = parseInt(localStorage.highScore, 10)
     if (!isFinite(highScore)) highScore = 0
@@ -600,9 +636,9 @@ function MainPanel () {
 }
 ;
 function MovingBubble (canvasWidth, canvasHeight,
-    radius, visualDiameter, shape, dx, dy, dpp) {
+    radius, visualDiameter, shape, dx, dy, scale) {
 
-    var stepMultiplier = 20 * dpp,
+    var stepMultiplier = 20 * scale,
         stepX = dx * stepMultiplier,
         stepY = dy * stepMultiplier
 
@@ -660,7 +696,7 @@ function MovingBubble (canvasWidth, canvasHeight,
 }
 ;
 function MovingCanvas (canvasWidth, canvasHeight,
-    bubbleRadius, bubbleVisualDiameter, placeListener, dpp) {
+    bubbleRadius, bubbleVisualDiameter, placeListener, scale) {
 
     function remove (bubble) {
         delete movingBubbles[bubble.id]
@@ -673,7 +709,7 @@ function MovingCanvas (canvasWidth, canvasHeight,
         remove: remove,
         add: function (shape, dx, dy) {
             var bubble = MovingBubble(canvasWidth, canvasHeight,
-                bubbleRadius, bubbleVisualDiameter, shape, dx, dy, dpp)
+                bubbleRadius, bubbleVisualDiameter, shape, dx, dy, scale)
             movingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
@@ -823,6 +859,33 @@ function Orphans (columns) {
     }
 
     return orphans
+
+}
+;
+function ParticleCanvases (scale, color) {
+
+    var maxRadius = scale * 6
+    var steps = 16
+
+    var canvases = []
+    for (var i = 0; i < steps; i++) {
+
+        var radius = maxRadius * (steps - i) / steps
+        var canvasRadius = radius + 1
+
+        var canvas = document.createElement('canvas')
+        canvas.width = canvas.height = canvasRadius * 2
+
+        var c = canvas.getContext('2d')
+        c.fillStyle = color
+        c.translate(canvasRadius, canvasRadius)
+        c.arc(0, 0, radius, 0, Math.PI * 2)
+        c.fill()
+
+        canvases.push(canvas)
+
+    }
+    return canvases
 
 }
 ;
@@ -1148,7 +1211,7 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
 
 }
 ;
-function BubbleShape_Black (radius) {
+function BubbleShape_Black (radius, scale) {
 
     var color = 'hsl(0, 0%, 40%)'
     var halfWidth = radius + 2
@@ -1158,6 +1221,7 @@ function BubbleShape_Black (radius) {
     return {
         color: color,
         colorName: 'black',
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1165,7 +1229,7 @@ function BubbleShape_Black (radius) {
 
 }
 ;
-function BubbleShape_Blue (canvasHeight, radius) {
+function BubbleShape_Blue (canvasHeight, radius, scale) {
 
     var color = 'hsl(220, 100%, 70%)'
     var halfWidth = radius + 2
@@ -1177,6 +1241,7 @@ function BubbleShape_Blue (canvasHeight, radius) {
         color: color,
         colorName: 'blue',
         laserGradient: LaserGradient(canvasHeight, c, 220, 100, 70),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1184,7 +1249,7 @@ function BubbleShape_Blue (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_BlueBomb (radius) {
+function BubbleShape_BlueBomb (radius, scale) {
 
     var color = 'hsl(220, 100%, 70%)'
     var halfWidth = radius + 2
@@ -1196,6 +1261,7 @@ function BubbleShape_BlueBomb (radius) {
         color: color,
         colorName: 'blue',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1257,7 +1323,7 @@ function BubbleShape_Canvas (lightColor, darkColor, radius) {
 
 }
 ;
-function BubbleShape_Green (canvasHeight, radius) {
+function BubbleShape_Green (canvasHeight, radius, scale) {
 
     var color = 'hsl(100, 100%, 40%)'
     var halfWidth = radius + 2
@@ -1269,6 +1335,7 @@ function BubbleShape_Green (canvasHeight, radius) {
         color: color,
         colorName: 'green',
         laserGradient: LaserGradient(canvasHeight, c, 100, 100, 40),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1276,7 +1343,7 @@ function BubbleShape_Green (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_GreenBomb (radius) {
+function BubbleShape_GreenBomb (radius, scale) {
 
     var color = 'hsl(100, 100%, 40%)'
     var halfWidth = radius + 2
@@ -1288,6 +1355,7 @@ function BubbleShape_GreenBomb (radius) {
         color: color,
         colorName: 'green',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1295,7 +1363,7 @@ function BubbleShape_GreenBomb (radius) {
 
 }
 ;
-function BubbleShape_Red (canvasHeight, radius) {
+function BubbleShape_Red (canvasHeight, radius, scale) {
 
     var color = 'hsl(5, 100%, 65%)'
     var halfWidth = radius + 2
@@ -1307,6 +1375,7 @@ function BubbleShape_Red (canvasHeight, radius) {
         color: color,
         colorName: 'red',
         laserGradient: LaserGradient(canvasHeight, c, 5, 100, 65),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1314,7 +1383,7 @@ function BubbleShape_Red (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_RedBomb (radius) {
+function BubbleShape_RedBomb (radius, scale) {
 
     var color = 'hsl(5, 100%, 65%)'
     var halfWidth = radius + 2
@@ -1326,6 +1395,7 @@ function BubbleShape_RedBomb (radius) {
         color: color,
         colorName: 'red',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1333,7 +1403,7 @@ function BubbleShape_RedBomb (radius) {
 
 }
 ;
-function BubbleShape_Violet (canvasHeight, radius) {
+function BubbleShape_Violet (canvasHeight, radius, scale) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
@@ -1345,6 +1415,7 @@ function BubbleShape_Violet (canvasHeight, radius) {
         color: color,
         colorName: 'violet',
         laserGradient: LaserGradient(canvasHeight, c, 300, 100, 60),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1352,7 +1423,7 @@ function BubbleShape_Violet (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_VioletBomb (radius) {
+function BubbleShape_VioletBomb (radius, scale) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
@@ -1364,6 +1435,7 @@ function BubbleShape_VioletBomb (radius) {
         color: color,
         colorName: 'violet',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1371,7 +1443,7 @@ function BubbleShape_VioletBomb (radius) {
 
 }
 ;
-function BubbleShape_White (canvasHeight, radius) {
+function BubbleShape_White (canvasHeight, radius, scale) {
 
     var color = 'hsl(0, 0%, 90%)'
     var halfWidth = radius + 2
@@ -1383,6 +1455,7 @@ function BubbleShape_White (canvasHeight, radius) {
         color: color,
         colorName: 'white',
         laserGradient: LaserGradient(canvasHeight, c, 0, 0, 90),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1390,7 +1463,7 @@ function BubbleShape_White (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_WhiteBomb (radius) {
+function BubbleShape_WhiteBomb (radius, scale) {
 
     var color = 'hsl(0, 0%, 90%)'
     var halfWidth = radius + 2
@@ -1402,6 +1475,7 @@ function BubbleShape_WhiteBomb (radius) {
         color: color,
         colorName: 'white',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1409,7 +1483,7 @@ function BubbleShape_WhiteBomb (radius) {
 
 }
 ;
-function BubbleShape_Yellow (canvasHeight, radius) {
+function BubbleShape_Yellow (canvasHeight, radius, scale) {
 
     var color = 'hsl(60, 90%, 70%)'
     var halfWidth = radius + 2
@@ -1421,6 +1495,7 @@ function BubbleShape_Yellow (canvasHeight, radius) {
         color: color,
         colorName: 'yellow',
         laserGradient: LaserGradient(canvasHeight, c, 60, 90, 70),
+        particleCanvases: ParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1428,7 +1503,7 @@ function BubbleShape_Yellow (canvasHeight, radius) {
 
 }
 ;
-function BubbleShape_YellowBomb (radius) {
+function BubbleShape_YellowBomb (radius, scale) {
 
     var color = 'hsl(60, 90%, 70%)'
     var halfWidth = radius + 2
@@ -1440,6 +1515,7 @@ function BubbleShape_YellowBomb (radius) {
         color: color,
         colorName: 'yellow',
         isBomb: true,
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
