@@ -7,6 +7,8 @@ function MainPanel () {
 
     function pointerEnd () {
 
+        if (!pointerStarted) return
+
         var x = pointerX - canvasWidth / 2,
             y = canvasHeight - bubbleRadius - pointerY,
             distance = Math.hypot(x, y),
