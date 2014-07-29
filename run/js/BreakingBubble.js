@@ -3,11 +3,20 @@ function BreakingBubble (x, y, shape, scale) {
     var index = 0
     var particleCanvases = shape.particleCanvases
 
-    var doubleScale = 2 * scale
+    var particelScale
+    var numParticles
+    if (shape.isBomb) {
+        particelScale = 3 * scale
+        numParticles = 10
+    } else {
+        particelScale = 2 * scale
+        numParticles = 5
+    }
+
     var particles = []
-    for (var i = 0; i < 6; i++) {
-        var locationXY = RandomXY(doubleScale, doubleScale)
-        var directionXY = RandomXY(doubleScale, doubleScale)
+    for (var i = 0; i < numParticles; i++) {
+        var locationXY = RandomXY(particelScale, particelScale)
+        var directionXY = RandomXY(particelScale, particelScale)
         particles.push({
             x: x + locationXY[0],
             y: y + locationXY[1],

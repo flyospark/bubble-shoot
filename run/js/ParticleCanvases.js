@@ -1,6 +1,6 @@
 function ParticleCanvases (scale, color) {
 
-    var maxRadius = scale * 8
+    var maxRadius = scale * 6
     var steps = 16
 
     var canvases = []
