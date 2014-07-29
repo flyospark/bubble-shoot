@@ -1,9 +1,9 @@
-function FallingBubble (x, y, shape, dpp) {
+function FallingBubble (x, y, shape, scale) {
 
     var maxSteps = 32,
         stepsLeft = maxSteps,
         opacity = 1,
-        dx = (Math.random() * 2 - 1) * 6 * dpp,
+        dx = (Math.random() * 2 - 1) * 6 * scale,
         dy = 0
 
     return {
@@ -16,7 +16,7 @@ function FallingBubble (x, y, shape, dpp) {
         tick: function () {
             x += dx
             y += dy
-            dy += dpp
+            dy += scale
             dx *= 0.95
             stepsLeft--
             if (!stepsLeft) return true

@@ -1,10 +1,10 @@
-function BreakingBubble (x, y, shape, dpp) {
+function BreakingBubble (x, y, shape, scale) {
 
     var maxSteps = 16
     var stepIndex = maxSteps
     var fullCircle = Math.PI * 2
 
-    var scale = 2 * dpp
+    var scale = 2 * scale
     var particles = []
     for (var i = 0; i < 6; i++) {
         var locationXY = RandomXY(scale, scale)

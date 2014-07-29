@@ -1,7 +1,7 @@
 function MovingBubble (canvasWidth, canvasHeight,
-    radius, visualDiameter, shape, dx, dy, dpp) {
+    radius, visualDiameter, shape, dx, dy, scale) {
 
-    var stepMultiplier = 20 * dpp,
+    var stepMultiplier = 20 * scale,
         stepX = dx * stepMultiplier,
         stepY = dy * stepMultiplier
 
