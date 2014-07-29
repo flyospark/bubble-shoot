@@ -121,11 +121,16 @@ function MainPanel () {
     var width = innerWidth * dpp
     var height = innerHeight * dpp
 
-    var bubbleDiameter = 40 * dpp
+    var numBubblesHorizontal = 9 + Math.floor((width - 300) / 200)
+    var bubbleDiameter = Math.floor(width / numBubblesHorizontal)
+    var scale = bubbleDiameter / 40
     var bubbleRadius = bubbleDiameter / 2
     var verticalDistance = Math.sin(Math.PI / 3) * bubbleDiameter
-    var bubbleVisualRadius = bubbleRadius - 1 * dpp
+    var bubbleVisualRadius = bubbleRadius - 1 * scale
     var bubbleVisualDiameter = bubbleVisualRadius * 2
+
+    var canvasWidth = width - width % bubbleDiameter
+    var canvasHeight = height - height % bubbleDiameter
 
     var classPrefix = 'MainPanel'
 
@@ -138,22 +143,19 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var canvasWidth = width - width % bubbleDiameter
-    var canvasHeight = height - height % bubbleDiameter
-
-    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, dpp),
-        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, dpp),
-        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, dpp),
-        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, dpp),
-        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, dpp),
-        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, dpp),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, dpp),
-        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, dpp)
+    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, scale),
+        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
+        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
+        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, scale),
+        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
+        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
+        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
+        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)
@@ -182,17 +184,15 @@ function MainPanel () {
 
     var blurC = blurCanvas.c
 
-    var background = Background(canvasWidth, canvasHeight, bubbleDiameter, dpp)
+    var background = Background(canvasWidth, canvasHeight, bubbleDiameter, scale)
 
-    var numBubblesHorizontal = Math.floor(width / bubbleDiameter)
+    var breakingCanvas = BreakingCanvas(scale)
 
-    var breakingCanvas = BreakingCanvas(dpp)
+    var fallingCanvas = FallingCanvas(scale)
 
-    var fallingCanvas = FallingCanvas(dpp)
+    var score = Score(canvasHeight, bubbleDiameter, scale)
 
-    var score = Score(canvasHeight, bubbleDiameter, dpp)
-
-    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight, dpp)
+    var resultCanvas = ResultCanvas(canvasWidth, canvasHeight, scale)
 
     var stillCanvas = StillCanvas(canvasHeight, bubbleRadius,
         numBubblesHorizontal, bubbleDiameter, shiftRandomShape.get,
@@ -210,7 +210,7 @@ function MainPanel () {
     stillCanvas.reset()
 
     var movingCanvas = MovingCanvas(canvasWidth, canvasHeight,
-        bubbleRadius, bubbleVisualDiameter, placeMovingBubble, dpp)
+        bubbleRadius, bubbleVisualDiameter, placeMovingBubble, scale)
 
     var pointerStarted = false,
         pointerX, pointerY
