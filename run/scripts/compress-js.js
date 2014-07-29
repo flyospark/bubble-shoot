@@ -9,6 +9,7 @@ var uglifyJs = require('uglify-js')
 var files = [
     'js/Background.js',
     'js/BlurCanvas.js',
+    'js/BombNeighbors.js',
     'js/BreakingBubble.js',
     'js/BreakingCanvas.js',
     'js/Collide.js',
@@ -31,12 +32,19 @@ var files = [
     'js/Score.js',
     'js/BubbleShape/Black.js',
     'js/BubbleShape/Blue.js',
+    'js/BubbleShape/BlueBomb.js',
+    'js/BubbleShape/Bomb.js',
     'js/BubbleShape/Canvas.js',
     'js/BubbleShape/Green.js',
+    'js/BubbleShape/GreenBomb.js',
     'js/BubbleShape/Red.js',
+    'js/BubbleShape/RedBomb.js',
     'js/BubbleShape/Violet.js',
+    'js/BubbleShape/VioletBomb.js',
     'js/BubbleShape/White.js',
+    'js/BubbleShape/WhiteBomb.js',
     'js/BubbleShape/Yellow.js',
+    'js/BubbleShape/YellowBomb.js',
     'js/Main.js',
 ]
 

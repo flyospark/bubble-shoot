@@ -54,6 +54,52 @@ function BlurCanvas (canvasWidth, canvasHeight) {
 
 }
 ;
+function BombNeighbors (columns, neighbors) {
+
+    function checkAndInclude (colNumber, rowNumber) {
+
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
+
+        var bubble = bubbles[rowNumber]
+        if (!bubble || bombNeighbors[bubble.id]) return
+
+        bombNeighbors[bubble.id] = bubble
+        if (bubble.shape.isBomb)include(bubble)
+
+    }
+
+    function include (bubble) {
+        var colNumber = bubble.colNumber
+        var rowNumber = bubble.rowNumber
+        checkAndInclude(colNumber - 2, rowNumber)
+        checkAndInclude(colNumber + 2, rowNumber)
+        checkAndInclude(colNumber - 1, rowNumber - 1)
+        checkAndInclude(colNumber + 1, rowNumber - 1)
+        checkAndInclude(colNumber - 1, rowNumber + 1)
+        checkAndInclude(colNumber + 1, rowNumber + 1)
+    }
+
+    var columnsAndRows = {}
+    for (var i in columns) {
+        var bubbles = columns[i]
+        columnsAndRows[i] = {}
+        for (var j in bubbles) {
+            var itemBubble = bubbles[j]
+            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
+        }
+    }
+
+    var bombNeighbors = {}
+    for (var i = 0; i < neighbors.length; i++) {
+        var bubble = neighbors[i]
+        bombNeighbors[bubble.id] = bubble
+        if (bubble.shape.isBomb) include(bubble)
+    }
+    return bombNeighbors
+
+}
+;
 function BreakingBubble (x, y, shape, dpp) {
 
     var maxSteps = 16
@@ -1138,6 +1184,53 @@ function BubbleShape_Blue (canvasHeight, radius) {
 
 }
 ;
+function BubbleShape_BlueBomb (radius) {
+
+    var color = 'hsl(220, 100%, 70%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'blue',
+        isBomb: true,
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb (canvas, radius) {
+
+    var c = canvas.getContext('2d')
+
+    var color = 'rgba(255 ,255, 255, 0.4)'
+
+    c.beginPath()
+    c.arc(0, 0, radius * 0.25, 0, Math.PI * 2)
+    c.fillStyle = color
+    c.fill()
+
+    var numSteps = 3
+    var stepAngle = Math.PI * 2 / numSteps
+    var shapeRadius = radius * 0.62
+    var arcAngle = Math.PI / 3
+    c.lineWidth = radius * 0.45
+    c.beginPath()
+    c.rotate(Math.PI / 2 - arcAngle / 2)
+    for (var i = 0; i < numSteps; i++) {
+        c.moveTo(shapeRadius, 0)
+        c.arc(0, 0, shapeRadius, 0, arcAngle)
+        c.rotate(stepAngle)
+    }
+    c.strokeStyle = color
+    c.stroke()
+
+}
+;
 function BubbleShape_Canvas (lightColor, darkColor, radius) {
 
     var halfWidth = radius + 2
@@ -1183,6 +1276,25 @@ function BubbleShape_Green (canvasHeight, radius) {
 
 }
 ;
+function BubbleShape_GreenBomb (radius) {
+
+    var color = 'hsl(100, 100%, 40%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'green',
+        isBomb: true,
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
 function BubbleShape_Red (canvasHeight, radius) {
 
     var color = 'hsl(5, 100%, 65%)'
@@ -1195,6 +1307,25 @@ function BubbleShape_Red (canvasHeight, radius) {
         color: color,
         colorName: 'red',
         laserGradient: LaserGradient(canvasHeight, c, 5, 100, 65),
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_RedBomb (radius) {
+
+    var color = 'hsl(5, 100%, 65%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'red',
+        isBomb: true,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
@@ -1221,6 +1352,25 @@ function BubbleShape_Violet (canvasHeight, radius) {
 
 }
 ;
+function BubbleShape_VioletBomb (radius) {
+
+    var color = 'hsl(300, 100%, 60%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'violet',
+        isBomb: true,
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
 function BubbleShape_White (canvasHeight, radius) {
 
     var color = 'hsl(0, 0%, 90%)'
@@ -1240,6 +1390,25 @@ function BubbleShape_White (canvasHeight, radius) {
 
 }
 ;
+function BubbleShape_WhiteBomb (radius) {
+
+    var color = 'hsl(0, 0%, 90%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'white',
+        isBomb: true,
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
 function BubbleShape_Yellow (canvasHeight, radius) {
 
     var color = 'hsl(60, 90%, 70%)'
@@ -1252,6 +1421,25 @@ function BubbleShape_Yellow (canvasHeight, radius) {
         color: color,
         colorName: 'yellow',
         laserGradient: LaserGradient(canvasHeight, c, 60, 90, 70),
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_YellowBomb (radius) {
+
+    var color = 'hsl(60, 90%, 70%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(60, 90%, 40%)', radius)
+    BubbleShape_Bomb(canvas, radius)
+
+    return {
+        color: color,
+        colorName: 'yellow',
+        isBomb: true,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
