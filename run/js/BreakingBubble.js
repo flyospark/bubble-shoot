@@ -30,7 +30,7 @@ function BreakingBubble (x, y, shape, scale) {
                 c.beginPath()
                 c.moveTo(px, py)
                 c.fillStyle = shape.color
-                c.arc(px, py, 4 * stepIndex / maxSteps * dpp, 0, fullCircle)
+                c.arc(px, py, 4 * stepIndex / maxSteps * scale, 0, fullCircle)
                 c.fill()
             }
 
