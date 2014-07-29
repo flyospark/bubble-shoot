@@ -9,6 +9,7 @@ echo_html(
     '<script type="text/javascript" src="js/Background.js"></script>'
     .'<script type="text/javascript" src="js/BlurCanvas.js"></script>'
     .'<script type="text/javascript" src="js/BombNeighbors.js"></script>'
+    .'<script type="text/javascript" src="js/BombParticleCanvases.js"></script>'
     .'<script type="text/javascript" src="js/BreakingBubble.js"></script>'
     .'<script type="text/javascript" src="js/BreakingCanvas.js"></script>'
     .'<script type="text/javascript" src="js/Collide.js"></script>'

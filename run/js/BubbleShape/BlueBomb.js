@@ -10,7 +10,7 @@ function BubbleShape_BlueBomb (radius, scale) {
         color: color,
         colorName: 'blue',
         isBomb: true,
-        particleCanvases: ParticleCanvases(scale, color),
+        particleCanvases: BombParticleCanvases(scale, color),
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
