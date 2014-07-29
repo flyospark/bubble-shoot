@@ -13,13 +13,11 @@ function MainPanel () {
             dx = x / distance,
             dy = -y / distance
 
-        if (dy < -minShootDY && nextBubble) {
+        if (dy < -minShootDY && nextBubble && nextBubble.ready) {
             var shape = nextBubble.shape
             movingCanvas.add(shape, dx, dy)
             nextBubble = null
-            nextBubbleTimeout = setTimeout(function () {
-                nextBubble = getNextBubble()
-            }, 200)
+            nextBubbleTimeout = 10
             identifier = null
             pointerStarted = false
         }
@@ -87,7 +85,6 @@ function MainPanel () {
         breakingCanvas.tick()
         fallingCanvas.tick()
         if (resultCanvas.visible) resultCanvas.tick()
-        if (nextBubble) nextBubble.tick()
 
         var collisions = Collide(movingCanvas.movingBubbles,
             stillCanvas.stillBubbles, bubbleVisualDiameter)
@@ -98,6 +95,13 @@ function MainPanel () {
             movingBubble.shiftBack(bubbleDiameter - collision.distance)
             placeMovingBubble(movingBubble)
             movingCanvas.remove(movingBubble)
+        }
+
+        if (nextBubbleTimeout) {
+            nextBubbleTimeout--
+            if (!nextBubbleTimeout) nextBubble = getNextBubble()
+        } else {
+            if (nextBubble) nextBubble.tick()
         }
 
         debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
@@ -150,6 +154,14 @@ function MainPanel () {
         bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius),
         bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius),
         bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius)
+
+    bubbleShapeBlack.particleCanvases = ParticleCanvases(dpp, bubbleShapeBlack.color)
+    bubbleShapeBlue.particleCanvases = bubbleShapeBlueBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeBlue.color)
+    bubbleShapeGreen.particleCanvases = bubbleShapeGreenBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeGreen.color)
+    bubbleShapeRed.particleCanvases = bubbleShapeRedBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeRed.color)
+    bubbleShapeViolet.particleCanvases = bubbleShapeVioletBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeViolet.color)
+    bubbleShapeWhite.particleCanvases = bubbleShapeWhiteBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeWhite.color)
+    bubbleShapeYellow.particleCanvases = bubbleShapeYellowBomb.particleCanvases = ParticleCanvases(dpp, bubbleShapeYellow.color)
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, bubbleShapeBlue)
@@ -225,7 +237,7 @@ function MainPanel () {
         bubbleVisualDiameter, c, minShootDY)
 
     var nextBubble = getNextBubble()
-    var nextBubbleTimeout
+    var nextBubbleTimeout = 0
 
     var highScore = parseInt(localStorage.highScore, 10)
     if (!isFinite(highScore)) highScore = 0
@@ -286,7 +298,7 @@ function MainPanel () {
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
-    setInterval(tick, 20)
+    //setInterval(tick, 20)
 
     repaint()
 

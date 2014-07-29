@@ -1,8 +1,7 @@
 function BreakingBubble (x, y, shape, scale) {
 
-    var maxSteps = 16
-    var stepIndex = maxSteps
-    var fullCircle = Math.PI * 2
+    var index = 0
+    var particleCanvases = shape.particleCanvases
 
     var doubleScale = 2 * scale
     var particles = []
@@ -17,23 +16,18 @@ function BreakingBubble (x, y, shape, scale) {
         })
     }
 
-    var radius = 8 * scale
-
     return {
         id: Math.random(),
         paint: function (c) {
 
-            if (stepIndex == maxSteps) shape.paint(c, x, y)
+            if (!index) shape.paint(c, x, y)
 
             for (var i in particles) {
-                var particle = particles[i],
-                    px = particle.x,
-                    py = particle.y
-                c.beginPath()
-                c.moveTo(px, py)
-                c.fillStyle = shape.color
-                c.arc(px, py, radius, 0, fullCircle)
-                c.fill()
+                var canvas = particleCanvases[index],
+                    particle = particles[i],
+                    px = particle.x - canvas.width / 2,
+                    py = particle.y - canvas.height / 2
+                c.drawImage(canvas, px, py)
             }
 
         },
@@ -45,10 +39,8 @@ function BreakingBubble (x, y, shape, scale) {
                 particle.y += particle.dy
             }
 
-            stepIndex--
-            if (!stepIndex) return true
-
-            radius = 8 * scale * stepIndex / maxSteps
+            index++
+            if (index == particleCanvases.length) return true
 
         },
     }

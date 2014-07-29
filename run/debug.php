@@ -23,6 +23,7 @@ echo_html(
     .'<script type="text/javascript" src="js/Neighbors.js"></script>'
     .'<script type="text/javascript" src="js/NextBubble.js"></script>'
     .'<script type="text/javascript" src="js/Orphans.js"></script>'
+    .'<script type="text/javascript" src="js/ParticleCanvases.js"></script>'
     .'<script type="text/javascript" src="js/RandomShape.js"></script>'
     .'<script type="text/javascript" src="js/RandomXY.js"></script>'
     .'<script type="text/javascript" src="js/ResultCanvas.js"></script>'
