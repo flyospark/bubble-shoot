@@ -7,13 +7,13 @@ chdir(__DIR__);
 
 $compressedCssFile = '../compressed.css';
 $compressedJsFile = '../compressed.js';
-$get_revisions_file = '../fns/get_revisions.php';
+$get_run_revisions_file = '../fns/get_run_revisions.php';
 
 $compressedCss = file_get_contents($compressedCssFile);
 $compressedJs = file_get_contents($compressedJsFile);
 
-include_once $get_revisions_file;
-$revisions = get_revisions();
+include_once $get_run_revisions_file;
+$revisions = get_run_revisions();
 
 system('./compress-css.js');
 system('./compress-js.js');
@@ -39,12 +39,12 @@ if ($changed) {
 
     $content =
         "<?php\n\n"
-        ."function get_revisions () {\n"
+        ."function get_run_revisions () {\n"
         ."    return [\n"
         .$values
         ."    ];\n"
         ."}\n";
-    file_put_contents($get_revisions_file, $content);
+    file_put_contents($get_run_revisions_file, $content);
 
 }
 

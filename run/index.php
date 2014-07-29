@@ -1,7 +1,7 @@
 <?php
 
-include_once 'fns/get_revisions.php';
-$revisions = get_revisions();
+include_once 'fns/get_run_revisions.php';
+$revisions = get_run_revisions();
 
 include_once 'fns/echo_html.php';
 echo_html(
