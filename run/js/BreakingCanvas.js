@@ -1,10 +1,10 @@
-function BreakingCanvas (dpp) {
+function BreakingCanvas (scale) {
 
     var breakingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            var bubble = BreakingBubble(x, y, shape, dpp)
+            var bubble = BreakingBubble(x, y, shape, scale)
             breakingBubbles[bubble.id] = bubble
         },
         paint: function (c) {

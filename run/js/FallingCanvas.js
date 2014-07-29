@@ -1,10 +1,10 @@
-function FallingCanvas (dpp) {
+function FallingCanvas (scale) {
 
     var fallingBubbles = {}
 
     return {
         add: function (x, y, shape) {
-            var bubble = FallingBubble(x, y, shape, dpp)
+            var bubble = FallingBubble(x, y, shape, scale)
             fallingBubbles[bubble.id] = bubble
         },
         paint: function (c) {
