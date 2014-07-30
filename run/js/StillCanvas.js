@@ -128,6 +128,25 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             }
 
         },
+        getData: function () {
+            var data = {
+                bubbles: [],
+                shiftY: shiftY,
+            }
+            for (var i in stillBubbles) {
+                var bubble = stillBubbles[i]
+                var shape = bubble.shape
+                data.bubbles.push({
+                    colNumber: bubble.colNumber,
+                    rowNumber: bubble.rowNumber,
+                    shape: {
+                        colorName: shape.colorName,
+                        isBomb: shape.isBomb,
+                    },
+                })
+            }
+            return data
+        },
         isOdd: function () {
             return odd
         },

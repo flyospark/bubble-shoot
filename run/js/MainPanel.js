@@ -291,6 +291,12 @@ function MainPanel () {
     var shot = 0
     var maxShots = 7
 
+    window.stillCanvas = stillCanvas
+    addEventListener('beforeunload', function () {
+        localStorage.state = JSON.stringify({
+            stillCanvas: stillCanvas.getData(),
+        })
+    })
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
