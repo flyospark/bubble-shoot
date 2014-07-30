@@ -70,3 +70,8 @@ a {
     max-width: 600px;
     margin: auto;
 }
+
+#logoImage {
+    width: 128px;
+    height: 128px;
+}
