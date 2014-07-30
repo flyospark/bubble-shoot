@@ -422,6 +422,17 @@ function MainPanel () {
         return shapeMap[bubbleData.colorName][property]
     }
 
+    function saveState () {
+        localStorage.state = JSON.stringify({
+            width: width,
+            height: height,
+            dpp: dpp,
+            score: score.get(),
+            stillCanvas: stillCanvas.getData(),
+            nextBubbleColorName: nextBubble ? nextBubble.shape.colorName : null,
+        })
+    }
+
     function tick () {
         for (var i = 0; i < 2; i++) {
 
@@ -665,16 +676,11 @@ function MainPanel () {
     var shot = 0
     var maxShots = 7
 
-    addEventListener('beforeunload', function () {
-        localStorage.state = JSON.stringify({
-            width: width,
-            height: height,
-            dpp: dpp,
-            score: score.get(),
-            stillCanvas: stillCanvas.getData(),
-            nextBubbleColorName: nextBubble ? nextBubble.shape.colorName : null,
-        })
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState == 'hidden') saveState()
     })
+
+    addEventListener('beforeunload', saveState)
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
