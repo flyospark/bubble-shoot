@@ -330,6 +330,9 @@ function MainPanel () {
 
     addEventListener('beforeunload', function () {
         localStorage.state = JSON.stringify({
+            width: width,
+            height: height,
+            dpp: dpp,
             score: score.get(),
             stillCanvas: stillCanvas.getData(),
             nextBubbleColorName: nextBubble ? nextBubble.shape.colorName : null,
@@ -343,20 +346,22 @@ function MainPanel () {
     repaint()
 
     ;(function () {
+
         var state = localStorage.state
-        if (state) {
+        if (!state) return
 
-            var data = JSON.parse(state)
-            score.add(data.score)
-            stillCanvas.setData(data.stillCanvas, restoreBubble)
+        var data = JSON.parse(state)
+        if (data.width != width && data.height != height && data.dpp != dpp) return
 
-            var nextBubbleColorName = data.nextBubbleColorName
-            if (nextBubbleColorName) {
-                var shape = shapeMap[nextBubbleColorName].normal
-                nextBubble = NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
-            }
+        score.add(data.score)
+        stillCanvas.setData(data.stillCanvas, restoreBubble)
 
+        var nextBubbleColorName = data.nextBubbleColorName
+        if (nextBubbleColorName) {
+            var shape = shapeMap[nextBubbleColorName].normal
+            nextBubble = NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
         }
+
     })()
 
     return { element: element }
