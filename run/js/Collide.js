@@ -7,7 +7,7 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
             var stillBubble = stillBubbles[j],
                 dx = stillBubble.x - movingBubble.x,
                 dy = stillBubble.y - movingBubble.y,
-                distance = Math.hypot(dx, dy)
+                distance = Math.sqrt(dx * dx + dy * dy)
 
             if (distance < bubbleVisualDiameter) {
                 collisions.push({

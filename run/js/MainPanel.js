@@ -11,7 +11,7 @@ function MainPanel () {
 
         var x = pointerX - canvasWidth / 2,
             y = canvasHeight - bubbleRadius - pointerY,
-            distance = Math.hypot(x, y),
+            distance = Math.sqrt(x * x + y * y),
             dx = x / distance,
             dy = -y / distance
 

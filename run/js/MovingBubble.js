@@ -15,7 +15,7 @@ function MovingBubble (canvasWidth, canvasHeight,
         },
         shiftBack: function (distance) {
 
-            var hypot = Math.hypot(dx, dy)
+            var hypot = Math.sqrt(dx * dx + dy * dy)
             that.x -= dx * distance / hypot
             that.y -= dy * distance / hypot
 

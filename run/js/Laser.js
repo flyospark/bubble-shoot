@@ -10,7 +10,7 @@ function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootD
 
             var touchX = x - bubbleX,
                 touchY = y - bubbleY,
-                touchHypot = Math.hypot(touchX, touchY),
+                touchHypot = Math.sqrt(touchX * touchX + touchY * touchY),
                 endX = touchX * radius / touchHypot,
                 endY = touchY * radius / touchHypot
 
