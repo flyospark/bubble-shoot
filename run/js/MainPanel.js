@@ -261,7 +261,7 @@ function MainPanel () {
             pointerStart(touch)
         }
     })
-    element.addEventListener('mousemove', function (e) {
+    addEventListener('mousemove', function (e) {
         if (touched) touched = false
         else pointerMove(e)
     })
@@ -274,7 +274,7 @@ function MainPanel () {
             if (touch.identifier === identifier) pointerMove(touch)
         }
     })
-    element.addEventListener('mouseup', function (e) {
+    addEventListener('mouseup', function (e) {
         if (touched) touched = false
         else pointerEnd(e)
     })
