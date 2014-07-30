@@ -147,42 +147,42 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, scale),
-        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
-        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
-        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, scale),
-        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
-        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+    var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
+        blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
+        blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
+        greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
+        greenBombBubbleShape = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
+        redBubbleShape = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
+        redBombBubbleShape = BubbleShape_RedBomb(bubbleVisualRadius, scale),
+        violetBubbleShape = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
+        violetBombBubbleShape = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
+        whiteBubbleShape = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
+        whiteBombBubbleShape = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
+        yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
+        yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(1, bubbleShapeBlue)
-    nextBubbleRandomShape.add(1, bubbleShapeGreen)
-    nextBubbleRandomShape.add(1, bubbleShapeRed)
-    nextBubbleRandomShape.add(1, bubbleShapeViolet)
-    nextBubbleRandomShape.add(1, bubbleShapeWhite)
-    nextBubbleRandomShape.add(1, bubbleShapeYellow)
+    nextBubbleRandomShape.add(1, blueBubbleShape)
+    nextBubbleRandomShape.add(1, greenBubbleShape)
+    nextBubbleRandomShape.add(1, redBubbleShape)
+    nextBubbleRandomShape.add(1, violetBubbleShape)
+    nextBubbleRandomShape.add(1, whiteBubbleShape)
+    nextBubbleRandomShape.add(1, yellowBubbleShape)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(3, bubbleShapeBlack)
-    shiftRandomShape.add(8, bubbleShapeBlue)
-    shiftRandomShape.add(1, bubbleShapeBlueBomb)
-    shiftRandomShape.add(8, bubbleShapeGreen)
-    shiftRandomShape.add(1, bubbleShapeGreenBomb)
-    shiftRandomShape.add(8, bubbleShapeRed)
-    shiftRandomShape.add(1, bubbleShapeRedBomb)
-    shiftRandomShape.add(8, bubbleShapeViolet)
-    shiftRandomShape.add(1, bubbleShapeVioletBomb)
-    shiftRandomShape.add(8, bubbleShapeWhite)
-    shiftRandomShape.add(1, bubbleShapeWhiteBomb)
-    shiftRandomShape.add(8, bubbleShapeYellow)
-    shiftRandomShape.add(1, bubbleShapeYellowBomb)
+    shiftRandomShape.add(3, blackBubbleShape)
+    shiftRandomShape.add(8, blueBubbleShape)
+    shiftRandomShape.add(1, blueBombBubbleShape)
+    shiftRandomShape.add(8, greenBubbleShape)
+    shiftRandomShape.add(1, greenBombBubbleShape)
+    shiftRandomShape.add(8, redBubbleShape)
+    shiftRandomShape.add(1, redBombBubbleShape)
+    shiftRandomShape.add(8, violetBubbleShape)
+    shiftRandomShape.add(1, violetBombBubbleShape)
+    shiftRandomShape.add(8, whiteBubbleShape)
+    shiftRandomShape.add(1, whiteBombBubbleShape)
+    shiftRandomShape.add(8, yellowBubbleShape)
+    shiftRandomShape.add(1, yellowBombBubbleShape)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
