@@ -131,7 +131,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
         getData: function () {
             var data = {
                 bubbles: [],
-                shiftY: shiftY,
+                shiftIndex: shiftIndex,
             }
             for (var i in stillBubbles) {
                 var bubble = stillBubbles[i]
@@ -164,6 +164,14 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             shift()
             shift()
             shift()
+        },
+        setData: function (data) {
+
+            shiftIndex = Math.max(0, Math.floor(data.shiftIndex))
+            if (!isFinite(shiftIndex)) shiftIndex = 0
+
+            stillBubbles.splice(0)
+
         },
         tick: function () {
 
