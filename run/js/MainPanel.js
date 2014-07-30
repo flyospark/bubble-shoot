@@ -78,6 +78,13 @@ function MainPanel () {
         })
     }
 
+    function restoreBubble (bubbleData) {
+        var property
+        if (bubbleData.isBomb) property = 'bomb'
+        else property = 'normal'
+        return shapeMap[bubbleData.colorName][property]
+    }
+
     function tick () {
         for (var i = 0; i < 2; i++) {
 
@@ -161,46 +168,35 @@ function MainPanel () {
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
-    var restoreBubble = (function () {
-
-        var map = {
-            black: {
-                normal: blackBubbleShape,
-            },
-            blue: {
-                normal: blueBubbleShape,
-                bomb: blueBombBubbleShape,
-            },
-            green: {
-                normal: greenBubbleShape,
-                bomb: greenBombBubbleShape,
-            },
-            red: {
-                normal: redBubbleShape,
-                bomb: redBombBubbleShape,
-            },
-            violet: {
-                normal: violetBubbleShape,
-                bomb: violetBombBubbleShape,
-            },
-            white: {
-                normal: whiteBubbleShape,
-                bomb: whiteBombBubbleShape,
-            },
-            yellow: {
-                normal: yellowBubbleShape,
-                bomb: yellowBombBubbleShape,
-            },
-        }
-
-        return function (bubbleData) {
-            var property
-            if (bubbleData.isBomb) property = 'bomb'
-            else property = 'normal'
-            return map[bubbleData.colorName][property]
-        }
-
-    })()
+    var shapeMap = {
+        black: {
+            normal: blackBubbleShape,
+        },
+        blue: {
+            normal: blueBubbleShape,
+            bomb: blueBombBubbleShape,
+        },
+        green: {
+            normal: greenBubbleShape,
+            bomb: greenBombBubbleShape,
+        },
+        red: {
+            normal: redBubbleShape,
+            bomb: redBombBubbleShape,
+        },
+        violet: {
+            normal: violetBubbleShape,
+            bomb: violetBombBubbleShape,
+        },
+        white: {
+            normal: whiteBubbleShape,
+            bomb: whiteBombBubbleShape,
+        },
+        yellow: {
+            normal: yellowBubbleShape,
+            bomb: yellowBombBubbleShape,
+        },
+    }
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, blueBubbleShape)
@@ -336,6 +332,7 @@ function MainPanel () {
         localStorage.state = JSON.stringify({
             score: score.get(),
             stillCanvas: stillCanvas.getData(),
+            nextBubbleColorName: nextBubble ? nextBubble.shape.colorName : null,
         })
     })
     addEventListener('keydown', function (e) {
@@ -348,9 +345,17 @@ function MainPanel () {
     ;(function () {
         var state = localStorage.state
         if (state) {
+
             var data = JSON.parse(state)
             score.add(data.score)
             stillCanvas.setData(data.stillCanvas, restoreBubble)
+
+            var nextBubbleColorName = data.nextBubbleColorName
+            if (nextBubbleColorName) {
+                var shape = shapeMap[nextBubbleColorName].normal
+                nextBubble = NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
+            }
+
         }
     })()
 

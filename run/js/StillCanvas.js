@@ -130,6 +130,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
         },
         getData: function () {
             var data = {
+                odd: odd,
                 bubbles: [],
                 shiftIndex: shiftIndex,
             }
@@ -167,6 +168,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
         },
         setData: function (data, restoreShape) {
 
+            odd = data.odd
             shiftIndex = Math.max(0, Math.floor(data.shiftIndex))
             if (!isFinite(shiftIndex)) shiftIndex = 0
             shiftY = shiftIndex * verticalDistance
