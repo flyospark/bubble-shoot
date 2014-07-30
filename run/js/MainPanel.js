@@ -161,6 +161,47 @@ function MainPanel () {
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
+    var restoreBubble = (function () {
+
+        var map = {
+            black: {
+                normal: blackBubbleShape,
+            },
+            blue: {
+                normal: blueBubbleShape,
+                bomb: blueBombBubbleShape,
+            },
+            green: {
+                normal: greenBubbleShape,
+                bomb: greenBombBubbleShape,
+            },
+            red: {
+                normal: redBubbleShape,
+                bomb: redBombBubbleShape,
+            },
+            violet: {
+                normal: violetBubbleShape,
+                bomb: violetBombBubbleShape,
+            },
+            white: {
+                normal: whiteBubbleShape,
+                bomb: whiteBombBubbleShape,
+            },
+            yellow: {
+                normal: yellowBubbleShape,
+                bomb: yellowBombBubbleShape,
+            },
+        }
+
+        return function (bubbleData) {
+            var property
+            if (bubbleData.isBomb) property = 'bomb'
+            else property = 'normal'
+            return map[bubbleData.colorName][property]
+        }
+
+    })()
+
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, blueBubbleShape)
     nextBubbleRandomShape.add(1, greenBubbleShape)
@@ -292,6 +333,8 @@ function MainPanel () {
     var maxShots = 7
 
     window.stillCanvas = stillCanvas
+    window.restoreBubble = restoreBubble
+
     addEventListener('beforeunload', function () {
         localStorage.state = JSON.stringify({
             stillCanvas: stillCanvas.getData(),
