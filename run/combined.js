@@ -215,7 +215,7 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
             var stillBubble = stillBubbles[j],
                 dx = stillBubble.x - movingBubble.x,
                 dy = stillBubble.y - movingBubble.y,
-                distance = Math.hypot(dx, dy)
+                distance = Math.sqrt(dx * dx + dy * dy)
 
             if (distance < bubbleVisualDiameter) {
                 collisions.push({
@@ -292,7 +292,7 @@ function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootD
 
             var touchX = x - bubbleX,
                 touchY = y - bubbleY,
-                touchHypot = Math.hypot(touchX, touchY),
+                touchHypot = Math.sqrt(touchX * touchX + touchY * touchY),
                 endX = touchX * radius / touchHypot,
                 endY = touchY * radius / touchHypot
 
@@ -348,7 +348,7 @@ function MainPanel () {
 
         var x = pointerX - canvasWidth / 2,
             y = canvasHeight - bubbleRadius - pointerY,
-            distance = Math.hypot(x, y),
+            distance = Math.sqrt(x * x + y * y),
             dx = x / distance,
             dy = -y / distance
 
@@ -484,42 +484,83 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var bubbleShapeBlack = BubbleShape_Black(bubbleVisualRadius, scale),
-        bubbleShapeBlue = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeBlueBomb = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
-        bubbleShapeGreen = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeGreenBomb = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
-        bubbleShapeRed = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeRedBomb = BubbleShape_RedBomb(bubbleVisualRadius, scale),
-        bubbleShapeViolet = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeVioletBomb = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
-        bubbleShapeWhite = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeWhiteBomb = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
-        bubbleShapeYellow = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
-        bubbleShapeYellowBomb = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+    var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
+        blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
+        blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
+        greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
+        greenBombBubbleShape = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
+        redBubbleShape = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
+        redBombBubbleShape = BubbleShape_RedBomb(bubbleVisualRadius, scale),
+        violetBubbleShape = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
+        violetBombBubbleShape = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
+        whiteBubbleShape = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
+        whiteBombBubbleShape = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
+        yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
+        yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+
+    var restoreBubble = (function () {
+
+        var map = {
+            black: {
+                normal: blackBubbleShape,
+            },
+            blue: {
+                normal: blueBubbleShape,
+                bomb: blueBombBubbleShape,
+            },
+            green: {
+                normal: greenBubbleShape,
+                bomb: greenBombBubbleShape,
+            },
+            red: {
+                normal: redBubbleShape,
+                bomb: redBombBubbleShape,
+            },
+            violet: {
+                normal: violetBubbleShape,
+                bomb: violetBombBubbleShape,
+            },
+            white: {
+                normal: whiteBubbleShape,
+                bomb: whiteBombBubbleShape,
+            },
+            yellow: {
+                normal: yellowBubbleShape,
+                bomb: yellowBombBubbleShape,
+            },
+        }
+
+        return function (bubbleData) {
+            var property
+            if (bubbleData.isBomb) property = 'bomb'
+            else property = 'normal'
+            return map[bubbleData.colorName][property]
+        }
+
+    })()
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(1, bubbleShapeBlue)
-    nextBubbleRandomShape.add(1, bubbleShapeGreen)
-    nextBubbleRandomShape.add(1, bubbleShapeRed)
-    nextBubbleRandomShape.add(1, bubbleShapeViolet)
-    nextBubbleRandomShape.add(1, bubbleShapeWhite)
-    nextBubbleRandomShape.add(1, bubbleShapeYellow)
+    nextBubbleRandomShape.add(1, blueBubbleShape)
+    nextBubbleRandomShape.add(1, greenBubbleShape)
+    nextBubbleRandomShape.add(1, redBubbleShape)
+    nextBubbleRandomShape.add(1, violetBubbleShape)
+    nextBubbleRandomShape.add(1, whiteBubbleShape)
+    nextBubbleRandomShape.add(1, yellowBubbleShape)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(3, bubbleShapeBlack)
-    shiftRandomShape.add(8, bubbleShapeBlue)
-    shiftRandomShape.add(1, bubbleShapeBlueBomb)
-    shiftRandomShape.add(8, bubbleShapeGreen)
-    shiftRandomShape.add(1, bubbleShapeGreenBomb)
-    shiftRandomShape.add(8, bubbleShapeRed)
-    shiftRandomShape.add(1, bubbleShapeRedBomb)
-    shiftRandomShape.add(8, bubbleShapeViolet)
-    shiftRandomShape.add(1, bubbleShapeVioletBomb)
-    shiftRandomShape.add(8, bubbleShapeWhite)
-    shiftRandomShape.add(1, bubbleShapeWhiteBomb)
-    shiftRandomShape.add(8, bubbleShapeYellow)
-    shiftRandomShape.add(1, bubbleShapeYellowBomb)
+    shiftRandomShape.add(3, blackBubbleShape)
+    shiftRandomShape.add(8, blueBubbleShape)
+    shiftRandomShape.add(1, blueBombBubbleShape)
+    shiftRandomShape.add(8, greenBubbleShape)
+    shiftRandomShape.add(1, greenBombBubbleShape)
+    shiftRandomShape.add(8, redBubbleShape)
+    shiftRandomShape.add(1, redBombBubbleShape)
+    shiftRandomShape.add(8, violetBubbleShape)
+    shiftRandomShape.add(1, violetBombBubbleShape)
+    shiftRandomShape.add(8, whiteBubbleShape)
+    shiftRandomShape.add(1, whiteBombBubbleShape)
+    shiftRandomShape.add(8, yellowBubbleShape)
+    shiftRandomShape.add(1, yellowBombBubbleShape)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
 
@@ -598,7 +639,7 @@ function MainPanel () {
             pointerStart(touch)
         }
     })
-    element.addEventListener('mousemove', function (e) {
+    addEventListener('mousemove', function (e) {
         if (touched) touched = false
         else pointerMove(e)
     })
@@ -611,7 +652,7 @@ function MainPanel () {
             if (touch.identifier === identifier) pointerMove(touch)
         }
     })
-    element.addEventListener('mouseup', function (e) {
+    addEventListener('mouseup', function (e) {
         if (touched) touched = false
         else pointerEnd(e)
     })
@@ -628,12 +669,27 @@ function MainPanel () {
     var shot = 0
     var maxShots = 7
 
+    addEventListener('beforeunload', function () {
+        localStorage.state = JSON.stringify({
+            score: score.get(),
+            stillCanvas: stillCanvas.getData(),
+        })
+    })
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
     setInterval(tick, 30)
 
     repaint()
+
+    ;(function () {
+        var state = localStorage.state
+        if (state) {
+            var data = JSON.parse(state)
+            score.add(data.score)
+            stillCanvas.setData(data.stillCanvas, restoreBubble)
+        }
+    })()
 
     return { element: element }
 
@@ -656,7 +712,7 @@ function MovingBubble (canvasWidth, canvasHeight,
         },
         shiftBack: function (distance) {
 
-            var hypot = Math.hypot(dx, dy)
+            var hypot = Math.sqrt(dx * dx + dy * dy)
             that.x -= dx * distance / hypot
             that.y -= dy * distance / hypot
 
@@ -1146,6 +1202,25 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             }
 
         },
+        getData: function () {
+            var data = {
+                bubbles: [],
+                shiftIndex: shiftIndex,
+            }
+            for (var i in stillBubbles) {
+                var bubble = stillBubbles[i]
+                var shape = bubble.shape
+                data.bubbles.push({
+                    colNumber: bubble.colNumber,
+                    rowNumber: bubble.rowNumber,
+                    shape: {
+                        colorName: shape.colorName,
+                        isBomb: shape.isBomb,
+                    },
+                })
+            }
+            return data
+        },
         isOdd: function () {
             return odd
         },
@@ -1163,6 +1238,37 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             shift()
             shift()
             shift()
+        },
+        setData: function (data, restoreShape) {
+
+            shiftIndex = Math.max(0, Math.floor(data.shiftIndex))
+            if (!isFinite(shiftIndex)) shiftIndex = 0
+            shiftY = shiftIndex * verticalDistance
+
+            for (var i in stillBubbles) delete stillBubbles[i]
+            for (var i in columns) {
+                var columnBubbles = columns[i]
+                for (var i in columnBubbles) delete columnBubbles[i]
+            }
+            for (var i in moves) delete moves[i]
+
+            var dataBubbles = data.bubbles
+            for (var i in dataBubbles) {
+
+                var dataBubble = dataBubbles[i]
+
+                var shape = restoreShape(dataBubble.shape)
+                if (!shape) continue
+
+                var colNumber = dataBubble.colNumber,
+                    rowNumber = dataBubble.rowNumber,
+                    x = bubbleRadius + colNumber * bubbleRadius,
+                    y = bubbleRadius + rowNumber * verticalDistance,
+                    bubble = StillBubble(x, y, shape, rowNumber, colNumber)
+                add(bubble)
+
+            }
+
         },
         tick: function () {
 
