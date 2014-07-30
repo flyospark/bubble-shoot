@@ -544,7 +544,7 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, yellowBubbleShape)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(3, blackBubbleShape)
+    shiftRandomShape.add(5, blackBubbleShape)
     shiftRandomShape.add(8, blueBubbleShape)
     shiftRandomShape.add(1, blueBombBubbleShape)
     shiftRandomShape.add(8, greenBubbleShape)
@@ -688,7 +688,7 @@ function MainPanel () {
         if (!state) return
 
         var data = JSON.parse(state)
-        if (data.width != width && data.height != height && data.dpp != dpp) return
+        if (data.width != width || data.height != height || data.dpp != dpp) return
 
         score.add(data.score)
         stillCanvas.setData(data.stillCanvas, restoreBubble)
