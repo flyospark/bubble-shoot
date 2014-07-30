@@ -165,12 +165,35 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             shift()
             shift()
         },
-        setData: function (data) {
+        setData: function (data, restoreShape) {
 
             shiftIndex = Math.max(0, Math.floor(data.shiftIndex))
             if (!isFinite(shiftIndex)) shiftIndex = 0
+            shiftY = shiftIndex * verticalDistance
 
-            stillBubbles.splice(0)
+            for (var i in stillBubbles) delete stillBubbles[i]
+            for (var i in columns) {
+                var columnBubbles = columns[i]
+                for (var i in columnBubbles) delete columnBubbles[i]
+            }
+            for (var i in moves) delete moves[i]
+
+            var dataBubbles = data.bubbles
+            for (var i in dataBubbles) {
+
+                var dataBubble = dataBubbles[i]
+
+                var shape = restoreShape(dataBubble.shape)
+                if (!shape) continue
+
+                var colNumber = dataBubble.colNumber,
+                    rowNumber = dataBubble.rowNumber,
+                    x = bubbleRadius + colNumber * bubbleRadius,
+                    y = bubbleRadius + rowNumber * verticalDistance,
+                    bubble = StillBubble(x, y, shape, rowNumber, colNumber)
+                add(bubble)
+
+            }
 
         },
         tick: function () {
