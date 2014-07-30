@@ -416,35 +416,37 @@ function MainPanel () {
     }
 
     function tick () {
+        for (var i = 0; i < 2; i++) {
 
-        var time = Date.now()
+            var time = Date.now()
 
-        stillCanvas.tick()
-        movingCanvas.tick()
-        breakingCanvas.tick()
-        fallingCanvas.tick()
-        if (resultCanvas.visible) resultCanvas.tick()
+            stillCanvas.tick()
+            movingCanvas.tick()
+            breakingCanvas.tick()
+            fallingCanvas.tick()
+            if (resultCanvas.visible) resultCanvas.tick()
 
-        var collisions = Collide(movingCanvas.movingBubbles,
-            stillCanvas.stillBubbles, bubbleVisualDiameter)
+            var collisions = Collide(movingCanvas.movingBubbles,
+                stillCanvas.stillBubbles, bubbleVisualDiameter)
 
-        for (var i = 0; i < collisions.length; i++) {
-            var collision = collisions[i]
-            var movingBubble = collision.movingBubble
-            movingBubble.shiftBack(bubbleDiameter - collision.distance)
-            placeMovingBubble(movingBubble)
-            movingCanvas.remove(movingBubble)
+            for (var j = 0; j < collisions.length; j++) {
+                var collision = collisions[j]
+                var movingBubble = collision.movingBubble
+                movingBubble.shiftBack(bubbleDiameter - collision.distance)
+                placeMovingBubble(movingBubble)
+                movingCanvas.remove(movingBubble)
+            }
+
+            if (nextBubbleTimeout) {
+                nextBubbleTimeout--
+                if (!nextBubbleTimeout) nextBubble = getNextBubble()
+            } else {
+                if (nextBubble) nextBubble.tick()
+            }
+
+            debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
+
         }
-
-        if (nextBubbleTimeout) {
-            nextBubbleTimeout--
-            if (!nextBubbleTimeout) nextBubble = getNextBubble()
-        } else {
-            if (nextBubble) nextBubble.tick()
-        }
-
-        debugTickElement.innerHTML = 'tick ' + (Date.now() - time)
-
     }
 
     function placeMovingBubble (movingBubble) {
@@ -629,7 +631,7 @@ function MainPanel () {
     addEventListener('keydown', function (e) {
         if (e.keyCode == 32) tick()
     })
-    setInterval(tick, 20)
+    setInterval(tick, 30)
 
     repaint()
 
