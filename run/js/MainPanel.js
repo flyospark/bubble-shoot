@@ -332,11 +332,9 @@ function MainPanel () {
     var shot = 0
     var maxShots = 7
 
-    window.stillCanvas = stillCanvas
-    window.restoreBubble = restoreBubble
-
     addEventListener('beforeunload', function () {
         localStorage.state = JSON.stringify({
+            score: score.get(),
             stillCanvas: stillCanvas.getData(),
         })
     })
@@ -346,6 +344,15 @@ function MainPanel () {
     setInterval(tick, 30)
 
     repaint()
+
+    ;(function () {
+        var state = localStorage.state
+        if (state) {
+            var data = JSON.parse(state)
+            score.add(data.score)
+            stillCanvas.setData(data.stillCanvas, restoreBubble)
+        }
+    })()
 
     return { element: element }
 
