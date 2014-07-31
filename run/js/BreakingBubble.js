@@ -50,7 +50,7 @@ function BreakingBubble (x, y, shape, scale) {
             }
 
             index++
-            if (index == numParticles) return true
+            if (index == particleCanvases[0].length) return true
 
         },
     }

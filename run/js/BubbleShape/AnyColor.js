@@ -1,4 +1,4 @@
-function BubbleShape_AnyColor (radius, scale) {
+function BubbleShape_AnyColor (radius, particleCanvases) {
 
     var halfSize = radius + 2
     var size = Math.floor(halfSize * 2)
@@ -61,12 +61,6 @@ function BubbleShape_AnyColor (radius, scale) {
     c.clip()
     c.drawImage(anotherCanvas, 0, 0)
 
-    var steps = 16
-    var particleCanvases = []
-    for (var i = 0; i < steps; i++) {
-        particleCanvases.push(ParticleCanvas(scale, '#fff', steps, i))
-    }
-
     return {
         isAnyColor: true,
         colorName: 'anyColor',
@@ -74,7 +68,10 @@ function BubbleShape_AnyColor (radius, scale) {
         particleCanvases: particleCanvases,
         getParticleCanvases: function (number) {
             var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            for (var i = 0; i < number; i++) {
+                var index = Math.floor(Math.random() * particleCanvases.length)
+                canvases.push(particleCanvases[index])
+            }
             return canvases
         },
         paint: function (c, x, y) {

@@ -98,7 +98,7 @@ function MainPanel () {
     }
 
     function tick () {
-        for (var i = 0; i < 2; i++) {
+        for (var i = 0; i < 1; i++) {
 
             var time = Date.now()
 
@@ -166,8 +166,7 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, scale),
-        blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
+    var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
         blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
         blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
         greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
@@ -180,6 +179,16 @@ function MainPanel () {
         whiteBombBubbleShape = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+
+    var allParticleCanvases = blackBubbleShape.getParticleCanvases(1)
+        .concat(blueBubbleShape.getParticleCanvases(1))
+        .concat(greenBubbleShape.getParticleCanvases(1))
+        .concat(redBubbleShape.getParticleCanvases(1))
+        .concat(violetBubbleShape.getParticleCanvases(1))
+        .concat(whiteBubbleShape.getParticleCanvases(1))
+        .concat(yellowBubbleShape.getParticleCanvases(1))
+
+    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, allParticleCanvases)
 
     var shapeMap = {
         anyColor: {
@@ -216,12 +225,14 @@ function MainPanel () {
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, anyColorBubbleShape)
+/*
     nextBubbleRandomShape.add(3, blueBubbleShape)
     nextBubbleRandomShape.add(3, greenBubbleShape)
     nextBubbleRandomShape.add(3, redBubbleShape)
     nextBubbleRandomShape.add(3, violetBubbleShape)
     nextBubbleRandomShape.add(3, whiteBubbleShape)
     nextBubbleRandomShape.add(3, yellowBubbleShape)
+*/
 
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(5, blackBubbleShape)
