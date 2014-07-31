@@ -100,7 +100,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
             var shape = movingBubble.shape
             var isInjection = shape.isInjection
-            if (isInjection) shape = shape.normalShape
+            if (isInjection) shape = movingBubble.shape = shape.normalShape
 
             var colNumber = Math.floor(x / bubbleRadius) - 1
             var bubble = StillBubble(x, y, shape, rowNumber, colNumber)
@@ -108,6 +108,10 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
             if (isInjection) {
+                var injectionNeighbors = InjectionNeighbors(bubble, columns)
+                for (var i in injectionNeighbors) {
+                    injectionNeighbors[i].shape = shape
+                }
             } else {
                 var neighbors = Neighbors(bubble, columns)
                 if (neighbors.length >= breakNumber) {

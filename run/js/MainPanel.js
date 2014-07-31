@@ -93,6 +93,7 @@ function MainPanel () {
             score: score.get(),
             stillCanvas: stillCanvas.getData(),
             nextBubbleColorName: nextBubble ? nextBubble.shape.colorName : null,
+            nextBubbleIsInjection: nextBubble ? nextBubble.shape.isInjection : null,
         })
     }
 
@@ -184,6 +185,31 @@ function MainPanel () {
     blueInjectionBubbleShape.getParticleCanvases = blueBubbleShape.getParticleCanvases
     blueInjectionBubbleShape.normalShape = blueBubbleShape
 
+    var greenInjectionBubbleShape = BubbleShape_GreenInjection(canvasHeight, bubbleVisualRadius, scale)
+    greenInjectionBubbleShape.laserGradient = greenBubbleShape.laserGradient
+    greenInjectionBubbleShape.getParticleCanvases = greenBubbleShape.getParticleCanvases
+    greenInjectionBubbleShape.normalShape = greenBubbleShape
+
+    var redInjectionBubbleShape = BubbleShape_RedInjection(canvasHeight, bubbleVisualRadius, scale)
+    redInjectionBubbleShape.laserGradient = redBubbleShape.laserGradient
+    redInjectionBubbleShape.getParticleCanvases = redBubbleShape.getParticleCanvases
+    redInjectionBubbleShape.normalShape = redBubbleShape
+
+    var violetInjectionBubbleShape = BubbleShape_VioletInjection(canvasHeight, bubbleVisualRadius, scale)
+    violetInjectionBubbleShape.laserGradient = violetBubbleShape.laserGradient
+    violetInjectionBubbleShape.getParticleCanvases = violetBubbleShape.getParticleCanvases
+    violetInjectionBubbleShape.normalShape = violetBubbleShape
+
+    var whiteInjectionBubbleShape = BubbleShape_WhiteInjection(canvasHeight, bubbleVisualRadius, scale)
+    whiteInjectionBubbleShape.laserGradient = whiteBubbleShape.laserGradient
+    whiteInjectionBubbleShape.getParticleCanvases = whiteBubbleShape.getParticleCanvases
+    whiteInjectionBubbleShape.normalShape = whiteBubbleShape
+
+    var yellowInjectionBubbleShape = BubbleShape_YellowInjection(canvasHeight, bubbleVisualRadius, scale)
+    yellowInjectionBubbleShape.laserGradient = yellowBubbleShape.laserGradient
+    yellowInjectionBubbleShape.getParticleCanvases = yellowBubbleShape.getParticleCanvases
+    yellowInjectionBubbleShape.normalShape = yellowBubbleShape
+
     var allParticleCanvases = blackBubbleShape.getParticleCanvases(1)
         .concat(blueBubbleShape.getParticleCanvases(1))
         .concat(greenBubbleShape.getParticleCanvases(1))
@@ -200,53 +226,63 @@ function MainPanel () {
         blue: {
             normal: blueBubbleShape,
             bomb: blueBombBubbleShape,
+            injection: blueInjectionBubbleShape,
         },
         green: {
             normal: greenBubbleShape,
             bomb: greenBombBubbleShape,
+            injection: greenInjectionBubbleShape,
         },
         red: {
             normal: redBubbleShape,
             bomb: redBombBubbleShape,
+            injection: redInjectionBubbleShape,
         },
         violet: {
             normal: violetBubbleShape,
             bomb: violetBombBubbleShape,
+            injection: violetInjectionBubbleShape,
         },
         white: {
             normal: whiteBubbleShape,
             bomb: whiteBombBubbleShape,
+            injection: whiteInjectionBubbleShape,
         },
         yellow: {
             normal: yellowBubbleShape,
             bomb: yellowBombBubbleShape,
+            injection: yellowInjectionBubbleShape,
         },
     }
 
     var nextBubbleRandomShape = RandomShape()
+    nextBubbleRandomShape.add(2, anyColorBubbleShape)
+    nextBubbleRandomShape.add(17, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
-/*
-    nextBubbleRandomShape.add(1, anyColorBubbleShape)
-    nextBubbleRandomShape.add(3, blueBubbleShape)
-    nextBubbleRandomShape.add(3, greenBubbleShape)
-    nextBubbleRandomShape.add(3, redBubbleShape)
-    nextBubbleRandomShape.add(3, violetBubbleShape)
-    nextBubbleRandomShape.add(3, whiteBubbleShape)
-    nextBubbleRandomShape.add(3, yellowBubbleShape)
-*/
+    nextBubbleRandomShape.add(17, greenBubbleShape)
+    nextBubbleRandomShape.add(1, greenInjectionBubbleShape)
+    nextBubbleRandomShape.add(17, redBubbleShape)
+    nextBubbleRandomShape.add(1, redInjectionBubbleShape)
+    nextBubbleRandomShape.add(17, violetBubbleShape)
+    nextBubbleRandomShape.add(1, violetInjectionBubbleShape)
+    nextBubbleRandomShape.add(17, whiteBubbleShape)
+    nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
+    nextBubbleRandomShape.add(17, yellowBubbleShape)
+    nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
+
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(6, blackBubbleShape)
-    shiftRandomShape.add(9, blueBubbleShape)
+    shiftRandomShape.add(10, blueBubbleShape)
     shiftRandomShape.add(1, blueBombBubbleShape)
-    shiftRandomShape.add(9, greenBubbleShape)
+    shiftRandomShape.add(10, greenBubbleShape)
     shiftRandomShape.add(1, greenBombBubbleShape)
-    shiftRandomShape.add(9, redBubbleShape)
+    shiftRandomShape.add(10, redBubbleShape)
     shiftRandomShape.add(1, redBombBubbleShape)
-    shiftRandomShape.add(9, violetBubbleShape)
+    shiftRandomShape.add(10, violetBubbleShape)
     shiftRandomShape.add(1, violetBombBubbleShape)
-    shiftRandomShape.add(9, whiteBubbleShape)
+    shiftRandomShape.add(10, whiteBubbleShape)
     shiftRandomShape.add(1, whiteBombBubbleShape)
-    shiftRandomShape.add(9, yellowBubbleShape)
+    shiftRandomShape.add(10, yellowBubbleShape)
     shiftRandomShape.add(1, yellowBombBubbleShape)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
@@ -381,7 +417,12 @@ function MainPanel () {
 
         var nextBubbleColorName = data.nextBubbleColorName
         if (nextBubbleColorName) {
-            var shape = shapeMap[nextBubbleColorName].normal
+            var shape
+            if (data.nextBubbleIsInjection) {
+                shape = shapeMap[nextBubbleColorName].injection
+            } else {
+                shape = shapeMap[nextBubbleColorName].normal
+            }
             nextBubble = NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
         }
 
