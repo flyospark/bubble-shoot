@@ -86,6 +86,7 @@ function MainPanel () {
     }
 
     function saveState () {
+        return
         localStorage.state = JSON.stringify({
             width: width,
             height: height,
@@ -165,7 +166,8 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
+    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius),
+        blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
         blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
         blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
         greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
@@ -180,6 +182,9 @@ function MainPanel () {
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
     var shapeMap = {
+        anyColor: {
+            normal: anyColorBubbleShape,
+        },
         black: {
             normal: blackBubbleShape,
         },
@@ -210,13 +215,15 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
+    nextBubbleRandomShape.add(1, anyColorBubbleShape)
+/*
     nextBubbleRandomShape.add(1, blueBubbleShape)
     nextBubbleRandomShape.add(1, greenBubbleShape)
     nextBubbleRandomShape.add(1, redBubbleShape)
     nextBubbleRandomShape.add(1, violetBubbleShape)
     nextBubbleRandomShape.add(1, whiteBubbleShape)
     nextBubbleRandomShape.add(1, yellowBubbleShape)
-
+*/
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(5, blackBubbleShape)
     shiftRandomShape.add(8, blueBubbleShape)
