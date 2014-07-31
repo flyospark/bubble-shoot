@@ -55,7 +55,6 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
     var anotherCanvas = document.createElement('canvas')
     anotherCanvas.width = anotherCanvas.height = size
     anotherCanvas.getContext('2d').putImageData(imageData, 0, 0)
-    open(anotherCanvas.toDataURL())
 
     c.arc(halfSize, halfSize, radius, 0, Math.PI * 2)
     c.clip()

@@ -86,7 +86,6 @@ function MainPanel () {
     }
 
     function saveState () {
-        return
         localStorage.state = JSON.stringify({
             width: width,
             height: height,
@@ -98,7 +97,7 @@ function MainPanel () {
     }
 
     function tick () {
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < 2; i++) {
 
             var time = Date.now()
 
@@ -225,28 +224,26 @@ function MainPanel () {
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, anyColorBubbleShape)
-/*
     nextBubbleRandomShape.add(3, blueBubbleShape)
     nextBubbleRandomShape.add(3, greenBubbleShape)
     nextBubbleRandomShape.add(3, redBubbleShape)
     nextBubbleRandomShape.add(3, violetBubbleShape)
     nextBubbleRandomShape.add(3, whiteBubbleShape)
     nextBubbleRandomShape.add(3, yellowBubbleShape)
-*/
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(5, blackBubbleShape)
-    shiftRandomShape.add(8, blueBubbleShape)
+    shiftRandomShape.add(6, blackBubbleShape)
+    shiftRandomShape.add(9, blueBubbleShape)
     shiftRandomShape.add(1, blueBombBubbleShape)
-    shiftRandomShape.add(8, greenBubbleShape)
+    shiftRandomShape.add(9, greenBubbleShape)
     shiftRandomShape.add(1, greenBombBubbleShape)
-    shiftRandomShape.add(8, redBubbleShape)
+    shiftRandomShape.add(9, redBubbleShape)
     shiftRandomShape.add(1, redBombBubbleShape)
-    shiftRandomShape.add(8, violetBubbleShape)
+    shiftRandomShape.add(9, violetBubbleShape)
     shiftRandomShape.add(1, violetBombBubbleShape)
-    shiftRandomShape.add(8, whiteBubbleShape)
+    shiftRandomShape.add(9, whiteBubbleShape)
     shiftRandomShape.add(1, whiteBombBubbleShape)
-    shiftRandomShape.add(8, yellowBubbleShape)
+    shiftRandomShape.add(9, yellowBubbleShape)
     shiftRandomShape.add(1, yellowBombBubbleShape)
 
     var blurCanvas = BlurCanvas(canvasWidth, canvasHeight)
