@@ -6,8 +6,10 @@ function Neighbors (bubble, columns) {
         if (!bubbles) return
 
         var bubble = bubbles[rowNumber]
-        if (!bubble || scannedBubbles[bubble.id]) return
-        if (!matchShape.isAnyColor && bubble.shape.colorName != matchShape.colorName) return
+        if (!bubble || scannedBubbles[bubble.id] || bubble.shape.isBlack) return
+
+        if (!matchShape.isAnyColor && !bubble.shape.isAnyColor &&
+            bubble.shape.colorName != matchShape.colorName) return
 
         scan(bubble)
 

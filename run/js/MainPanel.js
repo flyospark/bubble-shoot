@@ -190,12 +190,8 @@ function MainPanel () {
     var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, allParticleCanvases)
 
     var shapeMap = {
-        anyColor: {
-            normal: anyColorBubbleShape,
-        },
-        black: {
-            normal: blackBubbleShape,
-        },
+        anyColor: { normal: anyColorBubbleShape },
+        black: { normal: blackBubbleShape },
         blue: {
             normal: blueBubbleShape,
             bomb: blueBombBubbleShape,

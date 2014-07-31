@@ -10,6 +10,7 @@ function BubbleShape_Black (radius, scale) {
     return {
         color: color,
         colorName: 'black',
+        isBlack: true,
         getParticleCanvases: function (number) {
             var canvases = []
             for (var i = 0; i < number; i++) canvases.push(particleCanvases)
