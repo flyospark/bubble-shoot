@@ -166,7 +166,7 @@ function MainPanel () {
     debugElement.appendChild(debugRepaintElement)
     debugElement.appendChild(debugTickElement)
 
-    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius),
+    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, scale),
         blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
         blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
         blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
