@@ -179,6 +179,11 @@ function MainPanel () {
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
+    var blueInjectionBubbleShape = BubbleShape_BlueInjection(canvasHeight, bubbleVisualRadius, scale)
+    blueInjectionBubbleShape.laserGradient = blueBubbleShape.laserGradient
+    blueInjectionBubbleShape.getParticleCanvases = blueBubbleShape.getParticleCanvases
+    blueInjectionBubbleShape.normalShape = blueBubbleShape
+
     var allParticleCanvases = blackBubbleShape.getParticleCanvases(1)
         .concat(blueBubbleShape.getParticleCanvases(1))
         .concat(greenBubbleShape.getParticleCanvases(1))
@@ -219,6 +224,8 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
+    nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
+/*
     nextBubbleRandomShape.add(1, anyColorBubbleShape)
     nextBubbleRandomShape.add(3, blueBubbleShape)
     nextBubbleRandomShape.add(3, greenBubbleShape)
@@ -226,7 +233,7 @@ function MainPanel () {
     nextBubbleRandomShape.add(3, violetBubbleShape)
     nextBubbleRandomShape.add(3, whiteBubbleShape)
     nextBubbleRandomShape.add(3, yellowBubbleShape)
-
+*/
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(6, blackBubbleShape)
     shiftRandomShape.add(9, blueBubbleShape)

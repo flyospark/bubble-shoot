@@ -5,7 +5,7 @@ function BubbleShape_Bomb (canvas, radius) {
     var color = 'rgba(255 ,255, 255, 0.45)'
 
     c.beginPath()
-    c.arc(0, 0, radius * 0.20, 0, Math.PI * 2)
+    c.arc(0, 0, radius * 0.2, 0, Math.PI * 2)
     c.fillStyle = color
     c.fill()
 

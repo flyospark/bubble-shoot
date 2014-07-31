@@ -98,35 +98,42 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             var x = movingBubble.x
             x = Math.round((x - oddOffset) / bubbleDiameter) * bubbleDiameter + oddOffset
 
+            var shape = movingBubble.shape
+            var isInjection = shape.isInjection
+            if (isInjection) shape = shape.normalShape
+
             var colNumber = Math.floor(x / bubbleRadius) - 1
-            var bubble = StillBubble(x, y, movingBubble.shape, rowNumber, colNumber)
+            var bubble = StillBubble(x, y, shape, rowNumber, colNumber)
             add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
-            var neighbors = Neighbors(bubble, columns)
-            if (neighbors.length >= breakNumber) {
+            if (isInjection) {
+            } else {
+                var neighbors = Neighbors(bubble, columns)
+                if (neighbors.length >= breakNumber) {
 
-                var bombNeighbors = BombNeighbors(columns, neighbors)
+                    var bombNeighbors = BombNeighbors(columns, neighbors)
 
-                var score = -(breakNumber - 1) * 2
+                    var score = -(breakNumber - 1) * 2
 
-                for (var i in bombNeighbors) {
-                    var neighbor = bombNeighbors[i]
-                    remove(neighbor)
-                    breakCallback(neighbor.x, neighbor.y, neighbor.shape)
-                    score += 2
+                    for (var i in bombNeighbors) {
+                        var neighbor = bombNeighbors[i]
+                        remove(neighbor)
+                        breakCallback(neighbor.x, neighbor.y, neighbor.shape)
+                        score += 2
+                    }
+
+                    var orphans = Orphans(columns)
+                    for (var i in orphans) {
+                        var orphan = orphans[i]
+                        remove(orphan)
+                        fallCallback(orphan.x, orphan.y, orphan.shape)
+                        score += 1
+                    }
+
+                    scoreListener(score)
+
                 }
-
-                var orphans = Orphans(columns)
-                for (var i in orphans) {
-                    var orphan = orphans[i]
-                    remove(orphan)
-                    fallCallback(orphan.x, orphan.y, orphan.shape)
-                    score += 1
-                }
-
-                scoreListener(score)
-
             }
 
         },
