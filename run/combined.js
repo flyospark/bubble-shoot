@@ -1007,21 +1007,28 @@ function ResultCanvas (canvasWidth, canvasHeight, dpp) {
             that.hiding = false
         }
         ratio = index / maxIndex
+        ratioSqr = Math.pow(ratio, 1 / 4)
     }
 
     function showTick () {
         if (index < maxIndex) index++
         else that.showing = false
         ratio = index / maxIndex
+        ratioSqr = Math.pow(ratio, 1 / 4)
     }
 
     var index = 0,
         maxIndex = 24,
         ratio = 0,
-        fontHeight = (26 * dpp),
-        font = 'bold ' + fontHeight + 'px Arial, sans-serif'
+        ratioSqr = 0,
+        largeFontHeight = (48 * dpp),
+        largeFont = 'bold ' + largeFontHeight + 'px Arial, sans-serif',
+        middleFontHeight = (36 * dpp),
+        middleFont = 'bold ' + middleFontHeight + 'px Arial, sans-serif',
+        smallFontHeight = (22 * dpp),
+        smallFont = smallFontHeight + 'px Arial, sans-serif'
 
-    var score, highScore
+    var score, highScore, record
 
     var that = {
         tick: showTick,
@@ -1035,30 +1042,48 @@ function ResultCanvas (canvasWidth, canvasHeight, dpp) {
         },
         paint: function (c) {
 
-            var ratioSqr = Math.pow(ratio, 1 / 4)
-
             c.fillStyle = 'rgba(0, 0, 0, ' + (ratioSqr * 0.7) + ')'
             c.fillRect(0, 0, canvasWidth, canvasHeight)
 
-            var x = canvasWidth / 2
-            var y = canvasHeight / 4 + canvasHeight * ratioSqr / 4 - fontHeight * 1.5
-            c.translate(x, y)
             c.fillStyle = 'rgba(255, 255, 255, ' + ratioSqr + ')'
             c.textAlign = 'center'
             c.textBaseline = 'top'
-            c.font = font
-            c.fillText('YOUR SCORE: ' + score, 0, 0)
-            if (score > highScore) {
-                c.fillText('NEW RECORD!', 0, fontHeight * 2)
+
+            var x = canvasWidth / 2
+            var y = canvasHeight / 4 + canvasHeight * ratioSqr / 4 - largeFontHeight * 1.5
+            c.save()
+            c.translate(x, y)
+
+            c.font = smallFont
+            c.fillText('YOUR SCORE', 0, 0)
+            c.translate(0, smallFontHeight)
+
+            c.font = largeFont
+            c.fillText(score, 0, 0)
+            c.translate(0, largeFontHeight + smallFontHeight)
+
+            if (record) {
+                c.font = middleFont
+                c.fillStyle = 'hsl(60, 90%, 70%)'
+                c.fillText('NEW RECORD!', 0, 0)
             } else {
-                c.fillText('HIGH SCORE: ' + highScore, 0, fontHeight * 2)
+
+                c.font = smallFont
+                c.fillText('HIGH SCORE', 0, 0)
+                c.translate(0, smallFontHeight)
+
+                c.font = largeFont
+                c.fillText(highScore, 0, 0)
+
             }
-            c.translate(-x, -y)
+
+            c.restore()
 
         },
         show: function (_score, _highScore) {
             score = _score
             highScore = _highScore
+            record = score > highScore
             that.visible = true
             that.hiding = false
             that.tick = showTick
@@ -1198,22 +1223,24 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
                 var bombNeighbors = BombNeighbors(columns, neighbors)
 
-                var n = 0
+                var score = -(breakNumber - 1) * 2
+
                 for (var i in bombNeighbors) {
                     var neighbor = bombNeighbors[i]
                     remove(neighbor)
                     breakCallback(neighbor.x, neighbor.y, neighbor.shape)
-                    n++
+                    score += 2
                 }
-
-                scoreListener(n - breakNumber + 1)
 
                 var orphans = Orphans(columns)
                 for (var i in orphans) {
                     var orphan = orphans[i]
                     remove(orphan)
                     fallCallback(orphan.x, orphan.y, orphan.shape)
+                    score += 1
                 }
+
+                scoreListener(score)
 
             }
 
@@ -1341,6 +1368,54 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
 ;
 function BubbleShape_AnyColor (radius, particleCanvases) {
 
+    function backgroundCanvas () {
+
+        var canvas = document.createElement('canvas')
+        canvas.width = canvas.height = size
+
+        var c = canvas.getContext('2d')
+
+        var imageData = c.createImageData(size, size)
+        for (var y = 0; y < size; y++) {
+            for (var x = 0; x < size; x++) {
+
+                var centerX = x - halfSize,
+                    centerY = y - halfSize,
+                    distance = Math.sqrt(centerX * centerX + centerY * centerY) / radius
+
+                var angle = Math.atan(centerY / centerX)
+                if (centerX < 0) angle += Math.PI
+                angle -= 0.3
+
+                var r = 0, g = 0, b = 0
+
+                r = Math.abs(angle - Math.PI / 2) - 1
+                g = -Math.abs(angle - Math.PI / 3) + 2
+                b = -Math.abs(angle - Math.PI * 2 / 3) + 2
+
+                r = Math.max(0, Math.min(1, 1 - r * distance)) * 255
+                g = Math.max(0, Math.min(1, 1 - g * distance)) * 255
+                b = Math.max(0, Math.min(1, 1 - b * distance)) * 255
+
+                r = 16 + r * (255 - 32) / 256
+                g = 16 + g * (255 - 32) / 256
+                b = 16 + b * (255 - 32) / 256
+
+                var offset = (y * size + x) * 4
+                imageData.data[offset] = r
+                imageData.data[offset + 1] = g
+                imageData.data[offset + 2] = b
+                imageData.data[offset + 3] = 255
+
+            }
+        }
+
+        c.putImageData(imageData, 0, 0)
+
+        return canvas
+
+    }
+
     var halfSize = radius + 2
     var size = Math.floor(halfSize * 2)
 
@@ -1349,48 +1424,9 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
 
     var c = canvas.getContext('2d')
 
-    var imageData = c.createImageData(size, size)
-    for (var y = 0; y < size; y++) {
-        for (var x = 0; x < size; x++) {
-
-            var centerX = x - halfSize,
-                centerY = y - halfSize,
-                distance = Math.sqrt(centerX * centerX + centerY * centerY) / radius
-
-            var angle = Math.atan(centerY / centerX)
-            if (centerX < 0) angle += Math.PI
-            angle -= 0.3
-
-            var r = 0, g = 0, b = 0
-
-            r = Math.abs(angle - Math.PI / 2) - 1
-            g = -Math.abs(angle - Math.PI / 3) + 2
-            b = -Math.abs(angle - Math.PI * 2 / 3) + 2
-
-            r = Math.max(0, Math.min(1, 1 - r * distance)) * 255
-            g = Math.max(0, Math.min(1, 1 - g * distance)) * 255
-            b = Math.max(0, Math.min(1, 1 - b * distance)) * 255
-
-            r = 16 + r * (255 - 32) / 256
-            g = 16 + g * (255 - 32) / 256
-            b = 16 + b * (255 - 32) / 256
-
-            var offset = (y * size + x) * 4
-            imageData.data[offset] = r
-            imageData.data[offset + 1] = g
-            imageData.data[offset + 2] = b
-            imageData.data[offset + 3] = 255
-
-        }
-    }
-
-    var anotherCanvas = document.createElement('canvas')
-    anotherCanvas.width = anotherCanvas.height = size
-    anotherCanvas.getContext('2d').putImageData(imageData, 0, 0)
-
     c.arc(halfSize, halfSize, radius, 0, Math.PI * 2)
     c.clip()
-    c.drawImage(anotherCanvas, 0, 0)
+    c.drawImage(backgroundCanvas(), 0, 0)
 
     return {
         isAnyColor: true,
