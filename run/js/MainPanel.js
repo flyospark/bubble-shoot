@@ -143,7 +143,7 @@ function MainPanel () {
     var width = innerWidth * dpp
     var height = innerHeight * dpp
 
-    var numBubblesHorizontal = 9 + Math.floor((width - 300) / 200)
+    var numBubblesHorizontal = 9 + Math.floor((width - 300) / 150)
     var bubbleDiameter = Math.floor(width / numBubblesHorizontal)
     var scale = bubbleDiameter / 40
     var bubbleRadius = bubbleDiameter / 2
