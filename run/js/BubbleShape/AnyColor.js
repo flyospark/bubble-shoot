@@ -72,6 +72,11 @@ function BubbleShape_AnyColor (radius, scale) {
         colorName: 'anyColor',
         laserGradient: 'rgba(255, 255, 255, 0.2)',
         particleCanvases: particleCanvases,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfSize, y - halfSize)
         },
