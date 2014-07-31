@@ -1356,6 +1356,7 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
         paint: function (c) {
             c.textBaseline = 'top'
             c.font = font
+            c.textAlign = 'left'
             c.fillStyle = '#777'
             c.fillText(score, x, y)
         },
