@@ -216,14 +216,13 @@ function MainPanel () {
 
     var nextBubbleRandomShape = RandomShape()
     nextBubbleRandomShape.add(1, anyColorBubbleShape)
-/*
-    nextBubbleRandomShape.add(1, blueBubbleShape)
-    nextBubbleRandomShape.add(1, greenBubbleShape)
-    nextBubbleRandomShape.add(1, redBubbleShape)
-    nextBubbleRandomShape.add(1, violetBubbleShape)
-    nextBubbleRandomShape.add(1, whiteBubbleShape)
-    nextBubbleRandomShape.add(1, yellowBubbleShape)
-*/
+    nextBubbleRandomShape.add(3, blueBubbleShape)
+    nextBubbleRandomShape.add(3, greenBubbleShape)
+    nextBubbleRandomShape.add(3, redBubbleShape)
+    nextBubbleRandomShape.add(3, violetBubbleShape)
+    nextBubbleRandomShape.add(3, whiteBubbleShape)
+    nextBubbleRandomShape.add(3, yellowBubbleShape)
+
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(5, blackBubbleShape)
     shiftRandomShape.add(8, blueBubbleShape)
