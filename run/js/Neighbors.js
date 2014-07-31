@@ -1,29 +1,33 @@
 function Neighbors (bubble, columns) {
 
-    function checkAndScan (colNumber, rowNumber) {
+    function checkAndScan (colNumber, rowNumber, matchShape) {
 
         var bubbles = columnsAndRows[colNumber]
         if (!bubbles) return
 
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
-        if (bubble.shape.colorName != shape.colorName) return
+        if (!matchShape.isAnyColor && bubble.shape.colorName != matchShape.colorName) return
 
         scan(bubble)
 
     }
 
     function scan (bubble) {
+
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
         scannedBubbles[bubble.id] = bubble
         neighbors.push(bubble)
-        checkAndScan(colNumber - 2, rowNumber)
-        checkAndScan(colNumber + 2, rowNumber)
-        checkAndScan(colNumber - 1, rowNumber - 1)
-        checkAndScan(colNumber + 1, rowNumber - 1)
-        checkAndScan(colNumber - 1, rowNumber + 1)
-        checkAndScan(colNumber + 1, rowNumber + 1)
+
+        var shape = bubble.shape
+        checkAndScan(colNumber - 2, rowNumber, shape)
+        checkAndScan(colNumber + 2, rowNumber, shape)
+        checkAndScan(colNumber - 1, rowNumber - 1, shape)
+        checkAndScan(colNumber + 1, rowNumber - 1, shape)
+        checkAndScan(colNumber - 1, rowNumber + 1, shape)
+        checkAndScan(colNumber + 1, rowNumber + 1, shape)
+
     }
 
     var columnsAndRows = {}
@@ -36,7 +40,6 @@ function Neighbors (bubble, columns) {
         }
     }
 
-    var shape = bubble.shape
     var scannedBubbles = {}
     var neighbors = []
     scan(bubble)
