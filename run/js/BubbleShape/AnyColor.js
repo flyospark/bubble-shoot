@@ -8,15 +8,6 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
 
     var c = canvas.getContext('2d')
 
-    var redX = 0
-    var redY = radius
-
-    var greenX = radius / 2
-    var greenY = -radius / 2
-
-    var blueX = -radius / 2
-    var blueY = -radius / 2
-
     var imageData = c.createImageData(size, size)
     for (var y = 0; y < size; y++) {
         for (var x = 0; x < size; x++) {

@@ -936,6 +936,26 @@ function Orphans (columns) {
 
 }
 ;
+function ParticleCanvas (scale, color, steps, i) {
+
+    var maxRadius = scale * 6
+
+    var radius = maxRadius * (steps - i) / steps
+    var canvasRadius = radius + 1
+
+    var canvas = document.createElement('canvas')
+    canvas.width = canvas.height = canvasRadius * 2
+
+    var c = canvas.getContext('2d')
+    c.fillStyle = color
+    c.translate(canvasRadius, canvasRadius)
+    c.arc(0, 0, radius, 0, Math.PI * 2)
+    c.fill()
+
+    return canvas
+
+}
+;
 function ParticleCanvases (scale, color) {
     var steps = 16
     var canvases = []
@@ -1319,6 +1339,79 @@ function Score (canvasHeight, bubbleDiameter, dpp) {
 
 }
 ;
+function BubbleShape_AnyColor (radius, particleCanvases) {
+
+    var halfSize = radius + 2
+    var size = Math.floor(halfSize * 2)
+
+    var canvas = document.createElement('canvas')
+    canvas.width = canvas.height = size
+
+    var c = canvas.getContext('2d')
+
+    var imageData = c.createImageData(size, size)
+    for (var y = 0; y < size; y++) {
+        for (var x = 0; x < size; x++) {
+
+            var centerX = x - halfSize,
+                centerY = y - halfSize,
+                distance = Math.sqrt(centerX * centerX + centerY * centerY) / radius
+
+            var angle = Math.atan(centerY / centerX)
+            if (centerX < 0) angle += Math.PI
+            angle -= 0.3
+
+            var r = 0, g = 0, b = 0
+
+            r = Math.abs(angle - Math.PI / 2) - 1
+            g = -Math.abs(angle - Math.PI / 3) + 2
+            b = -Math.abs(angle - Math.PI * 2 / 3) + 2
+
+            r = Math.max(0, Math.min(1, 1 - r * distance)) * 255
+            g = Math.max(0, Math.min(1, 1 - g * distance)) * 255
+            b = Math.max(0, Math.min(1, 1 - b * distance)) * 255
+
+            r = 16 + r * (255 - 32) / 256
+            g = 16 + g * (255 - 32) / 256
+            b = 16 + b * (255 - 32) / 256
+
+            var offset = (y * size + x) * 4
+            imageData.data[offset] = r
+            imageData.data[offset + 1] = g
+            imageData.data[offset + 2] = b
+            imageData.data[offset + 3] = 255
+
+        }
+    }
+
+    var anotherCanvas = document.createElement('canvas')
+    anotherCanvas.width = anotherCanvas.height = size
+    anotherCanvas.getContext('2d').putImageData(imageData, 0, 0)
+
+    c.arc(halfSize, halfSize, radius, 0, Math.PI * 2)
+    c.clip()
+    c.drawImage(anotherCanvas, 0, 0)
+
+    return {
+        isAnyColor: true,
+        colorName: 'anyColor',
+        laserGradient: 'rgba(255, 255, 255, 0.2)',
+        particleCanvases: particleCanvases,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) {
+                var index = Math.floor(Math.random() * particleCanvases.length)
+                canvases.push(particleCanvases[index])
+            }
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfSize, y - halfSize)
+        },
+    }
+
+}
+;
 function BubbleShape_Black (radius, scale) {
 
     var color = 'hsl(0, 0%, 40%)'
@@ -1400,20 +1493,20 @@ function BubbleShape_Bomb (canvas, radius) {
 
     var c = canvas.getContext('2d')
 
-    var color = 'rgba(255 ,255, 255, 0.4)'
+    var color = 'rgba(255 ,255, 255, 0.45)'
 
     c.beginPath()
-    c.arc(0, 0, radius * 0.25, 0, Math.PI * 2)
+    c.arc(0, 0, radius * 0.20, 0, Math.PI * 2)
     c.fillStyle = color
     c.fill()
 
     var numSteps = 3
     var stepAngle = Math.PI * 2 / numSteps
-    var shapeRadius = radius * 0.62
+    var shapeRadius = radius * 0.6
     var arcAngle = Math.PI / 3
-    c.lineWidth = radius * 0.45
+    c.lineWidth = radius * 0.6
     c.beginPath()
-    c.rotate(Math.PI / 2 - arcAngle / 2)
+    c.rotate(-Math.PI / 2 - arcAngle / 2)
     for (var i = 0; i < numSteps; i++) {
         c.moveTo(shapeRadius, 0)
         c.arc(0, 0, shapeRadius, 0, arcAngle)
