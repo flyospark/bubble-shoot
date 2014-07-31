@@ -1,8 +1,5 @@
 function BreakingBubble (x, y, shape, scale) {
 
-    var index = 0
-    var particleCanvases = shape.particleCanvases
-
     var particelScale
     var numParticles
     if (shape.isBomb) {
@@ -12,6 +9,9 @@ function BreakingBubble (x, y, shape, scale) {
         particelScale = 2 * scale
         numParticles = 5
     }
+
+    var index = 0
+    var particleCanvases = shape.particleCanvases
 
     var particles = []
     for (var i = 0; i < numParticles; i++) {
