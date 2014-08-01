@@ -290,7 +290,7 @@ function InjectionNeighbors (bubble, columns) {
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
         neighbors.push(bubble)
-        if (neighbors.length == 4) return
+        if (neighbors.length == 5) return
 
         Shuffle(checkFunctions)
         for (var i in checkFunctions) checkFunctions[i](colNumber, rowNumber)
@@ -542,7 +542,7 @@ function MainPanel () {
     var width = innerWidth * dpp
     var height = innerHeight * dpp
 
-    var numBubblesHorizontal = 9 + Math.floor((width - 300) / 150)
+    var numBubblesHorizontal = 9 + Math.floor((width - 300) / 130)
     var bubbleDiameter = Math.floor(width / numBubblesHorizontal)
     var scale = bubbleDiameter / 40
     var bubbleRadius = bubbleDiameter / 2
@@ -643,7 +643,7 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(200, anyColorBubbleShape)
+    nextBubbleRandomShape.add(4, anyColorBubbleShape)
     nextBubbleRandomShape.add(37, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
     nextBubbleRandomShape.add(37, greenBubbleShape)
@@ -777,7 +777,7 @@ function MainPanel () {
     })
 
     var shot = 0
-    var maxShots = 7
+    var maxShots = 2 + Math.ceil(numBubblesHorizontal / 2)
 
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState == 'hidden') saveState()

@@ -25,7 +25,7 @@ function InjectionNeighbors (bubble, columns) {
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
         neighbors.push(bubble)
-        if (neighbors.length == 4) return
+        if (neighbors.length == 5) return
 
         Shuffle(checkFunctions)
         for (var i in checkFunctions) checkFunctions[i](colNumber, rowNumber)
