@@ -1,11 +1,11 @@
-function BubbleShape_VioletInjection (canvasHeight, radius, scale, violetBubbleShape) {
+function BubbleShape_Injection_Violet (canvasHeight, radius, scale, violetBubbleShape) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
 
-    BubbleShape_Injection(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale)
 
     return {
         color: color,

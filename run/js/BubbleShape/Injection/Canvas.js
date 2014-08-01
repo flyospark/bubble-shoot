@@ -1,4 +1,4 @@
-function BubbleShape_Injection (canvas, scale) {
+function BubbleShape_Injection_Canvas (canvas, scale) {
 
     function lineTo (dx, dy) {
         x += dx

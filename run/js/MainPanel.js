@@ -180,22 +180,22 @@ function MainPanel () {
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
-    var blueInjectionBubbleShape = BubbleShape_BlueInjection(
+    var blueInjectionBubbleShape = BubbleShape_Injection_Blue(
         canvasHeight, bubbleVisualRadius, scale, blueBubbleShape)
 
-    var greenInjectionBubbleShape = BubbleShape_GreenInjection(
+    var greenInjectionBubbleShape = BubbleShape_Injection_Green(
         canvasHeight, bubbleVisualRadius, scale, greenBubbleShape)
 
-    var redInjectionBubbleShape = BubbleShape_RedInjection(
+    var redInjectionBubbleShape = BubbleShape_Injection_Red(
         canvasHeight, bubbleVisualRadius, scale, redBubbleShape)
 
-    var violetInjectionBubbleShape = BubbleShape_VioletInjection(
+    var violetInjectionBubbleShape = BubbleShape_Injection_Violet(
         canvasHeight, bubbleVisualRadius, scale, violetBubbleShape)
 
-    var whiteInjectionBubbleShape = BubbleShape_WhiteInjection(
+    var whiteInjectionBubbleShape = BubbleShape_Injection_White(
         canvasHeight, bubbleVisualRadius, scale, whiteBubbleShape)
 
-    var yellowInjectionBubbleShape = BubbleShape_YellowInjection(
+    var yellowInjectionBubbleShape = BubbleShape_Injection_Yellow(
         canvasHeight, bubbleVisualRadius, scale, yellowBubbleShape)
 
     var allParticleCanvases = blackBubbleShape.getParticleCanvases(1)
