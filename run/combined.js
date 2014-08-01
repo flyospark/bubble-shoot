@@ -273,8 +273,6 @@ function InjectionNeighbors (bubble, columns) {
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
 
-        if (neighbors.length > 3) return
-
         queue.push(bubble)
 
     }
@@ -288,16 +286,38 @@ function InjectionNeighbors (bubble, columns) {
         var rowNumber = bubble.rowNumber
         scannedBubbles[bubble.id] = bubble
         var shape = bubble.shape
-        if (shape != excludeShape) neighbors.push(bubble)
-        checkAndScan(colNumber - 2, rowNumber)
-        checkAndScan(colNumber + 2, rowNumber)
-        checkAndScan(colNumber - 1, rowNumber - 1)
-        checkAndScan(colNumber + 1, rowNumber - 1)
-        checkAndScan(colNumber - 1, rowNumber + 1)
-        checkAndScan(colNumber + 1, rowNumber + 1)
+        if (shape != excludeShape) {
+            neighbors.push(bubble)
+            if (neighbors.length > 5) return
+        }
+
+        Shuffle(checkFunctions)
+        for (var i in checkFunctions) checkFunctions[i](colNumber, rowNumber)
+
         scanNext()
 
     }
+
+    var checkFunctions = [
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 2, rowNumber)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 2, rowNumber)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 1, rowNumber - 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 1, rowNumber - 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 1, rowNumber + 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 1, rowNumber + 1)
+        },
+    ]
 
     var excludeShape = bubble.shape
 
@@ -1189,6 +1209,44 @@ function ResultCanvas (canvasWidth, canvasHeight, dpp) {
 
 }
 ;
+function Score (canvasHeight, bubbleDiameter, dpp) {
+
+    var score = 0,
+        x = 10 * dpp,
+        y = canvasHeight - bubbleDiameter + 10 * dpp,
+        font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
+
+    return {
+        add: function (_score) {
+            score += _score
+        },
+        get: function () {
+            return score
+        },
+        paint: function (c) {
+            c.textBaseline = 'top'
+            c.font = font
+            c.textAlign = 'left'
+            c.fillStyle = '#777'
+            c.fillText(score, x, y)
+        },
+        reset: function () {
+            score = 0
+        },
+    }
+
+}
+;
+function Shuffle (items) {
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i]
+        var randomIndex = i + Math.floor(Math.random() * (items.length - i))
+        items[i] = items[randomIndex]
+        items[randomIndex] = item
+    }
+    return items
+}
+;
 function StillBubble (x, y, shape, rowNumber, colNumber) {
 
     var that = {
@@ -1444,34 +1502,6 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     }
 
     return that
-
-}
-;
-function Score (canvasHeight, bubbleDiameter, dpp) {
-
-    var score = 0,
-        x = 10 * dpp,
-        y = canvasHeight - bubbleDiameter + 10 * dpp,
-        font = 'bold ' + (26 * dpp) + 'px Arial, sans-serif'
-
-    return {
-        add: function (_score) {
-            score += _score
-        },
-        get: function () {
-            return score
-        },
-        paint: function (c) {
-            c.textBaseline = 'top'
-            c.font = font
-            c.textAlign = 'left'
-            c.fillStyle = '#777'
-            c.fillText(score, x, y)
-        },
-        reset: function () {
-            score = 0
-        },
-    }
 
 }
 ;

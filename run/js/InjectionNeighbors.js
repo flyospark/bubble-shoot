@@ -25,15 +25,34 @@ function InjectionNeighbors (bubble, columns) {
             neighbors.push(bubble)
             if (neighbors.length > 5) return
         }
-        checkAndScan(colNumber - 2, rowNumber)
-        checkAndScan(colNumber + 2, rowNumber)
-        checkAndScan(colNumber - 1, rowNumber - 1)
-        checkAndScan(colNumber + 1, rowNumber - 1)
-        checkAndScan(colNumber - 1, rowNumber + 1)
-        checkAndScan(colNumber + 1, rowNumber + 1)
+
+        Shuffle(checkFunctions)
+        for (var i in checkFunctions) checkFunctions[i](colNumber, rowNumber)
+
         scanNext()
 
     }
+
+    var checkFunctions = [
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 2, rowNumber)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 2, rowNumber)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 1, rowNumber - 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 1, rowNumber - 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber - 1, rowNumber + 1)
+        },
+        function (colNumber, rowNumber) {
+            checkAndScan(colNumber + 1, rowNumber + 1)
+        },
+    ]
 
     var excludeShape = bubble.shape
 
