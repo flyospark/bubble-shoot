@@ -206,7 +206,8 @@ function MainPanel () {
         .concat(whiteBubbleShape.getParticleCanvases(1))
         .concat(yellowBubbleShape.getParticleCanvases(1))
 
-    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, allParticleCanvases)
+    var anyColorBubbleShape = BubbleShape_AnyColor(
+        canvasHeight, bubbleVisualRadius, allParticleCanvases)
 
     var shapeMap = {
         anyColor: { normal: anyColorBubbleShape },
@@ -244,8 +245,7 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(4, anyColorBubbleShape)
-/*
+    nextBubbleRandomShape.add(200, anyColorBubbleShape)
     nextBubbleRandomShape.add(37, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
     nextBubbleRandomShape.add(37, greenBubbleShape)
@@ -258,7 +258,6 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
     nextBubbleRandomShape.add(37, yellowBubbleShape)
     nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
-*/
 
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(9, blackBubbleShape)

@@ -1,4 +1,4 @@
-function BubbleShape_AnyColor (radius, particleCanvases) {
+function BubbleShape_AnyColor (canvasHeight, radius, particleCanvases) {
 
     function backgroundCanvas () {
 
@@ -63,7 +63,16 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
     return {
         isAnyColor: true,
         colorName: 'anyColor',
-        laserGradient: 'rgba(255, 255, 255, 0.2)',
+        laserGradient: (function (){
+            var g = c.createLinearGradient(0, 0, 0, canvasHeight)
+            for (var i = 0; i <= 6; i++) {
+                var ratio = i / 6,
+                    h = ratio * 360,
+                    a = ratio * 0.2
+                g.addColorStop(ratio, 'hsla(' + h + ', 100%, 50%, ' + a + ')')
+            }
+            return g
+        })(),
         particleCanvases: particleCanvases,
         getParticleCanvases: function (number) {
             var canvases = []
