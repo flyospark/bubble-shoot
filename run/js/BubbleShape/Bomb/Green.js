@@ -1,16 +1,16 @@
-function BubbleShape_RedBomb (radius, scale) {
+function BubbleShape_Bomb_Green (radius, scale) {
 
-    var color = 'hsl(5, 100%, 65%)'
+    var color = 'hsl(100, 100%, 40%)'
     var halfWidth = radius + 2
 
-    var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
-    BubbleShape_Bomb(canvas, radius)
+    var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
     return {
         color: color,
-        colorName: 'red',
+        colorName: 'green',
         isBomb: true,
         getParticleCanvases: function (number) {
             var canvases = []

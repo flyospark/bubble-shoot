@@ -1,4 +1,4 @@
-function BubbleShape_Bomb (canvas, radius) {
+function BubbleShape_Bomb_Canvas (canvas, radius) {
 
     var c = canvas.getContext('2d')
 

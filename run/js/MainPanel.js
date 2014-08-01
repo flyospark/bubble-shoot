@@ -168,17 +168,17 @@ function MainPanel () {
 
     var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
         blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
-        blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
+        blueBombBubbleShape = BubbleShape_Bomb_Blue(bubbleVisualRadius, scale),
         greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
-        greenBombBubbleShape = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
+        greenBombBubbleShape = BubbleShape_Bomb_Green(bubbleVisualRadius, scale),
         redBubbleShape = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
-        redBombBubbleShape = BubbleShape_RedBomb(bubbleVisualRadius, scale),
+        redBombBubbleShape = BubbleShape_Bomb_Red(bubbleVisualRadius, scale),
         violetBubbleShape = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
-        violetBombBubbleShape = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
+        violetBombBubbleShape = BubbleShape_Bomb_Violet(bubbleVisualRadius, scale),
         whiteBubbleShape = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
-        whiteBombBubbleShape = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
+        whiteBombBubbleShape = BubbleShape_Bomb_White(bubbleVisualRadius, scale),
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
-        yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+        yellowBombBubbleShape = BubbleShape_Bomb_Yellow(bubbleVisualRadius, scale)
 
     var blueInjectionBubbleShape = BubbleShape_Injection_Blue(
         canvasHeight, bubbleVisualRadius, scale, blueBubbleShape)

@@ -546,17 +546,17 @@ function MainPanel () {
 
     var blackBubbleShape = BubbleShape_Black(bubbleVisualRadius, scale),
         blueBubbleShape = BubbleShape_Blue(canvasHeight, bubbleVisualRadius, scale),
-        blueBombBubbleShape = BubbleShape_BlueBomb(bubbleVisualRadius, scale),
+        blueBombBubbleShape = BubbleShape_Bomb_Blue(bubbleVisualRadius, scale),
         greenBubbleShape = BubbleShape_Green(canvasHeight, bubbleVisualRadius, scale),
-        greenBombBubbleShape = BubbleShape_GreenBomb(bubbleVisualRadius, scale),
+        greenBombBubbleShape = BubbleShape_Bomb_Green(bubbleVisualRadius, scale),
         redBubbleShape = BubbleShape_Red(canvasHeight, bubbleVisualRadius, scale),
-        redBombBubbleShape = BubbleShape_RedBomb(bubbleVisualRadius, scale),
+        redBombBubbleShape = BubbleShape_Bomb_Red(bubbleVisualRadius, scale),
         violetBubbleShape = BubbleShape_Violet(canvasHeight, bubbleVisualRadius, scale),
-        violetBombBubbleShape = BubbleShape_VioletBomb(bubbleVisualRadius, scale),
+        violetBombBubbleShape = BubbleShape_Bomb_Violet(bubbleVisualRadius, scale),
         whiteBubbleShape = BubbleShape_White(canvasHeight, bubbleVisualRadius, scale),
-        whiteBombBubbleShape = BubbleShape_WhiteBomb(bubbleVisualRadius, scale),
+        whiteBombBubbleShape = BubbleShape_Bomb_White(bubbleVisualRadius, scale),
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
-        yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
+        yellowBombBubbleShape = BubbleShape_Bomb_Yellow(bubbleVisualRadius, scale)
 
     var blueInjectionBubbleShape = BubbleShape_Injection_Blue(
         canvasHeight, bubbleVisualRadius, scale, blueBubbleShape)
@@ -1608,60 +1608,6 @@ function BubbleShape_Blue (canvasHeight, radius, scale) {
 
 }
 ;
-function BubbleShape_BlueBomb (radius, scale) {
-
-    var color = 'hsl(220, 100%, 70%)'
-    var halfWidth = radius + 2
-
-    var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
-    BubbleShape_Bomb(canvas, radius)
-
-    var particleCanvases = BombParticleCanvases(scale, color)
-
-    return {
-        color: color,
-        colorName: 'blue',
-        isBomb: true,
-        getParticleCanvases: function (number) {
-            var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
-            return canvases
-        },
-        paint: function (c, x, y) {
-            c.drawImage(canvas, x - halfWidth, y - halfWidth)
-        },
-    }
-
-}
-;
-function BubbleShape_Bomb (canvas, radius) {
-
-    var c = canvas.getContext('2d')
-
-    var color = 'rgba(255 ,255, 255, 0.45)'
-
-    c.beginPath()
-    c.arc(0, 0, radius * 0.2, 0, Math.PI * 2)
-    c.fillStyle = color
-    c.fill()
-
-    var numSteps = 3
-    var stepAngle = Math.PI * 2 / numSteps
-    var shapeRadius = radius * 0.6
-    var arcAngle = Math.PI / 3
-    c.lineWidth = radius * 0.6
-    c.beginPath()
-    c.rotate(-Math.PI / 2 - arcAngle / 2)
-    for (var i = 0; i < numSteps; i++) {
-        c.moveTo(shapeRadius, 0)
-        c.arc(0, 0, shapeRadius, 0, arcAngle)
-        c.rotate(stepAngle)
-    }
-    c.strokeStyle = color
-    c.stroke()
-
-}
-;
 function BubbleShape_Canvas (lightColor, darkColor, radius) {
 
     var halfWidth = radius + 2
@@ -1714,32 +1660,6 @@ function BubbleShape_Green (canvasHeight, radius, scale) {
 
 }
 ;
-function BubbleShape_GreenBomb (radius, scale) {
-
-    var color = 'hsl(100, 100%, 40%)'
-    var halfWidth = radius + 2
-
-    var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
-    BubbleShape_Bomb(canvas, radius)
-
-    var particleCanvases = BombParticleCanvases(scale, color)
-
-    return {
-        color: color,
-        colorName: 'green',
-        isBomb: true,
-        getParticleCanvases: function (number) {
-            var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
-            return canvases
-        },
-        paint: function (c, x, y) {
-            c.drawImage(canvas, x - halfWidth, y - halfWidth)
-        },
-    }
-
-}
-;
 function BubbleShape_Red (canvasHeight, radius, scale) {
 
     var color = 'hsl(5, 100%, 65%)'
@@ -1754,32 +1674,6 @@ function BubbleShape_Red (canvasHeight, radius, scale) {
         color: color,
         colorName: 'red',
         laserGradient: LaserGradient(canvasHeight, c, 5, 100, 65),
-        getParticleCanvases: function (number) {
-            var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
-            return canvases
-        },
-        paint: function (c, x, y) {
-            c.drawImage(canvas, x - halfWidth, y - halfWidth)
-        },
-    }
-
-}
-;
-function BubbleShape_RedBomb (radius, scale) {
-
-    var color = 'hsl(5, 100%, 65%)'
-    var halfWidth = radius + 2
-
-    var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
-    BubbleShape_Bomb(canvas, radius)
-
-    var particleCanvases = BombParticleCanvases(scale, color)
-
-    return {
-        color: color,
-        colorName: 'red',
-        isBomb: true,
         getParticleCanvases: function (number) {
             var canvases = []
             for (var i = 0; i < number; i++) canvases.push(particleCanvases)
@@ -1818,32 +1712,6 @@ function BubbleShape_Violet (canvasHeight, radius, scale) {
 
 }
 ;
-function BubbleShape_VioletBomb (radius, scale) {
-
-    var color = 'hsl(300, 100%, 60%)'
-    var halfWidth = radius + 2
-
-    var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
-    BubbleShape_Bomb(canvas, radius)
-
-    var particleCanvases = BombParticleCanvases(scale, color)
-
-    return {
-        color: color,
-        colorName: 'violet',
-        isBomb: true,
-        getParticleCanvases: function (number) {
-            var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
-            return canvases
-        },
-        paint: function (c, x, y) {
-            c.drawImage(canvas, x - halfWidth, y - halfWidth)
-        },
-    }
-
-}
-;
 function BubbleShape_White (canvasHeight, radius, scale) {
 
     var color = 'hsl(0, 0%, 90%)'
@@ -1858,32 +1726,6 @@ function BubbleShape_White (canvasHeight, radius, scale) {
         color: color,
         colorName: 'white',
         laserGradient: LaserGradient(canvasHeight, c, 0, 0, 90),
-        getParticleCanvases: function (number) {
-            var canvases = []
-            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
-            return canvases
-        },
-        paint: function (c, x, y) {
-            c.drawImage(canvas, x - halfWidth, y - halfWidth)
-        },
-    }
-
-}
-;
-function BubbleShape_WhiteBomb (radius, scale) {
-
-    var color = 'hsl(0, 0%, 90%)'
-    var halfWidth = radius + 2
-
-    var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
-    BubbleShape_Bomb(canvas, radius)
-
-    var particleCanvases = BombParticleCanvases(scale, color)
-
-    return {
-        color: color,
-        colorName: 'white',
-        isBomb: true,
         getParticleCanvases: function (number) {
             var canvases = []
             for (var i = 0; i < number; i++) canvases.push(particleCanvases)
@@ -1922,13 +1764,171 @@ function BubbleShape_Yellow (canvasHeight, radius, scale) {
 
 }
 ;
-function BubbleShape_YellowBomb (radius, scale) {
+function BubbleShape_Bomb_Blue (radius, scale) {
+
+    var color = 'hsl(220, 100%, 70%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
+
+    var particleCanvases = BombParticleCanvases(scale, color)
+
+    return {
+        color: color,
+        colorName: 'blue',
+        isBomb: true,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb_Canvas (canvas, radius) {
+
+    var c = canvas.getContext('2d')
+
+    var color = 'rgba(255 ,255, 255, 0.45)'
+
+    c.beginPath()
+    c.arc(0, 0, radius * 0.2, 0, Math.PI * 2)
+    c.fillStyle = color
+    c.fill()
+
+    var numSteps = 3
+    var stepAngle = Math.PI * 2 / numSteps
+    var shapeRadius = radius * 0.6
+    var arcAngle = Math.PI / 3
+    c.lineWidth = radius * 0.6
+    c.beginPath()
+    c.rotate(-Math.PI / 2 - arcAngle / 2)
+    for (var i = 0; i < numSteps; i++) {
+        c.moveTo(shapeRadius, 0)
+        c.arc(0, 0, shapeRadius, 0, arcAngle)
+        c.rotate(stepAngle)
+    }
+    c.strokeStyle = color
+    c.stroke()
+
+}
+;
+function BubbleShape_Bomb_Green (radius, scale) {
+
+    var color = 'hsl(100, 100%, 40%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
+
+    var particleCanvases = BombParticleCanvases(scale, color)
+
+    return {
+        color: color,
+        colorName: 'green',
+        isBomb: true,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb_Red (radius, scale) {
+
+    var color = 'hsl(5, 100%, 65%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
+
+    var particleCanvases = BombParticleCanvases(scale, color)
+
+    return {
+        color: color,
+        colorName: 'red',
+        isBomb: true,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb_Violet (radius, scale) {
+
+    var color = 'hsl(300, 100%, 60%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
+
+    var particleCanvases = BombParticleCanvases(scale, color)
+
+    return {
+        color: color,
+        colorName: 'violet',
+        isBomb: true,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb_White (radius, scale) {
+
+    var color = 'hsl(0, 0%, 90%)'
+    var halfWidth = radius + 2
+
+    var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
+
+    var particleCanvases = BombParticleCanvases(scale, color)
+
+    return {
+        color: color,
+        colorName: 'white',
+        isBomb: true,
+        getParticleCanvases: function (number) {
+            var canvases = []
+            for (var i = 0; i < number; i++) canvases.push(particleCanvases)
+            return canvases
+        },
+        paint: function (c, x, y) {
+            c.drawImage(canvas, x - halfWidth, y - halfWidth)
+        },
+    }
+
+}
+;
+function BubbleShape_Bomb_Yellow (radius, scale) {
 
     var color = 'hsl(60, 90%, 70%)'
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(60, 90%, 40%)', radius)
-    BubbleShape_Bomb(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius)
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
