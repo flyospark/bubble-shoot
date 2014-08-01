@@ -604,7 +604,8 @@ function MainPanel () {
         .concat(whiteBubbleShape.getParticleCanvases(1))
         .concat(yellowBubbleShape.getParticleCanvases(1))
 
-    var anyColorBubbleShape = BubbleShape_AnyColor(bubbleVisualRadius, allParticleCanvases)
+    var anyColorBubbleShape = BubbleShape_AnyColor(
+        canvasHeight, bubbleVisualRadius, allParticleCanvases)
 
     var shapeMap = {
         anyColor: { normal: anyColorBubbleShape },
@@ -642,8 +643,7 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(4, anyColorBubbleShape)
-/*
+    nextBubbleRandomShape.add(200, anyColorBubbleShape)
     nextBubbleRandomShape.add(37, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
     nextBubbleRandomShape.add(37, greenBubbleShape)
@@ -656,7 +656,6 @@ function MainPanel () {
     nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
     nextBubbleRandomShape.add(37, yellowBubbleShape)
     nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
-*/
 
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(9, blackBubbleShape)
@@ -1507,7 +1506,7 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
 }
 ;
-function BubbleShape_AnyColor (radius, particleCanvases) {
+function BubbleShape_AnyColor (canvasHeight, radius, particleCanvases) {
 
     function backgroundCanvas () {
 
@@ -1572,7 +1571,16 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
     return {
         isAnyColor: true,
         colorName: 'anyColor',
-        laserGradient: 'rgba(255, 255, 255, 0.2)',
+        laserGradient: (function (){
+            var g = c.createLinearGradient(0, 0, 0, canvasHeight)
+            for (var i = 0; i <= 6; i++) {
+                var ratio = i / 6,
+                    h = ratio * 360,
+                    a = ratio * 0.2
+                g.addColorStop(ratio, 'hsla(' + h + ', 100%, 50%, ' + a + ')')
+            }
+            return g
+        })(),
         particleCanvases: particleCanvases,
         getParticleCanvases: function (number) {
             var canvases = []
