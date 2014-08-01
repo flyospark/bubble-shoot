@@ -643,18 +643,18 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(4, anyColorBubbleShape)
-    nextBubbleRandomShape.add(37, blueBubbleShape)
+    nextBubbleRandomShape.add(10, anyColorBubbleShape)
+    nextBubbleRandomShape.add(40, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
-    nextBubbleRandomShape.add(37, greenBubbleShape)
+    nextBubbleRandomShape.add(40, greenBubbleShape)
     nextBubbleRandomShape.add(1, greenInjectionBubbleShape)
-    nextBubbleRandomShape.add(37, redBubbleShape)
+    nextBubbleRandomShape.add(40, redBubbleShape)
     nextBubbleRandomShape.add(1, redInjectionBubbleShape)
-    nextBubbleRandomShape.add(37, violetBubbleShape)
+    nextBubbleRandomShape.add(40, violetBubbleShape)
     nextBubbleRandomShape.add(1, violetInjectionBubbleShape)
-    nextBubbleRandomShape.add(37, whiteBubbleShape)
+    nextBubbleRandomShape.add(40, whiteBubbleShape)
     nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
-    nextBubbleRandomShape.add(37, yellowBubbleShape)
+    nextBubbleRandomShape.add(40, yellowBubbleShape)
     nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
 
     var shiftRandomShape = RandomShape()
@@ -1810,7 +1810,7 @@ function BubbleShape_Bomb_Blue (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(220, 85%, 25%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1830,11 +1830,9 @@ function BubbleShape_Bomb_Blue (radius, scale) {
 
 }
 ;
-function BubbleShape_Bomb_Canvas (canvas, radius) {
+function BubbleShape_Bomb_Canvas (canvas, radius, color) {
 
     var c = canvas.getContext('2d')
-
-    var color = 'rgba(255 ,255, 255, 0.45)'
 
     c.beginPath()
     c.arc(0, 0, radius * 0.2, 0, Math.PI * 2)
@@ -1864,7 +1862,7 @@ function BubbleShape_Bomb_Green (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(100, 85%, 15%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1890,7 +1888,7 @@ function BubbleShape_Bomb_Red (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(5, 85%, 20%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1916,7 +1914,7 @@ function BubbleShape_Bomb_Violet (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(300, 85%, 20%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1942,7 +1940,7 @@ function BubbleShape_Bomb_White (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(0, 0%, 25%, 0.5)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1968,7 +1966,7 @@ function BubbleShape_Bomb_Yellow (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(60, 90%, 40%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius)
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(60, 80%, 15%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 
@@ -1995,7 +1993,7 @@ function BubbleShape_Injection_Blue (canvasHeight, radius, scale, blueBubbleShap
 
     var canvas = BubbleShape_Canvas(color, 'hsl(220, 100%, 55%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(220, 85%, 20%, 0.6)')
 
     return {
         color: color,
@@ -2011,7 +2009,7 @@ function BubbleShape_Injection_Blue (canvasHeight, radius, scale, blueBubbleShap
 
 }
 ;
-function BubbleShape_Injection_Canvas (canvas, scale) {
+function BubbleShape_Injection_Canvas (canvas, scale, color) {
 
     function lineTo (dx, dy) {
         x += dx
@@ -2020,8 +2018,6 @@ function BubbleShape_Injection_Canvas (canvas, scale) {
     }
 
     var c = canvas.getContext('2d')
-
-    var color = 'rgba(255 ,255, 255, 0.45)'
 
     var x = -11, y = -7
 
@@ -2060,7 +2056,7 @@ function BubbleShape_Injection_Green (canvasHeight, radius, scale, greenBubbleSh
 
     var canvas = BubbleShape_Canvas(color, 'hsl(100, 100%, 30%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(100, 85%, 10%, 0.6)')
 
     return {
         color: color,
@@ -2083,7 +2079,7 @@ function BubbleShape_Injection_Red (canvasHeight, radius, scale, redBubbleShape)
 
     var canvas = BubbleShape_Canvas(color, 'hsl(5, 100%, 40%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(5, 85%, 15%, 0.6)')
 
     return {
         color: color,
@@ -2106,7 +2102,7 @@ function BubbleShape_Injection_Violet (canvasHeight, radius, scale, violetBubble
 
     var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(300, 85%, 15%, 0.6)')
 
     return {
         color: color,
@@ -2129,7 +2125,7 @@ function BubbleShape_Injection_White (canvasHeight, radius, scale, whiteBubbleSh
 
     var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(0, 0%, 20%, 0.5)')
 
     return {
         color: color,
@@ -2152,7 +2148,7 @@ function BubbleShape_Injection_Yellow (canvasHeight, radius, scale, yellowBubble
 
     var canvas = BubbleShape_Canvas(color, 'hsl(60, 90%, 40%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(60, 80%, 10%, 0.6)')
 
     return {
         color: color,
