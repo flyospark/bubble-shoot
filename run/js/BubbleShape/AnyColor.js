@@ -55,9 +55,9 @@ function BubbleShape_AnyColor (radius, particleCanvases) {
     canvas.width = canvas.height = size
 
     var c = canvas.getContext('2d')
-
     c.arc(halfSize, halfSize, radius, 0, Math.PI * 2)
-    c.clip()
+    c.fill()
+    c.globalCompositeOperation = 'source-atop'
     c.drawImage(backgroundCanvas(), 0, 0)
 
     return {
