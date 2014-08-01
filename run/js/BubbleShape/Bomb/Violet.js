@@ -4,7 +4,7 @@ function BubbleShape_Bomb_Violet (radius, scale) {
     var halfWidth = radius + 2
 
     var canvas = BubbleShape_Canvas(color, 'hsl(300, 100%, 40%)', radius)
-    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(300, 85%, 15%, 0.6)')
+    BubbleShape_Bomb_Canvas(canvas, radius, 'hsla(300, 85%, 20%, 0.6)')
 
     var particleCanvases = BombParticleCanvases(scale, color)
 

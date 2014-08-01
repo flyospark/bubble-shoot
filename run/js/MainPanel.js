@@ -245,7 +245,7 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(8, anyColorBubbleShape)
+    nextBubbleRandomShape.add(10, anyColorBubbleShape)
     nextBubbleRandomShape.add(40, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
     nextBubbleRandomShape.add(40, greenBubbleShape)
