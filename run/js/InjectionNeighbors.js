@@ -8,8 +8,13 @@ function InjectionNeighbors (bubble, columns) {
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
 
-        queue.push(bubble)
+        enqueue(bubble)
 
+    }
+
+    function enqueue (bubble) {
+        queue.push(bubble)
+        scannedBubbles[bubble.id] = bubble
     }
 
     function scanNext () {
@@ -19,12 +24,9 @@ function InjectionNeighbors (bubble, columns) {
 
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
-        scannedBubbles[bubble.id] = bubble
         var shape = bubble.shape
-        if (shape != excludeShape) {
-            neighbors.push(bubble)
-            if (neighbors.length > 5) return
-        }
+        neighbors.push(bubble)
+        if (neighbors.length == 4) return
 
         Shuffle(checkFunctions)
         for (var i in checkFunctions) checkFunctions[i](colNumber, rowNumber)
@@ -68,7 +70,8 @@ function InjectionNeighbors (bubble, columns) {
 
     var scannedBubbles = {}
     var neighbors = []
-    var queue = [bubble]
+    var queue = []
+    enqueue(bubble)
     scanNext()
 
     return neighbors
