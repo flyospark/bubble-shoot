@@ -180,35 +180,23 @@ function MainPanel () {
         yellowBubbleShape = BubbleShape_Yellow(canvasHeight, bubbleVisualRadius, scale),
         yellowBombBubbleShape = BubbleShape_YellowBomb(bubbleVisualRadius, scale)
 
-    var blueInjectionBubbleShape = BubbleShape_BlueInjection(canvasHeight, bubbleVisualRadius, scale)
-    blueInjectionBubbleShape.laserGradient = blueBubbleShape.laserGradient
-    blueInjectionBubbleShape.getParticleCanvases = blueBubbleShape.getParticleCanvases
-    blueInjectionBubbleShape.normalShape = blueBubbleShape
+    var blueInjectionBubbleShape = BubbleShape_BlueInjection(
+        canvasHeight, bubbleVisualRadius, scale, blueBubbleShape)
 
-    var greenInjectionBubbleShape = BubbleShape_GreenInjection(canvasHeight, bubbleVisualRadius, scale)
-    greenInjectionBubbleShape.laserGradient = greenBubbleShape.laserGradient
-    greenInjectionBubbleShape.getParticleCanvases = greenBubbleShape.getParticleCanvases
-    greenInjectionBubbleShape.normalShape = greenBubbleShape
+    var greenInjectionBubbleShape = BubbleShape_GreenInjection(
+        canvasHeight, bubbleVisualRadius, scale, greenBubbleShape)
 
-    var redInjectionBubbleShape = BubbleShape_RedInjection(canvasHeight, bubbleVisualRadius, scale)
-    redInjectionBubbleShape.laserGradient = redBubbleShape.laserGradient
-    redInjectionBubbleShape.getParticleCanvases = redBubbleShape.getParticleCanvases
-    redInjectionBubbleShape.normalShape = redBubbleShape
+    var redInjectionBubbleShape = BubbleShape_RedInjection(
+        canvasHeight, bubbleVisualRadius, scale, redBubbleShape)
 
-    var violetInjectionBubbleShape = BubbleShape_VioletInjection(canvasHeight, bubbleVisualRadius, scale)
-    violetInjectionBubbleShape.laserGradient = violetBubbleShape.laserGradient
-    violetInjectionBubbleShape.getParticleCanvases = violetBubbleShape.getParticleCanvases
-    violetInjectionBubbleShape.normalShape = violetBubbleShape
+    var violetInjectionBubbleShape = BubbleShape_VioletInjection(
+        canvasHeight, bubbleVisualRadius, scale, violetBubbleShape)
 
-    var whiteInjectionBubbleShape = BubbleShape_WhiteInjection(canvasHeight, bubbleVisualRadius, scale)
-    whiteInjectionBubbleShape.laserGradient = whiteBubbleShape.laserGradient
-    whiteInjectionBubbleShape.getParticleCanvases = whiteBubbleShape.getParticleCanvases
-    whiteInjectionBubbleShape.normalShape = whiteBubbleShape
+    var whiteInjectionBubbleShape = BubbleShape_WhiteInjection(
+        canvasHeight, bubbleVisualRadius, scale, whiteBubbleShape)
 
-    var yellowInjectionBubbleShape = BubbleShape_YellowInjection(canvasHeight, bubbleVisualRadius, scale)
-    yellowInjectionBubbleShape.laserGradient = yellowBubbleShape.laserGradient
-    yellowInjectionBubbleShape.getParticleCanvases = yellowBubbleShape.getParticleCanvases
-    yellowInjectionBubbleShape.normalShape = yellowBubbleShape
+    var yellowInjectionBubbleShape = BubbleShape_YellowInjection(
+        canvasHeight, bubbleVisualRadius, scale, yellowBubbleShape)
 
     var allParticleCanvases = blackBubbleShape.getParticleCanvases(1)
         .concat(blueBubbleShape.getParticleCanvases(1))

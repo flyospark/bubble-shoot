@@ -1,4 +1,4 @@
-function BubbleShape_VioletInjection (canvasHeight, radius, scale) {
+function BubbleShape_VioletInjection (canvasHeight, radius, scale, violetBubbleShape) {
 
     var color = 'hsl(300, 100%, 60%)'
     var halfWidth = radius + 2
@@ -10,7 +10,10 @@ function BubbleShape_VioletInjection (canvasHeight, radius, scale) {
     return {
         color: color,
         colorName: 'violet',
+        getParticleCanvases: violetBubbleShape.getParticleCanvases,
         isInjection: true,
+        laserGradient: violetBubbleShape.laserGradient,
+        normalShape: violetBubbleShape,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },

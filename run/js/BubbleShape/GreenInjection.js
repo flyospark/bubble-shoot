@@ -1,4 +1,4 @@
-function BubbleShape_GreenInjection (canvasHeight, radius, scale) {
+function BubbleShape_GreenInjection (canvasHeight, radius, scale, greenBubbleShape) {
 
     var color = 'hsl(100, 100%, 40%)'
     var halfWidth = radius + 2
@@ -10,7 +10,10 @@ function BubbleShape_GreenInjection (canvasHeight, radius, scale) {
     return {
         color: color,
         colorName: 'green',
+        getParticleCanvases: greenBubbleShape.getParticleCanvases,
         isInjection: true,
+        laserGradient: greenBubbleShape.laserGradient,
+        normalShape: greenBubbleShape,
         paint: function (c, x, y) {
             c.drawImage(canvas, x - halfWidth, y - halfWidth)
         },
