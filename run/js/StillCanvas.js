@@ -82,6 +82,9 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
 
     var breakNumber = 3
 
+    window.stillBubbles = stillBubbles
+    window.columns = columns
+
     var that = {
         gameOver: false,
         shift: shift,

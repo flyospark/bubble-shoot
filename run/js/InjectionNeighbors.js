@@ -10,11 +10,15 @@ function InjectionNeighbors (bubble, columns) {
 
         if (neighbors.length > 5) return
 
-        scan(bubble)
+        queue.push(bubble)
 
     }
 
-    function scan (bubble) {
+    function scanNext () {
+
+        var bubble = queue.shift()
+        if (!bubble) return
+
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
         scannedBubbles[bubble.id] = bubble
@@ -26,6 +30,8 @@ function InjectionNeighbors (bubble, columns) {
         checkAndScan(colNumber + 1, rowNumber - 1)
         checkAndScan(colNumber - 1, rowNumber + 1)
         checkAndScan(colNumber + 1, rowNumber + 1)
+        scanNext()
+
     }
 
     var excludeShape = bubble.shape
@@ -42,8 +48,10 @@ function InjectionNeighbors (bubble, columns) {
 
     var scannedBubbles = {}
     var neighbors = []
-    scan(bubble)
+    var queue = [bubble]
+    scanNext()
 
     return neighbors
 
 }
+    

@@ -16,6 +16,7 @@ var files = [
     'js/Collide.js',
     'js/FallingCanvas.js',
     'js/FallingBubble.js',
+    'js/InjectionNeighbors.js',
     'js/Laser.js',
     'js/LaserGradient.js',
     'js/MainCanvas.js',

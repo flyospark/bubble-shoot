@@ -263,6 +263,64 @@ function FallingBubble (x, y, shape, scale) {
 
 }
 ;
+function InjectionNeighbors (bubble, columns) {
+
+    function checkAndScan (colNumber, rowNumber) {
+
+        var bubbles = columnsAndRows[colNumber]
+        if (!bubbles) return
+
+        var bubble = bubbles[rowNumber]
+        if (!bubble || scannedBubbles[bubble.id]) return
+
+        if (neighbors.length > 5) return
+
+        queue.push(bubble)
+
+    }
+
+    function scanNext () {
+
+        var bubble = queue.shift()
+        if (!bubble) return
+
+        var colNumber = bubble.colNumber
+        var rowNumber = bubble.rowNumber
+        scannedBubbles[bubble.id] = bubble
+        var shape = bubble.shape
+        if (shape != excludeShape) neighbors.push(bubble)
+        checkAndScan(colNumber - 2, rowNumber)
+        checkAndScan(colNumber + 2, rowNumber)
+        checkAndScan(colNumber - 1, rowNumber - 1)
+        checkAndScan(colNumber + 1, rowNumber - 1)
+        checkAndScan(colNumber - 1, rowNumber + 1)
+        checkAndScan(colNumber + 1, rowNumber + 1)
+        scanNext()
+
+    }
+
+    var excludeShape = bubble.shape
+
+    var columnsAndRows = {}
+    for (var i in columns) {
+        var bubbles = columns[i]
+        columnsAndRows[i] = {}
+        for (var j in bubbles) {
+            var itemBubble = bubbles[j]
+            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
+        }
+    }
+
+    var scannedBubbles = {}
+    var neighbors = []
+    var queue = [bubble]
+    scanNext()
+
+    return neighbors
+
+}
+    
+;
 function Laser (canvasWidth, canvasHeight, bubbleRadius, thinkness, c, minShootDY) {
 
     var radius = Math.max(canvasWidth, canvasHeight) * 2
@@ -576,19 +634,19 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(2, anyColorBubbleShape)
-    nextBubbleRandomShape.add(27, blueBubbleShape)
-    nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, greenBubbleShape)
-    nextBubbleRandomShape.add(1, greenInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, redBubbleShape)
-    nextBubbleRandomShape.add(1, redInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, violetBubbleShape)
-    nextBubbleRandomShape.add(1, violetInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, whiteBubbleShape)
-    nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, yellowBubbleShape)
-    nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
+//    nextBubbleRandomShape.add(2, anyColorBubbleShape)
+    nextBubbleRandomShape.add(10, blueBubbleShape)
+    nextBubbleRandomShape.add(27, blueInjectionBubbleShape)
+//    nextBubbleRandomShape.add(27, greenBubbleShape)
+//    nextBubbleRandomShape.add(1, greenInjectionBubbleShape)
+//    nextBubbleRandomShape.add(27, redBubbleShape)
+//    nextBubbleRandomShape.add(1, redInjectionBubbleShape)
+//    nextBubbleRandomShape.add(27, violetBubbleShape)
+//    nextBubbleRandomShape.add(1, violetInjectionBubbleShape)
+//    nextBubbleRandomShape.add(27, whiteBubbleShape)
+//    nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
+//    nextBubbleRandomShape.add(27, yellowBubbleShape)
+//    nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
 
     var shiftRandomShape = RandomShape()
     shiftRandomShape.add(6, blackBubbleShape)
@@ -1244,6 +1302,9 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
     var odd = false
 
     var breakNumber = 3
+
+    window.stillBubbles = stillBubbles
+    window.columns = columns
 
     var that = {
         gameOver: false,
