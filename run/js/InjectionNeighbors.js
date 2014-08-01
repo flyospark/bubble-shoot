@@ -24,7 +24,6 @@ function InjectionNeighbors (bubble, columns) {
 
         var colNumber = bubble.colNumber
         var rowNumber = bubble.rowNumber
-        var shape = bubble.shape
         neighbors.push(bubble)
         if (neighbors.length == 4) return
 
@@ -55,8 +54,6 @@ function InjectionNeighbors (bubble, columns) {
             checkAndScan(colNumber + 1, rowNumber + 1)
         },
     ]
-
-    var excludeShape = bubble.shape
 
     var columnsAndRows = {}
     for (var i in columns) {
