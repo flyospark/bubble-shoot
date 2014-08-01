@@ -8,8 +8,6 @@ function InjectionNeighbors (bubble, columns) {
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
 
-        if (neighbors.length > 3) return
-
         queue.push(bubble)
 
     }
@@ -23,7 +21,10 @@ function InjectionNeighbors (bubble, columns) {
         var rowNumber = bubble.rowNumber
         scannedBubbles[bubble.id] = bubble
         var shape = bubble.shape
-        if (shape != excludeShape) neighbors.push(bubble)
+        if (shape != excludeShape) {
+            neighbors.push(bubble)
+            if (neighbors.length > 5) return
+        }
         checkAndScan(colNumber - 2, rowNumber)
         checkAndScan(colNumber + 2, rowNumber)
         checkAndScan(colNumber - 1, rowNumber - 1)
