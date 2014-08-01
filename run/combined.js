@@ -273,7 +273,7 @@ function InjectionNeighbors (bubble, columns) {
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
 
-        if (neighbors.length > 5) return
+        if (neighbors.length > 3) return
 
         queue.push(bubble)
 
@@ -622,22 +622,22 @@ function MainPanel () {
     }
 
     var nextBubbleRandomShape = RandomShape()
-    nextBubbleRandomShape.add(2, anyColorBubbleShape)
-    nextBubbleRandomShape.add(27, blueBubbleShape)
+    nextBubbleRandomShape.add(4, anyColorBubbleShape)
+    nextBubbleRandomShape.add(37, blueBubbleShape)
     nextBubbleRandomShape.add(1, blueInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, greenBubbleShape)
+    nextBubbleRandomShape.add(37, greenBubbleShape)
     nextBubbleRandomShape.add(1, greenInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, redBubbleShape)
+    nextBubbleRandomShape.add(37, redBubbleShape)
     nextBubbleRandomShape.add(1, redInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, violetBubbleShape)
+    nextBubbleRandomShape.add(37, violetBubbleShape)
     nextBubbleRandomShape.add(1, violetInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, whiteBubbleShape)
+    nextBubbleRandomShape.add(37, whiteBubbleShape)
     nextBubbleRandomShape.add(1, whiteInjectionBubbleShape)
-    nextBubbleRandomShape.add(27, yellowBubbleShape)
+    nextBubbleRandomShape.add(37, yellowBubbleShape)
     nextBubbleRandomShape.add(1, yellowInjectionBubbleShape)
 
     var shiftRandomShape = RandomShape()
-    shiftRandomShape.add(6, blackBubbleShape)
+    shiftRandomShape.add(9, blackBubbleShape)
     shiftRandomShape.add(13, blueBubbleShape)
     shiftRandomShape.add(1, blueBombBubbleShape)
     shiftRandomShape.add(13, greenBubbleShape)

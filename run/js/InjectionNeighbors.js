@@ -8,7 +8,7 @@ function InjectionNeighbors (bubble, columns) {
         var bubble = bubbles[rowNumber]
         if (!bubble || scannedBubbles[bubble.id]) return
 
-        if (neighbors.length > 5) return
+        if (neighbors.length > 3) return
 
         queue.push(bubble)
 
