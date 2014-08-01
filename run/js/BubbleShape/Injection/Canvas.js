@@ -1,4 +1,4 @@
-function BubbleShape_Injection_Canvas (canvas, scale) {
+function BubbleShape_Injection_Canvas (canvas, scale, color) {
 
     function lineTo (dx, dy) {
         x += dx
@@ -7,8 +7,6 @@ function BubbleShape_Injection_Canvas (canvas, scale) {
     }
 
     var c = canvas.getContext('2d')
-
-    var color = 'rgba(255 ,255, 255, 0.45)'
 
     var x = -11, y = -7
 

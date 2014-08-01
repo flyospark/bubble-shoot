@@ -5,7 +5,7 @@ function BubbleShape_Injection_White (canvasHeight, radius, scale, whiteBubbleSh
 
     var canvas = BubbleShape_Canvas(color, 'hsl(0, 0%, 70%)', radius)
 
-    BubbleShape_Injection_Canvas(canvas, scale)
+    BubbleShape_Injection_Canvas(canvas, scale, 'hsla(0, 0%, 20%, 0.5)')
 
     return {
         color: color,
