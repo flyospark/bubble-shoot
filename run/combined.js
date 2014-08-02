@@ -792,6 +792,7 @@ function MainPanel () {
     addEventListener('mouseup', mouseUpListener)
 
     var tickInterval = setInterval(tick, 30)
+    var saveInterval = setInterval(saveState, 30 * 1000)
 
     repaint()
 
@@ -823,6 +824,7 @@ function MainPanel () {
         element: element,
         destroy: function () {
             clearInterval(tickInterval)
+            clearInterval(saveInterval)
             removeEventListener('beforeunload', saveState)
             removeEventListener('mousemove', mouseMoveListener)
             removeEventListener('mouseup', mouseUpListener)
