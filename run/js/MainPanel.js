@@ -154,6 +154,9 @@ function MainPanel () {
         if (document.visibilityState == 'hidden') saveState()
     }
 
+    var requestAnimationFrame = window.requestAnimationFrame
+    if (!requestAnimationFrame) requestAnimationFrame = window.mozRequestAnimationFrame
+
     var dpp = devicePixelRatio
     var width = innerWidth * dpp
     var height = innerHeight * dpp
