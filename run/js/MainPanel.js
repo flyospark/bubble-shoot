@@ -5,6 +5,25 @@ function MainPanel () {
         return NextBubble(canvasWidth, canvasHeight, bubbleRadius, shape)
     }
 
+    function mouseMoveListener (e) {
+        if (touched) touched = false
+        else pointerMove(e)
+    }
+
+    function mouseUpListener (e) {
+        if (touched) touched = false
+        else pointerEnd(e)
+    }
+
+    function placeMovingBubble (movingBubble) {
+        stillCanvas.add(movingBubble)
+        shot++
+        if (shot === maxShots) {
+            shot = 0
+            stillCanvas.shift()
+        }
+    }
+
     function pointerEnd () {
 
         if (!pointerStarted) return
@@ -131,13 +150,8 @@ function MainPanel () {
         }
     }
 
-    function placeMovingBubble (movingBubble) {
-        stillCanvas.add(movingBubble)
-        shot++
-        if (shot === maxShots) {
-            shot = 0
-            stillCanvas.shift()
-        }
+    function visibilityChangeListener () {
+        if (document.visibilityState == 'hidden') saveState()
     }
 
     var dpp = devicePixelRatio
@@ -351,10 +365,6 @@ function MainPanel () {
             pointerStart(touch)
         }
     })
-    addEventListener('mousemove', function (e) {
-        if (touched) touched = false
-        else pointerMove(e)
-    })
     element.addEventListener('touchmove', function (e) {
         touched = true
         e.preventDefault()
@@ -363,10 +373,6 @@ function MainPanel () {
             var touch = touches[i]
             if (touch.identifier === identifier) pointerMove(touch)
         }
-    })
-    addEventListener('mouseup', function (e) {
-        if (touched) touched = false
-        else pointerEnd(e)
     })
     element.addEventListener('touchend', function (e) {
         touched = true
@@ -381,15 +387,13 @@ function MainPanel () {
     var shot = 0
     var maxShots = 2 + Math.ceil(numBubblesHorizontal / 2)
 
-    document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState == 'hidden') saveState()
-    })
+    document.addEventListener('visibilitychange', visibilityChangeListener)
 
     addEventListener('beforeunload', saveState)
-    addEventListener('keydown', function (e) {
-        if (e.keyCode == 32) tick()
-    })
-    setInterval(tick, 30)
+    addEventListener('mousemove', mouseMoveListener)
+    addEventListener('mouseup', mouseUpListener)
+
+    var tickInterval = setInterval(tick, 30)
 
     repaint()
 
@@ -417,6 +421,15 @@ function MainPanel () {
 
     })()
 
-    return { element: element }
+    return {
+        element: element,
+        destroy: function () {
+            clearInterval(tickInterval)
+            removeEventListener('beforeunload', saveState)
+            removeEventListener('mousemove', mouseMoveListener)
+            removeEventListener('mouseup', mouseUpListener)
+            document.removeEventListener('visibilitychange', visibilityChangeListener)
+        },
+    }
 
 }
