@@ -1,4 +1,4 @@
-function BombNeighbors (columns, neighbors) {
+function BombNeighbors (columnsAndRows, neighbors) {
 
     function checkAndInclude (colNumber, rowNumber) {
 
@@ -22,16 +22,6 @@ function BombNeighbors (columns, neighbors) {
         checkAndInclude(colNumber + 1, rowNumber - 1)
         checkAndInclude(colNumber - 1, rowNumber + 1)
         checkAndInclude(colNumber + 1, rowNumber + 1)
-    }
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
     }
 
     var bombNeighbors = {}

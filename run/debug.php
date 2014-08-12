@@ -13,6 +13,7 @@ echo_html(
     .'<script type="text/javascript" src="js/BreakingBubble.js"></script>'
     .'<script type="text/javascript" src="js/BreakingCanvas.js"></script>'
     .'<script type="text/javascript" src="js/Collide.js"></script>'
+    .'<script type="text/javascript" src="js/ColumnsAndRows.js"></script>'
     .'<script type="text/javascript" src="js/FallingCanvas.js"></script>'
     .'<script type="text/javascript" src="js/FallingBubble.js"></script>'
     .'<script type="text/javascript" src="js/InjectionNeighbors.js"></script>'

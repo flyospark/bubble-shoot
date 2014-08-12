@@ -110,16 +110,18 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
+            var columnsAndRows = ColumnsAndRows(columns)
+
             if (isInjection) {
-                var injectionNeighbors = InjectionNeighbors(bubble, columns)
+                var injectionNeighbors = InjectionNeighbors(bubble, columnsAndRows)
                 for (var i in injectionNeighbors) {
                     injectionNeighbors[i].shape = shape
                 }
             } else {
-                var neighbors = Neighbors(bubble, columns)
+                var neighbors = Neighbors(bubble, columnsAndRows)
                 if (neighbors.length >= breakNumber) {
 
-                    var bombNeighbors = BombNeighbors(columns, neighbors)
+                    var bombNeighbors = BombNeighbors(columnsAndRows, neighbors)
 
                     var score = -(breakNumber - 1) * 2
 

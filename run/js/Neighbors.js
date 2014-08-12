@@ -1,4 +1,4 @@
-function Neighbors (bubble, columns) {
+function Neighbors (bubble, columnsAndRows) {
 
     function checkAndScan (colNumber, rowNumber, matchShape) {
 
@@ -30,16 +30,6 @@ function Neighbors (bubble, columns) {
         checkAndScan(colNumber - 1, rowNumber + 1, shape)
         checkAndScan(colNumber + 1, rowNumber + 1, shape)
 
-    }
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
     }
 
     var scannedBubbles = {}

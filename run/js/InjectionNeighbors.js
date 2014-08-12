@@ -1,4 +1,4 @@
-function InjectionNeighbors (bubble, columns) {
+function InjectionNeighbors (bubble, columnsAndRows) {
 
     function checkAndScan (colNumber, rowNumber) {
 
@@ -54,16 +54,6 @@ function InjectionNeighbors (bubble, columns) {
             checkAndScan(colNumber + 1, rowNumber + 1)
         },
     ]
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
-    }
 
     var scannedBubbles = {}
     var neighbors = []

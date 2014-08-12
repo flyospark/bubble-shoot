@@ -14,6 +14,7 @@ var files = [
     'js/BreakingBubble.js',
     'js/BreakingCanvas.js',
     'js/Collide.js',
+    'js/ColumnsAndRows.js',
     'js/FallingCanvas.js',
     'js/FallingBubble.js',
     'js/InjectionNeighbors.js',
