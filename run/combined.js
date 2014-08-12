@@ -54,7 +54,7 @@ function BlurCanvas (canvasWidth, canvasHeight) {
 
 }
 ;
-function BombNeighbors (columns, neighbors) {
+function BombNeighbors (columnsAndRows, neighbors) {
 
     function checkAndInclude (colNumber, rowNumber) {
 
@@ -78,16 +78,6 @@ function BombNeighbors (columns, neighbors) {
         checkAndInclude(colNumber + 1, rowNumber - 1)
         checkAndInclude(colNumber - 1, rowNumber + 1)
         checkAndInclude(colNumber + 1, rowNumber + 1)
-    }
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
     }
 
     var bombNeighbors = {}
@@ -214,6 +204,19 @@ function Collide (movingBubbles, stillBubbles, bubbleVisualDiameter) {
     return collisions
 }
 ;
+function ColumnsAndRows (columns) {
+    var columnsAndRows = {}
+    for (var i in columns) {
+        var bubbles = columns[i]
+        columnsAndRows[i] = {}
+        for (var j in bubbles) {
+            var itemBubble = bubbles[j]
+            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
+        }
+    }
+    return columnsAndRows
+}
+;
 function FallingCanvas (scale) {
 
     var fallingBubbles = {}
@@ -263,7 +266,7 @@ function FallingBubble (x, y, shape, scale) {
 
 }
 ;
-function InjectionNeighbors (bubble, columns) {
+function InjectionNeighbors (bubble, columnsAndRows) {
 
     function checkAndScan (colNumber, rowNumber) {
 
@@ -319,16 +322,6 @@ function InjectionNeighbors (bubble, columns) {
             checkAndScan(colNumber + 1, rowNumber + 1)
         },
     ]
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
-    }
 
     var scannedBubbles = {}
     var neighbors = []
@@ -930,7 +923,7 @@ function MovingCanvas (canvasWidth, canvasHeight,
 
 }
 ;
-function Neighbors (bubble, columns) {
+function Neighbors (bubble, columnsAndRows) {
 
     function checkAndScan (colNumber, rowNumber, matchShape) {
 
@@ -962,16 +955,6 @@ function Neighbors (bubble, columns) {
         checkAndScan(colNumber - 1, rowNumber + 1, shape)
         checkAndScan(colNumber + 1, rowNumber + 1, shape)
 
-    }
-
-    var columnsAndRows = {}
-    for (var i in columns) {
-        var bubbles = columns[i]
-        columnsAndRows[i] = {}
-        for (var j in bubbles) {
-            var itemBubble = bubbles[j]
-            columnsAndRows[i][itemBubble.rowNumber] = itemBubble
-        }
     }
 
     var scannedBubbles = {}
@@ -1396,16 +1379,18 @@ function StillCanvas (canvasHeight, bubbleRadius, numBubblesHorizontal,
             add(bubble)
             if (shiftIndex) moveDown(bubble, shiftIndex)
 
+            var columnsAndRows = ColumnsAndRows(columns)
+
             if (isInjection) {
-                var injectionNeighbors = InjectionNeighbors(bubble, columns)
+                var injectionNeighbors = InjectionNeighbors(bubble, columnsAndRows)
                 for (var i in injectionNeighbors) {
                     injectionNeighbors[i].shape = shape
                 }
             } else {
-                var neighbors = Neighbors(bubble, columns)
+                var neighbors = Neighbors(bubble, columnsAndRows)
                 if (neighbors.length >= breakNumber) {
 
-                    var bombNeighbors = BombNeighbors(columns, neighbors)
+                    var bombNeighbors = BombNeighbors(columnsAndRows, neighbors)
 
                     var score = -(breakNumber - 1) * 2
 
