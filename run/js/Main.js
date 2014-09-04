@@ -12,8 +12,7 @@
     addEventListener('resize', function () {
         mainPanel.destroy()
         document.body.removeChild(mainPanel.element)
-        mainPanel = MainPanel()
-        body.appendChild(mainPanel.element)
+        start()
     })
 
 })()

@@ -71,7 +71,7 @@ function MainPanel () {
     }
 
     function repaint () {
-        requestAnimationFrame(function () {
+        animationFrame = requestAnimationFrame(function () {
 
             var time = Date.now()
 
@@ -154,8 +154,12 @@ function MainPanel () {
         if (document.visibilityState == 'hidden') saveState()
     }
 
-    var requestAnimationFrame = window.requestAnimationFrame
-    if (!requestAnimationFrame) requestAnimationFrame = window.mozRequestAnimationFrame
+    var requestAnimationFrame = window.requestAnimationFrame,
+        cancelAnimationFrame = window.cancelAnimationFrame
+    if (!requestAnimationFrame) {
+        requestAnimationFrame = window.mozRequestAnimationFrame
+        cancelAnimationFrame = window.mozCancelAnimationFrame
+    }
 
     var dpp = devicePixelRatio
     var width = innerWidth * dpp
@@ -399,6 +403,8 @@ function MainPanel () {
     var tickInterval = setInterval(tick, 30)
     var saveInterval = setInterval(saveState, 30 * 1000)
 
+    var animationFrame
+
     repaint()
 
     ;(function () {
@@ -434,6 +440,7 @@ function MainPanel () {
             removeEventListener('mousemove', mouseMoveListener)
             removeEventListener('mouseup', mouseUpListener)
             document.removeEventListener('visibilitychange', visibilityChangeListener)
+            cancelAnimationFrame(animationFrame)
         },
     }
 
