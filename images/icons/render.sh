@@ -1,4 +1,5 @@
 #!/bin/bash
+cd `dirname $BASH_SOURCE`
 for i in *.svg
 do
     name=`basename $i .svg`
