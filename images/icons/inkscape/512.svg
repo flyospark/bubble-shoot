@@ -11,11 +11,11 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="90"
-   height="90"
+   width="512"
+   height="512"
    id="svg2"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="90.svg">
+   sodipodi:docname="512.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -26,14 +26,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1044"
+     inkscape:window-height="1017"
      id="namedview3137"
      showgrid="true"
      inkscape:zoom="1"
-     inkscape:cx="154.44964"
-     inkscape:cy="101.88503"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:cx="69.449643"
+     inkscape:cy="288.88503"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2"
      inkscape:snap-bbox="true"
@@ -309,7 +309,7 @@
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3791"
-       id="radialGradient3541"
+       id="radialGradient4444"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.9999999,-1.8026347e-8,1.8026346e-8,2,-3.4999997,-1.796875)"
        cx="3.5"
@@ -332,7 +332,7 @@
   </metadata>
   <g
      id="g4245"
-     transform="scale(5.625,5.625)">
+     transform="scale(32,32)">
     <path
        transform="matrix(3.6721407,0,0,2.961901,14.938563,-0.5404555)"
        d="M 0.22097099,2.8834372 C 0.22097099,4.3285249 -0.72392558,5.5 -1.8895146,5.5 c -1.165589,0 -2.1104855,-1.1714751 -2.1104855,-2.6165628 0,-1.4450878 0.9448965,-2.61656289 2.1104855,-2.61656289 1.16558902,0 2.11048559,1.17147509 2.11048559,2.61656289 z"
@@ -368,7 +368,7 @@
        clip-path="none"
        transform="matrix(1.0666667,0,0,1.0666667,4.2666666,-0.216667)"
        sodipodi:type="arc"
-       style="fill:url(#radialGradient3541);fill-opacity:1;stroke:none"
+       style="fill:url(#radialGradient4444);fill-opacity:1;stroke:none"
        id="path3950"
        sodipodi:cx="3.5"
        sodipodi:cy="2.5"
