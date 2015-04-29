@@ -160,6 +160,14 @@ function MainPanel () {
         requestAnimationFrame = window.mozRequestAnimationFrame
         cancelAnimationFrame = window.mozCancelAnimationFrame
     }
+    if (!requestAnimationFrame) {
+        requestAnimationFrame = function (callback) {
+            return setTimeout(callback, 0)
+        }
+        cancelAnimationFrame = function (animationFrame) {
+            clearTimeout(animationFrame)
+        }
+    }
 
     var dpp = devicePixelRatio
     var width = innerWidth * dpp

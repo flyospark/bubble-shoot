@@ -25,7 +25,6 @@ function MovingBubble (canvasWidth, canvasHeight,
             var overflow = that.x + radius - canvasWidth
             if (overflow > 0) that.x -= 2 * overflow
 
-
         },
         tick: function () {
 
