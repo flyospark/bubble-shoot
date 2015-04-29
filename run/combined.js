@@ -551,6 +551,14 @@ function MainPanel () {
         requestAnimationFrame = window.mozRequestAnimationFrame
         cancelAnimationFrame = window.mozCancelAnimationFrame
     }
+    if (!requestAnimationFrame) {
+        requestAnimationFrame = function (callback) {
+            return setTimeout(callback, 0)
+        }
+        cancelAnimationFrame = function (animationFrame) {
+            clearTimeout(animationFrame)
+        }
+    }
 
     var dpp = devicePixelRatio
     var width = innerWidth * dpp
@@ -863,7 +871,6 @@ function MovingBubble (canvasWidth, canvasHeight,
 
             var overflow = that.x + radius - canvasWidth
             if (overflow > 0) that.x -= 2 * overflow
-
 
         },
         tick: function () {
